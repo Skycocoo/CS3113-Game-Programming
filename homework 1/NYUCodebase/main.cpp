@@ -47,7 +47,7 @@ GLuint LoadTexture(const char *filePath) {
     unsigned char* image = stbi_load(filePath, &w, &h, &comp, STBI_rgb_alpha);
     
     if(image == NULL) {
-        std::cout << "Unable to load image. Make sure the path is correct\n";
+        std::cout << "Unable to load image in the path " << *filePath << ". Make sure the path is correct\n";
         assert(false);
     }
     
@@ -73,6 +73,7 @@ ShaderProgram setUntextured(){
 
 ShaderProgram setTextured(const string& filepath, GLuint& texture){
     ShaderProgram program;
+//    cout << filepath << endl;
     program.Load(RESOURCE_FOLDER"vertex_textured.glsl", RESOURCE_FOLDER"fragment_textured.glsl");
     texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
     
@@ -192,6 +193,13 @@ int main(int argc, char *argv[]){
     ShaderProgram prog1 = setTextured("starBronze.png", texture1);
     objects.push_back(Object(prog1, true, texture1));
     
+    GLuint texture2;
+    ShaderProgram prog2 = setTextured("starSilver.png", texture2);
+    objects.push_back(Object(prog2, true, texture2));
+
+    GLuint texture3;
+    ShaderProgram prog3 = setTextured("starGold.png", texture3);
+    objects.push_back(Object(prog3, true, texture3));
 
     SDL_Event event;
     bool done = false;
@@ -206,10 +214,14 @@ int main(int argc, char *argv[]){
         glClear(GL_COLOR_BUFFER_BIT);
         
         float ticks = (float) SDL_GetTicks()/500.0f;
-        objects[1].modelMatrix = Matrix();
-        objects[1].modelMatrix.Translate(2 * cos(ticks), 2 * sin(ticks), 0);
-        objects[1].modelMatrix.Scale(0.5f, 0.5f, 0.5f);
-
+        
+        for (size_t i = 1; i < objects.size(); i++){
+            objects[i].modelMatrix = Matrix();
+            objects[i].modelMatrix.Scale(0.5f, 0.5f, 0.5f);
+            objects[i].modelMatrix.Translate(float(6) / float(i) * cos(ticks + 5 * i), float(6) / float(i) * sin(ticks + 5 * i), 0);
+            
+        }
+    
         for (Object& obj: objects){
             if (obj.istexture) displayTex(obj);
             else display(obj);
