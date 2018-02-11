@@ -1,12 +1,7 @@
 // Templated by Prof Safrin
-// Modified by Yuxi Luo, February 9, 2018
+// Modified by Yuxi Luo (yl4217), February 9, 2018
 // Homework 1, CS3113 Game Programming
 
-// Windows req:
-#ifdef _WINDOWS
-#include <GL/glew.h>
-#define RESOURCE_FOLDER ""
-#endif
 
 #include <iostream>
 #include <vector>
@@ -23,7 +18,7 @@
 
 using namespace std;
 
-
+// create an object class to handle parameters
 struct Object{
     ShaderProgram program;
     
@@ -37,7 +32,6 @@ struct Object{
     Object(const ShaderProgram& program, bool is, GLuint tex = 0): program(program), istexture(is), texture(tex){
         projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
     }
-    
 };
 
 
@@ -63,6 +57,7 @@ GLuint LoadTexture(const char *filePath) {
     return retTexture;
 }
 
+// untextured shader
 ShaderProgram setUntextured(){
     ShaderProgram program;
     program.Load(RESOURCE_FOLDER"vertex.glsl", RESOURCE_FOLDER"fragment.glsl");
@@ -71,32 +66,17 @@ ShaderProgram setUntextured(){
     return program;
 }
 
+// textured shader
 ShaderProgram setTextured(const string& filepath, GLuint& texture){
     ShaderProgram program;
-//    cout << filepath << endl;
     program.Load(RESOURCE_FOLDER"vertex_textured.glsl", RESOURCE_FOLDER"fragment_textured.glsl");
     texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
     
     return program;
 }
 
-void display(ShaderProgram& program, const Matrix& modelMatrix, const Matrix& projectionMatrix, const Matrix& viewMatrix){
-    
-    program.SetModelMatrix(modelMatrix);
-    program.SetProjectionMatrix(projectionMatrix);
-    program.SetViewMatrix(viewMatrix);
-    
-    float vertices[] = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
-    
-    glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-    glEnableVertexAttribArray(program.positionAttribute);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDisableVertexAttribArray(program.positionAttribute);
-}
-
+// display untextured object
 void display(Object& obj){
-    
-    
     obj.program.SetModelMatrix(obj.modelMatrix);
     obj.program.SetProjectionMatrix(obj.projectionMatrix);
     obj.program.SetViewMatrix(obj.viewMatrix);
@@ -109,30 +89,8 @@ void display(Object& obj){
     glDisableVertexAttribArray(obj.program.positionAttribute);
 }
 
-
-void displayTex(ShaderProgram& program, const Matrix& modelMatrix, const Matrix& projectionMatrix, const Matrix& viewMatrix, GLuint texture){
-    
-    program.SetModelMatrix(modelMatrix);
-    program.SetProjectionMatrix(projectionMatrix);
-    program.SetViewMatrix(viewMatrix);
-    
-    glBindTexture(GL_TEXTURE_2D, texture);
-    
-    float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-    glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-    glEnableVertexAttribArray(program.positionAttribute);
-    
-    float texCoords[] = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-    glVertexAttribPointer(program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
-    glEnableVertexAttribArray(program.texCoordAttribute);
-    
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glDisableVertexAttribArray(program.positionAttribute);
-    glDisableVertexAttribArray(program.texCoordAttribute);
-}
-
+// display textured object
 void displayTex(Object& obj){
-    
     obj.program.SetModelMatrix(obj.modelMatrix);
     obj.program.SetProjectionMatrix(obj.projectionMatrix);
     obj.program.SetViewMatrix(obj.viewMatrix);
@@ -152,6 +110,7 @@ void displayTex(Object& obj){
     glDisableVertexAttribArray(obj.program.texCoordAttribute);
 }
 
+// check keyboard event
 void checkKeyboard(const SDL_Event& event, bool& done){
     switch (event.type){
         case SDL_QUIT:
@@ -167,27 +126,22 @@ void checkKeyboard(const SDL_Event& event, bool& done){
 }
 
 int main(int argc, char *argv[]){
+    // initial set up
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* displayWindow = SDL_CreateWindow("Homework 1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 640, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
-    
-    #ifdef _WINDOWS
-    glewInit();
-    #endif
-    
-    
+
     glViewport(0, 0, 640, 640);
     glClearColor(1, 1, 1, 1);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-    
+    // loading objects
     vector<Object> objects;
     
     ShaderProgram prog = setUntextured();
     objects.push_back(Object(prog, false));
-    
     
     GLuint texture1;
     ShaderProgram prog1 = setTextured("starBronze.png", texture1);
@@ -201,13 +155,13 @@ int main(int argc, char *argv[]){
     ShaderProgram prog3 = setTextured("starGold.png", texture3);
     objects.push_back(Object(prog3, true, texture3));
 
+    
+    // game loop
     SDL_Event event;
     bool done = false;
-
-
-    // game loop
     while (!done) {
-        // check keyboard event
+        
+        // check keyboard event; could type q to escape
         while (SDL_PollEvent(&event)) checkKeyboard(event, done);
         
         // display contents
@@ -215,18 +169,19 @@ int main(int argc, char *argv[]){
         
         float ticks = (float) SDL_GetTicks()/500.0f;
         
+        // animate the objects
         for (size_t i = 1; i < objects.size(); i++){
             objects[i].modelMatrix = Matrix();
             objects[i].modelMatrix.Scale(0.5f, 0.5f, 0.5f);
             objects[i].modelMatrix.Translate(float(6) / float(i) * cos(ticks + 5 * i), float(6) / float(i) * sin(ticks + 5 * i), 0);
-            
         }
-    
+        
+        // display the objects
         for (Object& obj: objects){
             if (obj.istexture) displayTex(obj);
             else display(obj);
-
         }
+        
         SDL_GL_SwapWindow(displayWindow);
     }
     
