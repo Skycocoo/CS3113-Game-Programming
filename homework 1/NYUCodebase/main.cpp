@@ -81,33 +81,29 @@ void display(Object& obj){
     obj.program.SetProjectionMatrix(obj.projectionMatrix);
     obj.program.SetViewMatrix(obj.viewMatrix);
     
-    float vertices[] = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
+    if (!obj.istexture){
+        float vertices[] = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
+        glVertexAttribPointer(obj.program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
+        glEnableVertexAttribArray(obj.program.positionAttribute);
+        
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDisableVertexAttribArray(obj.program.positionAttribute);
+    } else {
+        glBindTexture(GL_TEXTURE_2D, obj.texture);
+        
+        float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
+        glVertexAttribPointer(obj.program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
+        glEnableVertexAttribArray(obj.program.positionAttribute);
+        
+        float texCoords[] = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+        glVertexAttribPointer(obj.program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
+        glEnableVertexAttribArray(obj.program.texCoordAttribute);
+        
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDisableVertexAttribArray(obj.program.positionAttribute);
+        glDisableVertexAttribArray(obj.program.texCoordAttribute);
+    }
     
-    glVertexAttribPointer(obj.program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-    glEnableVertexAttribArray(obj.program.positionAttribute);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDisableVertexAttribArray(obj.program.positionAttribute);
-}
-
-// display textured object
-void displayTex(Object& obj){
-    obj.program.SetModelMatrix(obj.modelMatrix);
-    obj.program.SetProjectionMatrix(obj.projectionMatrix);
-    obj.program.SetViewMatrix(obj.viewMatrix);
-    
-    glBindTexture(GL_TEXTURE_2D, obj.texture);
-    
-    float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-    glVertexAttribPointer(obj.program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-    glEnableVertexAttribArray(obj.program.positionAttribute);
-    
-    float texCoords[] = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-    glVertexAttribPointer(obj.program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
-    glEnableVertexAttribArray(obj.program.texCoordAttribute);
-    
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glDisableVertexAttribArray(obj.program.positionAttribute);
-    glDisableVertexAttribArray(obj.program.texCoordAttribute);
 }
 
 // check keyboard event
@@ -167,20 +163,17 @@ int main(int argc, char *argv[]){
         // display contents
         glClear(GL_COLOR_BUFFER_BIT);
         
-        float ticks = (float) SDL_GetTicks()/500.0f;
+        float ticks = (float) SDL_GetTicks()/600.0f;
         
         // animate the objects
         for (size_t i = 1; i < objects.size(); i++){
             objects[i].modelMatrix = Matrix();
             objects[i].modelMatrix.Scale(0.5f, 0.5f, 0.5f);
-            objects[i].modelMatrix.Translate(float(6) / float(i) * cos(ticks + 5 * i), float(6) / float(i) * sin(ticks + 5 * i), 0);
+            objects[i].modelMatrix.Translate(float(6) / float(i) * cos(ticks * i), float(6) / float(i) * sin(ticks * i), 0);
         }
         
         // display the objects
-        for (Object& obj: objects){
-            if (obj.istexture) displayTex(obj);
-            else display(obj);
-        }
+        for (Object& obj: objects) display(obj);
         
         SDL_GL_SwapWindow(displayWindow);
     }
