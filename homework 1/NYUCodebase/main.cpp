@@ -135,12 +135,13 @@ int main(int argc, char *argv[]){
     // matrices
     Matrix projectionMatrix;
     Matrix modelMatrix;
+    
     Matrix viewMatrix;
     projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
     
     SDL_Event event;
     bool done = false;
-    float lastFrameTicks = 0.0f;
+//    float lastFrameTicks = 0.0f;
     
     
 //Todo: create a class to hold shaderprogram and its corresponding projection/model/view matrices
@@ -155,16 +156,19 @@ int main(int argc, char *argv[]){
         // display contents
         glClear(GL_COLOR_BUFFER_BIT);
         
-        float ticks = (float)SDL_GetTicks()/1000.0f;
-        float elapsed = ticks - lastFrameTicks;
-        lastFrameTicks = ticks;
+
         
         
         display(prog, modelMatrix, projectionMatrix, viewMatrix);
         
         
+        float ticks = (float)SDL_GetTicks()/500.0f;
+//        float elapsed = ticks - lastFrameTicks;
+//        lastFrameTicks = ticks;
+
         Matrix modelMatrix2;
-        modelMatrix2.Translate(0, 2, 0);
+        modelMatrix2.Translate(2 * cos(ticks), 2 * sin(ticks), 0);
+        modelMatrix2.Scale(0.5f, 0.5f, 0.5f);
         
         displayTex(progt, modelMatrix2, projectionMatrix, viewMatrix, texture1);
         
