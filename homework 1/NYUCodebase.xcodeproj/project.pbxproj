@@ -21,6 +21,8 @@
 		6DEF23C21B96CC2600BCE792 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DEF23BC1B96CC2600BCE792 /* Matrix.cpp */; };
 		6DEF23C31B96CC2600BCE792 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DEF23BE1B96CC2600BCE792 /* ShaderProgram.cpp */; };
 		6DEF23C41B96CC2600BCE792 /* vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 6DEF23C01B96CC2600BCE792 /* vertex.glsl */; };
+		D017A139202FCE360030E887 /* starSilver.png in Resources */ = {isa = PBXBuildFile; fileRef = D017A138202FCE360030E887 /* starSilver.png */; };
+		D017A13B202FCE3F0030E887 /* starGold.png in Resources */ = {isa = PBXBuildFile; fileRef = D017A13A202FCE3F0030E887 /* starGold.png */; };
 		D0EAF794202DED85009F5E5B /* starBronze.png in Resources */ = {isa = PBXBuildFile; fileRef = D0EAF793202DED85009F5E5B /* starBronze.png */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +50,8 @@
 		6DEF23BE1B96CC2600BCE792 /* ShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
 		6DEF23BF1B96CC2600BCE792 /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
 		6DEF23C01B96CC2600BCE792 /* vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
+		D017A138202FCE360030E887 /* starSilver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = starSilver.png; path = "../../Source/assets/graphics/Tappy Plane (80 assets)/PNG/starSilver.png"; sourceTree = "<group>"; };
+		D017A13A202FCE3F0030E887 /* starGold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = starGold.png; path = "../../Source/assets/graphics/Tappy Plane (80 assets)/PNG/starGold.png"; sourceTree = "<group>"; };
 		D0349960202DD68E00003B19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../Source/libraries/XcodeFrameworks/SDL2.framework; sourceTree = "<group>"; };
 		D0349961202DD68E00003B19 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		D0349962202DD68E00003B19 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
@@ -152,6 +156,8 @@
 		6D5A86E119AE5CAA0066C1FD /* Code */ = {
 			isa = PBXGroup;
 			children = (
+				D017A13A202FCE3F0030E887 /* starGold.png */,
+				D017A138202FCE360030E887 /* starSilver.png */,
 				D0EAF793202DED85009F5E5B /* starBronze.png */,
 				6DEF23BB1B96CC2600BCE792 /* fragment.glsl */,
 				6DE9D2F01BA6AB8C002D599C /* fragment_textured.glsl */,
@@ -219,6 +225,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D017A139202FCE360030E887 /* starSilver.png in Resources */,
 				6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */,
 				6DEF23C11B96CC2600BCE792 /* fragment.glsl in Resources */,
 				6DE9D2F11BA6AB8C002D599C /* fragment_textured.glsl in Resources */,
@@ -227,6 +234,7 @@
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,
 				6DEF23C41B96CC2600BCE792 /* vertex.glsl in Resources */,
 				6DC7076A1BA7273500225B7D /* vertex_textured.glsl in Resources */,
+				D017A13B202FCE3F0030E887 /* starGold.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

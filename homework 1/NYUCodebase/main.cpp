@@ -54,10 +54,10 @@ ShaderProgram setUntextured(){
     return program;
 }
 
-ShaderProgram setTextured(const string& filepath){
+ShaderProgram setTextured(const string& filepath, GLuint& texture){
     ShaderProgram program;
     program.Load(RESOURCE_FOLDER"vertex_textured.glsl", RESOURCE_FOLDER"fragment_textured.glsl");
-    GLuint emojiTexture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
+    texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
     
     return program;
 }
@@ -76,11 +76,13 @@ void display(ShaderProgram& program, const Matrix& modelMatrix, const Matrix& pr
     glDisableVertexAttribArray(program.positionAttribute);
 }
 
-void displayTex(ShaderProgram& program, const Matrix& modelMatrix, const Matrix& projectionMatrix, const Matrix&(viewMatrix)){
+void displayTex(ShaderProgram& program, const Matrix& modelMatrix, const Matrix& projectionMatrix, const Matrix&(viewMatrix), GLuint texture){
     
     program.SetModelMatrix(modelMatrix);
     program.SetProjectionMatrix(projectionMatrix);
     program.SetViewMatrix(viewMatrix);
+    
+    glBindTexture(GL_TEXTURE_2D, texture);
     
     float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
@@ -111,28 +113,39 @@ void checkKeyboard(const SDL_Event& event, bool& done){
 
 int main(int argc, char *argv[]){
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* displayWindow = SDL_CreateWindow("Homework 1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 360, SDL_WINDOW_OPENGL);
+    SDL_Window* displayWindow = SDL_CreateWindow("Homework 1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 640, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
-    
     
     #ifdef _WINDOWS
     glewInit();
     #endif
-    glViewport(0, 0, 640, 360);
+    
+    
+    glViewport(0, 0, 640, 640);
+    glClearColor(1, 1, 1, 1);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     ShaderProgram prog = setUntextured();
-    ShaderProgram progt = setTextured("starBronze.png");
+    
+    GLuint texture1;
+    ShaderProgram progt = setTextured("starBronze.png", texture1);
     
     // matrices
     Matrix projectionMatrix;
     Matrix modelMatrix;
     Matrix viewMatrix;
-    projectionMatrix.SetOrthoProjection(-3.55, 3.55, -2.0f, 2.0f, -1.0f, 1.0f);
+    projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
     
     SDL_Event event;
     bool done = false;
-//    float lastFrameTicks = 0.0f;
+    float lastFrameTicks = 0.0f;
+    
+    
+//Todo: create a class to hold shaderprogram and its corresponding projection/model/view matrices
+//one vector holds textured & one other holds untextured
+    
     
     // game loop
     while (!done) {
@@ -142,13 +155,18 @@ int main(int argc, char *argv[]){
         // display contents
         glClear(GL_COLOR_BUFFER_BIT);
         
-//        float ticks = (float)SDL_GetTicks()/1000.0f;
-//        float elapsed = ticks - lastFrameTicks;
-//        lastFrameTicks = ticks;
+        float ticks = (float)SDL_GetTicks()/1000.0f;
+        float elapsed = ticks - lastFrameTicks;
+        lastFrameTicks = ticks;
         
         
         display(prog, modelMatrix, projectionMatrix, viewMatrix);
-        displayTex(progt, modelMatrix, projectionMatrix, viewMatrix);
+        
+        
+        Matrix modelMatrix2;
+        modelMatrix2.Translate(0, 2, 0);
+        
+        displayTex(progt, modelMatrix2, projectionMatrix, viewMatrix, texture1);
         
         SDL_GL_SwapWindow(displayWindow);
     }
