@@ -19,19 +19,67 @@
 using namespace std;
 
 // create an object class to handle parameters
-struct Object{
+class Object{
+    
+public:
+    Object(const ShaderProgram& program, bool is, GLuint tex = 0): program(program), istexture(is), texture(tex){
+        projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
+    }
+    
+    void animate(float ticks, size_t i = 0){
+        modelMatrix = Matrix();
+        modelMatrix.Scale(0.5f, 0.5f, 0.5f);
+        modelMatrix.Translate(float(6) / float(i) * cos(ticks * i), float(6) / float(i) * sin(ticks * i), 0);
+    }
+    
+    void display(){
+        program.SetModelMatrix(modelMatrix);
+        program.SetProjectionMatrix(projectionMatrix);
+        program.SetViewMatrix(viewMatrix);
+        
+        if (!istexture){
+            float vertices[] = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
+            glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
+            glEnableVertexAttribArray(program.positionAttribute);
+            
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glDisableVertexAttribArray(program.positionAttribute);
+        } else {
+            glBindTexture(GL_TEXTURE_2D, texture);
+            
+            float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
+            glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
+            glEnableVertexAttribArray(program.positionAttribute);
+            
+            float texCoords[] = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+            glVertexAttribPointer(program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
+            glEnableVertexAttribArray(program.texCoordAttribute);
+            
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glDisableVertexAttribArray(program.positionAttribute);
+            glDisableVertexAttribArray(program.texCoordAttribute);
+        }
+    }
+    
+private:
     ShaderProgram program;
     
     GLuint texture;
     Matrix projectionMatrix;
     Matrix modelMatrix;
     Matrix viewMatrix;
-
+    
     bool istexture = false;
     
-    Object(const ShaderProgram& program, bool is, GLuint tex = 0): program(program), istexture(is), texture(tex){
-        projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
-    }
+    float x;
+    float y;
+    float rotation;
+    int textureID;
+    float width;
+    float height;
+    float velocity_x;
+    float velocity_y;
+    
 };
 
 
@@ -75,37 +123,6 @@ ShaderProgram setTextured(const string& filepath, GLuint& texture){
     return program;
 }
 
-// display untextured object
-void display(Object& obj){
-    obj.program.SetModelMatrix(obj.modelMatrix);
-    obj.program.SetProjectionMatrix(obj.projectionMatrix);
-    obj.program.SetViewMatrix(obj.viewMatrix);
-    
-    if (!obj.istexture){
-        float vertices[] = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
-        glVertexAttribPointer(obj.program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-        glEnableVertexAttribArray(obj.program.positionAttribute);
-        
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDisableVertexAttribArray(obj.program.positionAttribute);
-    } else {
-        glBindTexture(GL_TEXTURE_2D, obj.texture);
-        
-        float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-        glVertexAttribPointer(obj.program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-        glEnableVertexAttribArray(obj.program.positionAttribute);
-        
-        float texCoords[] = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-        glVertexAttribPointer(obj.program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
-        glEnableVertexAttribArray(obj.program.texCoordAttribute);
-        
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glDisableVertexAttribArray(obj.program.positionAttribute);
-        glDisableVertexAttribArray(obj.program.texCoordAttribute);
-    }
-    
-}
-
 // check keyboard event
 void checkKeyboard(const SDL_Event& event, bool& done){
     switch (event.type){
@@ -121,17 +138,23 @@ void checkKeyboard(const SDL_Event& event, bool& done){
     }
 }
 
-int main(int argc, char *argv[]){
-    // initial set up
+SDL_Window* setUp(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* displayWindow = SDL_CreateWindow("Homework 2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 640, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
-
+    
     glViewport(0, 0, 640, 640);
     glClearColor(1, 1, 1, 1);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    return displayWindow;
+}
+
+int main(){
+    // initial set up
+    SDL_Window* displayWindow = setUp();
     
     // loading objects
     vector<Object> objects;
@@ -146,11 +169,11 @@ int main(int argc, char *argv[]){
     GLuint texture2;
     ShaderProgram prog2 = setTextured("starSilver.png", texture2);
     objects.push_back(Object(prog2, true, texture2));
-
+    
     GLuint texture3;
     ShaderProgram prog3 = setTextured("starGold.png", texture3);
     objects.push_back(Object(prog3, true, texture3));
-
+    
     
     // game loop
     SDL_Event event;
@@ -166,14 +189,10 @@ int main(int argc, char *argv[]){
         float ticks = (float) SDL_GetTicks()/600.0f;
         
         // animate the objects
-        for (size_t i = 1; i < objects.size(); i++){
-            objects[i].modelMatrix = Matrix();
-            objects[i].modelMatrix.Scale(0.5f, 0.5f, 0.5f);
-            objects[i].modelMatrix.Translate(float(6) / float(i) * cos(ticks * i), float(6) / float(i) * sin(ticks * i), 0);
-        }
+        for (size_t i = 1; i < objects.size(); i++) objects[i].animate(ticks, i);
         
         // display the objects
-        for (Object& obj: objects) display(obj);
+        for (Object& obj: objects) obj.display();
         
         SDL_GL_SwapWindow(displayWindow);
     }
