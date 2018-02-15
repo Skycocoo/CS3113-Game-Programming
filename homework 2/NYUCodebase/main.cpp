@@ -1,7 +1,5 @@
-// Templated by Prof Safrin
-// Modified by Yuxi Luo (yl4217), February 9, 2018
-// Homework 1, CS3113 Game Programming
-
+// Yuxi Luo (yl4217), February 15, 2018
+// Homework 2, PONG!, CS3113 Game Programming
 
 #include <iostream>
 #include <vector>
@@ -20,10 +18,9 @@ using namespace std;
 
 // create an object class to handle parameters
 class Object{
-    
 public:
     Object(const ShaderProgram& program, bool is = false, GLuint tex = 0): program(program), istexture(is), texture(tex){
-        projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
+        projectionMatrix.SetOrthoProjection(-7.083f, 7.083f, -5.0f, 5.0f, -1.0f, 1.0f);
     }
     
     void animate(float ticks, size_t i = 0){
@@ -136,12 +133,12 @@ void checkKeyboard(const SDL_Event& event, bool& done){
 
 SDL_Window* setUp(){
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* displayWindow = SDL_CreateWindow("Homework 2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 640, SDL_WINDOW_OPENGL);
+    SDL_Window* displayWindow = SDL_CreateWindow("Homework 2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1020, 720, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
     
-    glViewport(0, 0, 640, 640);
-    glClearColor(1, 1, 1, 1);
+    glViewport(0, 0, 1020, 720);
+    glClearColor(0, 0, 0, 0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
