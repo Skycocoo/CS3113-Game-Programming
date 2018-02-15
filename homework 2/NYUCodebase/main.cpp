@@ -22,7 +22,7 @@ using namespace std;
 class Object{
     
 public:
-    Object(const ShaderProgram& program, bool is, GLuint tex = 0): program(program), istexture(is), texture(tex){
+    Object(const ShaderProgram& program, bool is = false, GLuint tex = 0): program(program), istexture(is), texture(tex){
         projectionMatrix.SetOrthoProjection(-5.0f, 5.0f, -5.0f, 5.0f, -1.0f, 1.0f);
     }
     
@@ -37,39 +37,35 @@ public:
         program.SetProjectionMatrix(projectionMatrix);
         program.SetViewMatrix(viewMatrix);
         
-        if (!istexture){
-            float vertices[] = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
-            glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-            glEnableVertexAttribArray(program.positionAttribute);
-            
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-            glDisableVertexAttribArray(program.positionAttribute);
-        } else {
+        glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
+        glEnableVertexAttribArray(program.positionAttribute);
+        
+        if (istexture){
             glBindTexture(GL_TEXTURE_2D, texture);
-            
-            float vertices[] = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-            glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
-            glEnableVertexAttribArray(program.positionAttribute);
-            
-            float texCoords[] = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-            glVertexAttribPointer(program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
+            glVertexAttribPointer(program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
             glEnableVertexAttribArray(program.texCoordAttribute);
-            
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            glDisableVertexAttribArray(program.positionAttribute);
-            glDisableVertexAttribArray(program.texCoordAttribute);
         }
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDisableVertexAttribArray(program.positionAttribute);
+        
+        if (istexture) glDisableVertexAttribArray(program.texCoordAttribute);
+        
     }
     
 private:
     ShaderProgram program;
     
-    GLuint texture;
     Matrix projectionMatrix;
     Matrix modelMatrix;
     Matrix viewMatrix;
     
     bool istexture = false;
+    GLuint texture;
+    
+    vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
+    vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+    
+    // animation
     
     float x;
     float y;
