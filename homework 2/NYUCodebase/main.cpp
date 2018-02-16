@@ -183,6 +183,12 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
         obj.modelMatrix = splitPos[i];
         obj.display();
     }
+    
+//    need to draw the walls for upper & lower boundaries
+    
+    
+    
+    
 }
 
 // update the slide bar to be automatically moved by time
@@ -198,16 +204,37 @@ void updateSlide(Object& obj, float elapsed, bool& up){
     obj.modelMatrix.Translate(obj.x, obj.y, 0);
 }
 
+
+void initiatePong(Object& obj){
+//    random vector for velocity?
+
+//    direction of Pong based on the current scorer?
+    
+}
+
 void updatePong(Object& obj, float elapsed){
 //    if collide: with upper/lower boundary : velocity y = - velocity y
 //        with bars: verlocity x = - velocity x
 //
-//    collision detection?
     
+//    collision detection? -> change the direction of velocity
+//    edge detection? -> if x go beyond width / -width: score ++ for player / enemy
     
 }
 
+void win(){
+//    determine the end of game
+//    if one side scores >= 10 then win (display the result & end the game)
+//    if not: continue the game
+    
+}
 
+void dispalyGame(){
+//    display the player & computer's position (before the start of the game)
+//    display the score for each side in the middle of the game
+//    display the sign of an object which Pong will point towards (player or enemy)
+    
+}
 
 int main(){
     // initial set up
