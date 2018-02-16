@@ -68,11 +68,7 @@ private:
     
     vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-
     
-//    float rotation;
-
-
 };
 
 
@@ -202,6 +198,17 @@ void updateSlide(Object& obj, float elapsed, bool& up){
     obj.modelMatrix.Translate(obj.x, obj.y, 0);
 }
 
+void updatePong(Object& obj, float elapsed){
+//    if collide: with upper/lower boundary : velocity y = - velocity y
+//        with bars: verlocity x = - velocity x
+//
+//    collision detection?
+    
+    
+}
+
+
+
 int main(){
     // initial set up
     SDL_Window* displayWindow = setUp();
@@ -221,17 +228,15 @@ int main(){
     player.x = 5;
     player.velocity_y = 3;
     
-    
     bool enemyUp = true;
     Object enemy(prog, false);
     enemy.x = -5;
     enemy.velocity_y = 3;
     
     
-    
     // ping pong
     Object ping(prog, false);
-
+    
 
     // game loop
     float lastFrameTicks = 0.0f;
