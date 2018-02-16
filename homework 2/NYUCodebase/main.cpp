@@ -26,7 +26,6 @@ public:
     Matrix modelMatrix;
     Matrix viewMatrix;
     
-    
     Object(ShaderProgram& program, bool is = false, GLuint tex = 0):
     program(&program), istexture(is), texture(tex){
         projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
@@ -62,7 +61,6 @@ private:
     vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
     
     // animation
-    
     float x;
     float y;
     float rotation;
@@ -150,11 +148,26 @@ SDL_Window* setUp(){
     return displayWindow;
 }
 
-void drawSplit(Object& obj, int num = 5){
+// calculate the position of split line in advanceg
+void splitInit(vector<Matrix>& splitPos, int num){
+    float splitScale = float(2) / float(num);
+    
     for(int i = 0; i < num; i++){
         float relative = (i - float(num-1) / float(2)) * 2 * screenHeight / float(num);
-        obj.modelMatrix.Identity();
-        obj.modelMatrix.Translate(0, relative, 0);
+        
+        Matrix pos;
+        pos.Translate(0, relative, 0);
+        pos.Scale(splitScale, splitScale, splitScale);
+        
+        splitPos.push_back(pos);
+    }
+}
+
+// draw the middle line to split the window into two parts
+void drawSplit(Object& obj, const vector<Matrix>& splitPos){
+    
+    for(int i = 0; i < splitPos.size(); i++){
+        obj.modelMatrix = splitPos[i];
         obj.display();
     }
 }
@@ -164,10 +177,22 @@ int main(){
     SDL_Window* displayWindow = setUp();
     
     // loading objects
-    vector<Object> objects;
+
     
     ShaderProgram prog = setUntextured();
-    objects.push_back(Object(prog, false));
+    
+    // split line
+    Object split(prog, false);
+    vector<Matrix> splitPos;
+    splitInit(splitPos, 20);
+    
+    // player 1 & player 2
+    Object player(prog, false);
+    Object player2(prog, false);
+    
+    // ping pong
+    Object ping(prog, false);
+
     
 
     // game loop
@@ -181,14 +206,12 @@ int main(){
         // display contents
         glClear(GL_COLOR_BUFFER_BIT);
         
-        float ticks = (float) SDL_GetTicks()/600.0f;
-        
-        // animate the objects
-        
-        
+        // float ticks = (float) SDL_GetTicks()/600.0f;
+
         // display the objects
-//        for (Object& obj: objects) obj.display();
-        drawSplit(objects[0]);
+        drawSplit(split, splitPos);
+        
+        
         
         SDL_GL_SwapWindow(displayWindow);
     }
