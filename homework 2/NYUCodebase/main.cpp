@@ -22,9 +22,18 @@ float screenWidth;
 // create an object class to handle parameters
 class Object{
 public:
+    // matrices
     Matrix projectionMatrix;
     Matrix modelMatrix;
     Matrix viewMatrix;
+    
+    // positions
+    float x = 0;
+    float y = 0;
+    float width = 1;
+    float height = 1;
+    float velocity_x = 1;
+    float velocity_y = 1;
     
     Object(ShaderProgram& program, bool is = false, GLuint tex = 0):
     program(&program), istexture(is), texture(tex){
@@ -59,17 +68,11 @@ private:
     
     vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+
     
-    // animation
-    float x;
-    float y;
-    float rotation;
-    int textureID;
-    float width;
-    float height;
-    float velocity_x;
-    float velocity_y;
-    
+//    float rotation;
+
+
 };
 
 
@@ -172,13 +175,25 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
     }
 }
 
+void updateEnemy(Object& enemy, float elapsed, bool& up){
+//    bool up = true;
+    float distance = elapsed * enemy.velocity_y;
+    
+    if (enemy.y > screenHeight - distance - enemy.width / 2) up = false;
+    else if (enemy.y < -screenHeight + distance + enemy.width / 2) up = true;
+    
+    if (up) enemy.y += distance;
+    else enemy.y -= distance;
+    
+    enemy.modelMatrix.Identity();
+    enemy.modelMatrix.Translate(enemy.x, enemy.y, 0);
+}
+
 int main(){
     // initial set up
     SDL_Window* displayWindow = setUp();
     
-    // loading objects
-
-    
+    // setting up objects
     ShaderProgram prog = setUntextured();
     
     // split line
@@ -186,32 +201,45 @@ int main(){
     vector<Matrix> splitPos;
     splitInit(splitPos, 20);
     
-    // player 1 & player 2
+    
+    // player & enemy (computer control)
     Object player(prog, false);
-    Object player2(prog, false);
+    player.x = 5;
+    
+    
+    bool upward = true;
+    Object enemy(prog, false);
+    enemy.x = -5;
+    enemy.velocity_y = 3;
+    
+    
     
     // ping pong
     Object ping(prog, false);
 
-    
 
     // game loop
+    float lastFrameTicks = 0.0f;
     SDL_Event event;
     bool done = false;
     while (!done) {
         
-        // check keyboard event; could type q to escape
+        // keyboard event
         while (SDL_PollEvent(&event)) checkKeyboard(event, done);
         
-        // display contents
-        glClear(GL_COLOR_BUFFER_BIT);
+        // update parameters
+        float ticks = (float)SDL_GetTicks()/1000.0f;
+        float elapsed = ticks - lastFrameTicks;
+        lastFrameTicks = ticks;
         
-        // float ticks = (float) SDL_GetTicks()/600.0f;
-
-        // display the objects
+        updateEnemy(enemy, elapsed, upward);
+        
+        
+        // display
+        glClear(GL_COLOR_BUFFER_BIT);
         drawSplit(split, splitPos);
         
-        
+        enemy.display();
         
         SDL_GL_SwapWindow(displayWindow);
     }
