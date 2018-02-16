@@ -116,20 +116,6 @@ ShaderProgram setTextured(const string& filepath, GLuint& texture){
     return program;
 }
 
-// check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done){
-    switch (event.type){
-        case SDL_QUIT:
-            done = true;
-            break;
-        case SDL_WINDOWEVENT_CLOSE:
-            done = true;
-            break;
-        case SDL_KEYDOWN:
-            if (event.key.keysym.scancode == SDL_SCANCODE_Q) done = true;
-            break;
-    }
-}
 
 // initialize the window
 SDL_Window* setUp(){
@@ -150,6 +136,34 @@ SDL_Window* setUp(){
     
     return displayWindow;
 }
+
+// check keyboard event
+void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
+    switch (event.type){
+        case SDL_QUIT:
+            done = true;
+            break;
+        case SDL_WINDOWEVENT_CLOSE:
+            done = true;
+            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.scancode){
+                case SDL_SCANCODE_Q:
+                    done = true;
+                    break;
+                case SDL_SCANCODE_UP:
+                    playerup = true;
+                    break;
+                case SDL_SCANCODE_DOWN:
+                    playerup = false;
+                    break;
+                default:
+                    break;
+            }
+            break;
+    }
+}
+
 
 // calculate the position of split line in advanceg
 void splitInit(vector<Matrix>& splitPos, int num){
@@ -175,18 +189,17 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
     }
 }
 
-void updateEnemy(Object& enemy, float elapsed, bool& up){
-//    bool up = true;
-    float distance = elapsed * enemy.velocity_y;
+// update the slide bar to be automatically moved by time
+void updateSlide(Object& obj, float elapsed, bool& up){
+    float distance = elapsed * obj.velocity_y;
     
-    if (enemy.y > screenHeight - distance - enemy.width / 2) up = false;
-    else if (enemy.y < -screenHeight + distance + enemy.width / 2) up = true;
+    if (obj.y > screenHeight - distance - obj.width / 2) up = false;
+    else if (obj.y < -screenHeight + distance + obj.width / 2) up = true;
+    if (up) obj.y += distance;
+    else obj.y -= distance;
     
-    if (up) enemy.y += distance;
-    else enemy.y -= distance;
-    
-    enemy.modelMatrix.Identity();
-    enemy.modelMatrix.Translate(enemy.x, enemy.y, 0);
+    obj.modelMatrix.Identity();
+    obj.modelMatrix.Translate(obj.x, obj.y, 0);
 }
 
 int main(){
@@ -203,11 +216,13 @@ int main(){
     
     
     // player & enemy (computer control)
+    bool playerUp = true;
     Object player(prog, false);
     player.x = 5;
+    player.velocity_y = 3;
     
     
-    bool upward = true;
+    bool enemyUp = true;
     Object enemy(prog, false);
     enemy.x = -5;
     enemy.velocity_y = 3;
@@ -225,21 +240,22 @@ int main(){
     while (!done) {
         
         // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done);
+        while (SDL_PollEvent(&event)) checkKeyboard(event, done, playerUp);
         
         // update parameters
         float ticks = (float)SDL_GetTicks()/1000.0f;
         float elapsed = ticks - lastFrameTicks;
         lastFrameTicks = ticks;
         
-        updateEnemy(enemy, elapsed, upward);
-        
+        updateSlide(enemy, elapsed, enemyUp);
+        updateSlide(player, elapsed, playerUp);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
-        drawSplit(split, splitPos);
         
+        drawSplit(split, splitPos);
         enemy.display();
+        player.display();
         
         SDL_GL_SwapWindow(displayWindow);
     }
