@@ -15,46 +15,45 @@
 #include "stb_image.h"
 
 using namespace std;
+float screenRatio;
+float screenHeight;
+float screenWidth;
 
 // create an object class to handle parameters
 class Object{
 public:
-    Object(const ShaderProgram& program, bool is = false, GLuint tex = 0): program(program), istexture(is), texture(tex){
-        projectionMatrix.SetOrthoProjection(-7.083f, 7.083f, -5.0f, 5.0f, -1.0f, 1.0f);
-    }
+    Matrix projectionMatrix;
+    Matrix modelMatrix;
+    Matrix viewMatrix;
     
-    void animate(float ticks, size_t i = 0){
-        modelMatrix = Matrix();
-        modelMatrix.Scale(0.5f, 0.5f, 0.5f);
-        modelMatrix.Translate(float(6) / float(i) * cos(ticks * i), float(6) / float(i) * sin(ticks * i), 0);
-    }
     
+    Object(ShaderProgram& program, bool is = false, GLuint tex = 0):
+    program(&program), istexture(is), texture(tex){
+        projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
+    }
+
     void display(){
-        program.SetModelMatrix(modelMatrix);
-        program.SetProjectionMatrix(projectionMatrix);
-        program.SetViewMatrix(viewMatrix);
+        program->SetModelMatrix(modelMatrix);
+        program->SetProjectionMatrix(projectionMatrix);
+        program->SetViewMatrix(viewMatrix);
         
-        glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
-        glEnableVertexAttribArray(program.positionAttribute);
+        glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
+        glEnableVertexAttribArray(program->positionAttribute);
         
         if (istexture){
             glBindTexture(GL_TEXTURE_2D, texture);
-            glVertexAttribPointer(program.texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
-            glEnableVertexAttribArray(program.texCoordAttribute);
+            glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
+            glEnableVertexAttribArray(program->texCoordAttribute);
         }
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        glDisableVertexAttribArray(program.positionAttribute);
+        glDisableVertexAttribArray(program->positionAttribute);
         
-        if (istexture) glDisableVertexAttribArray(program.texCoordAttribute);
+        if (istexture) glDisableVertexAttribArray(program->texCoordAttribute);
         
     }
     
 private:
-    ShaderProgram program;
-    
-    Matrix projectionMatrix;
-    Matrix modelMatrix;
-    Matrix viewMatrix;
+    ShaderProgram* program;
     
     bool istexture = false;
     GLuint texture;
@@ -131,6 +130,7 @@ void checkKeyboard(const SDL_Event& event, bool& done){
     }
 }
 
+// initialize the window
 SDL_Window* setUp(){
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* displayWindow = SDL_CreateWindow("Homework 2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1020, 720, SDL_WINDOW_OPENGL);
@@ -142,7 +142,21 @@ SDL_Window* setUp(){
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
+    // screen view point
+    screenRatio = float(1020) / float(720);
+    screenHeight = 5.0;
+    screenWidth = screenHeight * screenRatio;
+    
     return displayWindow;
+}
+
+void drawSplit(Object& obj, int num = 5){
+    for(int i = 0; i < num; i++){
+        float relative = (i - float(num-1) / float(2)) * 2 * screenHeight / float(num);
+        obj.modelMatrix.Identity();
+        obj.modelMatrix.Translate(0, relative, 0);
+        obj.display();
+    }
 }
 
 int main(){
@@ -155,19 +169,7 @@ int main(){
     ShaderProgram prog = setUntextured();
     objects.push_back(Object(prog, false));
     
-    GLuint texture1;
-    ShaderProgram prog1 = setTextured("starBronze.png", texture1);
-    objects.push_back(Object(prog1, true, texture1));
-    
-    GLuint texture2;
-    ShaderProgram prog2 = setTextured("starSilver.png", texture2);
-    objects.push_back(Object(prog2, true, texture2));
-    
-    GLuint texture3;
-    ShaderProgram prog3 = setTextured("starGold.png", texture3);
-    objects.push_back(Object(prog3, true, texture3));
-    
-    
+
     // game loop
     SDL_Event event;
     bool done = false;
@@ -182,10 +184,11 @@ int main(){
         float ticks = (float) SDL_GetTicks()/600.0f;
         
         // animate the objects
-        for (size_t i = 1; i < objects.size(); i++) objects[i].animate(ticks, i);
+        
         
         // display the objects
-        for (Object& obj: objects) obj.display();
+//        for (Object& obj: objects) obj.display();
+        drawSplit(objects[0]);
         
         SDL_GL_SwapWindow(displayWindow);
     }
