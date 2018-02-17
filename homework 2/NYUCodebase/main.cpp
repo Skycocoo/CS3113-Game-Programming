@@ -158,22 +158,21 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
 
 // update the slide bar to be automatically moved by time
 void updateSlide(Object& obj, float elapsed, bool& up){
-//    float distance = elapsed * obj.velocity_y;
-//
-//    if (obj.y > screenHeight - distance - obj.width / 2 - splitScale / 2) up = false;
-//    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitScale / 2) up = true;
-//    if (up) obj.y += distance;
-//    else obj.y -= distance;
-//
+    float distance = elapsed * obj.velocity_y;
+
+    if (obj.y > screenHeight - distance - obj.width / 2 - splitScale / 2) up = false;
+    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitScale / 2) up = true;
+    if (up) obj.y += distance;
+    else obj.y -= distance;
+
     obj.modelMatrix.Identity();
     obj.modelMatrix.Translate(obj.x, obj.y, 0);
 }
 
 
 void initiatePong(Object& obj){
-    obj.velocity_y = 0;
-    obj.velocity_x = 3;
-//    obj.velocity_x = rand() % 10;
+    obj.velocity_x = (rand() + 10) % 10;
+    obj.velocity_y = (rand()) % 5;
 
     // direction of Pong based on the current scorer?
     
@@ -192,15 +191,18 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
         objRight = obj.x + obj.width / 2;
     
     for(size_t i = 0; i < bars.size(); i++){
-        float opUp = bars[i]->y + bars[i]->height / 2,
-            opDown = bars[i]->y - bars[i]->height / 2,
-            opLeft = bars[i]->x - bars[i]->width / 2,
-            opRight = bars[i]->x + bars[i]->width / 2;
+        float enUp = bars[i]->y + bars[i]->height / 2,
+            enDown = bars[i]->y - bars[i]->height / 2,
+            enLeft = bars[i]->x - bars[i]->width / 2,
+            enRight = bars[i]->x + bars[i]->width / 2;
         
         // intersecting
-        if (objUp > opDown && objLeft < opRight && objDown < opUp && objRight > opLeft){
+        if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)){
             collide = true;
         }
+        
+//        if (i == 0) cout << objUp << " " << enDown << " " << objLeft << " " << enRight << " " << objDown << " " << enUp << " " << objRight << " " << enLeft << endl;
+        
     }
     
     if (collide) obj.velocity_x = -obj.velocity_x;
@@ -273,8 +275,6 @@ int main(){
     // ping pong
     Object pong(prog, false);
     initiatePong(pong);
-    
-    cout << pong.velocity_y << pong.velocity_x << endl;
 
     // game loop
     float lastFrameTicks = 0.0f;
