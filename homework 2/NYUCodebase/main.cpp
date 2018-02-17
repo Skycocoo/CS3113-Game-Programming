@@ -161,10 +161,10 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
 }
 
 
-// calculate the position of split line in advanceg
-void splitInit(vector<Matrix>& splitPos, int num){
+// calculate the position of split line in advance;
+// return the size of tiles for collision detection
+float splitInit(const Object& obj, vector<Matrix>& splitPos, int num){
     float splitScale = float(2) / float(num);
-    
     for(int i = 0; i < num; i++){
         float relative = (i - float(num-1) / float(2)) * 2 * screenHeight / float(num);
         
@@ -174,29 +174,43 @@ void splitInit(vector<Matrix>& splitPos, int num){
         
         splitPos.push_back(pos);
     }
+
+    
+    // draw upper & lower boundaries
+    int numBoundary = 50;
+    for (int i = 0; i < numBoundary; i++){
+        float relative = (i - float(numBoundary) / float(2)) * 2 * screenWidth / float(numBoundary);
+        Matrix posH;
+        posH.Translate(relative, screenHeight - splitScale / 2, 0);
+        posH.Scale(splitScale, splitScale, splitScale);
+        
+        splitPos.push_back(posH);
+        
+        Matrix posL;
+        posL.Translate(relative, -screenHeight + splitScale / 2, 0);
+        posL.Scale(splitScale, splitScale, splitScale);
+        
+        splitPos.push_back(posL);
+    }
+    
+    return splitScale;
 }
+
 
 // draw the middle line to split the window into two parts
 void drawSplit(Object& obj, const vector<Matrix>& splitPos){
-    
     for(int i = 0; i < splitPos.size(); i++){
         obj.modelMatrix = splitPos[i];
         obj.display();
     }
-    
-//    need to draw the walls for upper & lower boundaries
-    
-    
-    
-    
 }
 
 // update the slide bar to be automatically moved by time
-void updateSlide(Object& obj, float elapsed, bool& up){
+void updateSlide(Object& obj, float elapsed, bool& up, float splitscale){
     float distance = elapsed * obj.velocity_y;
     
-    if (obj.y > screenHeight - distance - obj.width / 2) up = false;
-    else if (obj.y < -screenHeight + distance + obj.width / 2) up = true;
+    if (obj.y > screenHeight - distance - obj.width / 2 - splitscale / 2) up = false;
+    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitscale / 2) up = true;
     if (up) obj.y += distance;
     else obj.y -= distance;
     
@@ -246,7 +260,7 @@ int main(){
     // split line
     Object split(prog, false);
     vector<Matrix> splitPos;
-    splitInit(splitPos, 20);
+    float splitScale = splitInit(split, splitPos, 20);
     
     
     // player & enemy (computer control)
@@ -279,8 +293,8 @@ int main(){
         float elapsed = ticks - lastFrameTicks;
         lastFrameTicks = ticks;
         
-        updateSlide(enemy, elapsed, enemyUp);
-        updateSlide(player, elapsed, playerUp);
+        updateSlide(enemy, elapsed, enemyUp, splitScale);
+        updateSlide(player, elapsed, playerUp, splitScale);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
