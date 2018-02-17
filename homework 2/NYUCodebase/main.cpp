@@ -1,26 +1,28 @@
 // Yuxi Luo (yl4217), February 15, 2018
 // Homework 2, PONG!, CS3113 Game Programming
 
-#include <iostream>
-#include <vector>
-
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
-#include "ShaderProgram.h"
-#include "Matrix.h"
-
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+
+
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+
 // define Object as an entity in this game
+// header files for shaderprogram & matrix are included
 #include "Object.h"
 
 using namespace std;
 float screenRatio;
 float screenHeight;
 float screenWidth;
+float splitScale;
 
 
 // from lecture slide Jan 31, 2018
@@ -29,7 +31,7 @@ GLuint LoadTexture(const char *filePath) {
     unsigned char* image = stbi_load(filePath, &w, &h, &comp, STBI_rgb_alpha);
     
     if(image == NULL) {
-        std::cout << "Unable to load image in the path " << *filePath << ". Make sure the path is correct\n";
+        cout << "Unable to load image in the path " << *filePath << ". Make sure the path is correct\n";
         assert(false);
     }
     
@@ -95,13 +97,13 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
             break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.scancode){
-                case SDL_SCANCODE_Q:
+                case SDL_SCANCODE_Q: // quit
                     done = true;
                     break;
-                case SDL_SCANCODE_UP:
+                case SDL_SCANCODE_UP: // player control
                     playerup = true;
                     break;
-                case SDL_SCANCODE_DOWN:
+                case SDL_SCANCODE_DOWN: // player control
                     playerup = false;
                     break;
                 default:
@@ -112,10 +114,11 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
 }
 
 
-// calculate the position of split line in advance;
+// calculate positions in advance to reduce redundancy
 // return the size of tiles for collision detection
-float splitInit(const Object& obj, vector<Matrix>& splitPos, int num){
-    float splitScale = float(2) / float(num);
+void splitInit(const Object& obj, vector<Matrix>& splitPos, int num){
+    // position for middle split line
+    splitScale = float(2) / float(num);
     for(int i = 0; i < num; i++){
         float relative = (i - float(num-1) / float(2)) * 2 * screenHeight / float(num);
         
@@ -125,9 +128,8 @@ float splitInit(const Object& obj, vector<Matrix>& splitPos, int num){
         
         splitPos.push_back(pos);
     }
-
     
-    // draw upper & lower boundaries
+    // position for upper & lower boundaries
     int numBoundary = 50;
     for (int i = 0; i < numBoundary; i++){
         float relative = (i - float(numBoundary) / float(2)) * 2 * screenWidth / float(numBoundary);
@@ -143,8 +145,6 @@ float splitInit(const Object& obj, vector<Matrix>& splitPos, int num){
         
         splitPos.push_back(posL);
     }
-    
-    return splitScale;
 }
 
 
@@ -157,11 +157,11 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
 }
 
 // update the slide bar to be automatically moved by time
-void updateSlide(Object& obj, float elapsed, bool& up, float splitscale){
+void updateSlide(Object& obj, float elapsed, bool& up){
     float distance = elapsed * obj.velocity_y;
     
-    if (obj.y > screenHeight - distance - obj.width / 2 - splitscale / 2) up = false;
-    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitscale / 2) up = true;
+    if (obj.y > screenHeight - distance - obj.width / 2 - splitScale / 2) up = false;
+    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitScale / 2) up = true;
     if (up) obj.y += distance;
     else obj.y -= distance;
     
@@ -171,18 +171,57 @@ void updateSlide(Object& obj, float elapsed, bool& up, float splitscale){
 
 
 void initiatePong(Object& obj){
-//    random vector for velocity?
+    obj.velocity_y = 0;
+    obj.velocity_x = 3;
+//    obj.velocity_x = rand() % 10;
 
-//    direction of Pong based on the current scorer?
+    // direction of Pong based on the current scorer?
     
 }
 
-void updatePong(Object& obj, float elapsed){
+
+// detect collision
 //    if collide: with upper/lower boundary : velocity y = - velocity y
-//        with bars: verlocity x = - velocity x
-//
+//    with bars: verlocity x = - velocity x
+void collisionDetection(Object& obj, const vector<Object*>& bars){
+    bool collide = false;
     
-//    collision detection? -> change the direction of velocity
+    float   objUp = obj.y + obj.height / 2,
+        objDown = obj.y - obj.height / 2,
+        objLeft = obj.x - obj.width / 2,
+        objRight = obj.x + obj.width / 2;
+    
+    for(size_t i = 0; i < bars.size(); i++){
+        float opUp = bars[i]->y + bars[i]->height / 2,
+            opDown = bars[i]->y - bars[i]->height / 2,
+            opLeft = bars[i]->x - bars[i]->width / 2,
+            opRight = bars[i]->x + bars[i]->width / 2;
+        
+        // intersecting
+        if (objUp > opDown && objLeft < opRight && objDown < opUp && objRight > opLeft){
+            collide = true;
+        }
+    }
+    
+    if (collide) obj.velocity_x = -obj.velocity_x;
+    
+    // upper / lower boundary collision
+    if ((objUp > screenHeight - splitScale / 2) || (objDown < -screenHeight + splitScale / 2)) {
+        obj.velocity_y = -obj.velocity_y;
+        cout << obj.velocity_y << endl;
+    }
+    
+}
+
+void updatePong(Object& obj, const vector<Object*>& bars, float elapsed){
+    collisionDetection(obj, bars);
+    obj.x += elapsed * obj.velocity_x;
+    obj.y += elapsed * obj.velocity_y;
+    // cos / sin?
+    
+    obj.modelMatrix.Identity();
+    obj.modelMatrix.Translate(obj.x, obj.y, 0);
+
 //    edge detection? -> if x go beyond width / -width: score ++ for player / enemy
     
 }
@@ -203,6 +242,7 @@ void dispalyGame(){
 
 int main(){
     // initial set up
+    srand(time(NULL));
     SDL_Window* displayWindow = setUp();
     
     // setting up objects
@@ -211,10 +251,12 @@ int main(){
     // split line
     Object split(prog, false);
     vector<Matrix> splitPos;
-    float splitScale = splitInit(split, splitPos, 20);
+    splitInit(split, splitPos, 20);
     
     
     // player & enemy (computer control)
+    vector<Object*> bars;
+    
     bool playerUp = true;
     Object player(prog, false);
     player.x = 5;
@@ -225,10 +267,14 @@ int main(){
     enemy.x = -5;
     enemy.velocity_y = 3;
     
+    bars.push_back(&player);
+    bars.push_back(&enemy);
     
     // ping pong
-    Object ping(prog, false);
+    Object pong(prog, false);
+    initiatePong(pong);
     
+    cout << pong.velocity_y << pong.velocity_x << endl;
 
     // game loop
     float lastFrameTicks = 0.0f;
@@ -244,8 +290,9 @@ int main(){
         float elapsed = ticks - lastFrameTicks;
         lastFrameTicks = ticks;
         
-        updateSlide(enemy, elapsed, enemyUp, splitScale);
-        updateSlide(player, elapsed, playerUp, splitScale);
+        updateSlide(enemy, elapsed, enemyUp);
+        updateSlide(player, elapsed, playerUp);
+        updatePong(pong, bars, elapsed);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
@@ -253,6 +300,7 @@ int main(){
         drawSplit(split, splitPos);
         enemy.display();
         player.display();
+        pong.display();
         
         SDL_GL_SwapWindow(displayWindow);
     }
