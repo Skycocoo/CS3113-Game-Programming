@@ -14,62 +14,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+// define Object as an entity in this game
+#include "Object.h"
+
 using namespace std;
 float screenRatio;
 float screenHeight;
 float screenWidth;
-
-// create an object class to handle parameters
-class Object{
-public:
-    // matrices
-    Matrix projectionMatrix;
-    Matrix modelMatrix;
-    Matrix viewMatrix;
-    
-    // positions
-    float x = 0;
-    float y = 0;
-    float width = 1;
-    float height = 1;
-    float velocity_x = 1;
-    float velocity_y = 1;
-    
-    Object(ShaderProgram& program, bool is = false, GLuint tex = 0):
-    program(&program), istexture(is), texture(tex){
-        projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
-    }
-
-    void display(){
-        program->SetModelMatrix(modelMatrix);
-        program->SetProjectionMatrix(projectionMatrix);
-        program->SetViewMatrix(viewMatrix);
-        
-        glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
-        glEnableVertexAttribArray(program->positionAttribute);
-        
-        if (istexture){
-            glBindTexture(GL_TEXTURE_2D, texture);
-            glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
-            glEnableVertexAttribArray(program->texCoordAttribute);
-        }
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glDisableVertexAttribArray(program->positionAttribute);
-        
-        if (istexture) glDisableVertexAttribArray(program->texCoordAttribute);
-        
-    }
-    
-private:
-    ShaderProgram* program;
-    
-    bool istexture = false;
-    GLuint texture;
-    
-    vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
-    vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-    
-};
 
 
 // from lecture slide Jan 31, 2018
@@ -97,7 +48,7 @@ GLuint LoadTexture(const char *filePath) {
 // untextured shader
 ShaderProgram setUntextured(){
     ShaderProgram program;
-    program.Load(RESOURCE_FOLDER"vertex.glsl", RESOURCE_FOLDER"fragment.glsl");
+    program.Load(RESOURCE_FOLDER"Shaders/vertex.glsl", RESOURCE_FOLDER"Shaders/fragment.glsl");
     glUseProgram(program.programID);
     
     return program;
@@ -106,7 +57,7 @@ ShaderProgram setUntextured(){
 // textured shader
 ShaderProgram setTextured(const string& filepath, GLuint& texture){
     ShaderProgram program;
-    program.Load(RESOURCE_FOLDER"vertex_textured.glsl", RESOURCE_FOLDER"fragment_textured.glsl");
+    program.Load(RESOURCE_FOLDER"Shaders/vertex_textured.glsl", RESOURCE_FOLDER"Shaders/fragment_textured.glsl");
     texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
     
     return program;
