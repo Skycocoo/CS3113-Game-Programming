@@ -158,13 +158,13 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
 
 // update the slide bar to be automatically moved by time
 void updateSlide(Object& obj, float elapsed, bool& up){
-    float distance = elapsed * obj.velocity_y;
-    
-    if (obj.y > screenHeight - distance - obj.width / 2 - splitScale / 2) up = false;
-    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitScale / 2) up = true;
-    if (up) obj.y += distance;
-    else obj.y -= distance;
-    
+//    float distance = elapsed * obj.velocity_y;
+//
+//    if (obj.y > screenHeight - distance - obj.width / 2 - splitScale / 2) up = false;
+//    else if (obj.y < -screenHeight + distance + obj.width / 2 + splitScale / 2) up = true;
+//    if (up) obj.y += distance;
+//    else obj.y -= distance;
+//
     obj.modelMatrix.Identity();
     obj.modelMatrix.Translate(obj.x, obj.y, 0);
 }
