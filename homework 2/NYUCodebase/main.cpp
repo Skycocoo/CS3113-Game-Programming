@@ -1,22 +1,16 @@
 // Yuxi Luo (yl4217), February 15, 2018
 // Homework 2, PONG!, CS3113 Game Programming
 
-#include <SDL.h>
-#include <SDL_opengl.h>
-#include <SDL_image.h>
-#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-
-
 #include <cstdlib>
-#include <iostream>
 #include <vector>
 
 // define Object as an entity in this game
-// header files for shaderprogram & matrix are included
+// header files for shaderprogram & matrix & sdl are included
 #include "Object.h"
+#include "setUp.h"
 
 using namespace std;
 float screenRatio;
@@ -24,94 +18,6 @@ float screenHeight;
 float screenWidth;
 float splitScale;
 
-
-// from lecture slide Jan 31, 2018
-GLuint LoadTexture(const char *filePath) {
-    int w, h, comp;
-    unsigned char* image = stbi_load(filePath, &w, &h, &comp, STBI_rgb_alpha);
-    
-    if(image == NULL) {
-        cout << "Unable to load image in the path " << *filePath << ". Make sure the path is correct\n";
-        assert(false);
-    }
-    
-    GLuint retTexture;
-    glGenTextures(1, &retTexture);
-    glBindTexture(GL_TEXTURE_2D, retTexture);
-    
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    
-    stbi_image_free(image);
-    return retTexture;
-}
-
-// untextured shader
-ShaderProgram setUntextured(){
-    ShaderProgram program;
-    program.Load(RESOURCE_FOLDER"Shaders/vertex.glsl", RESOURCE_FOLDER"Shaders/fragment.glsl");
-    glUseProgram(program.programID);
-    
-    return program;
-}
-
-// textured shader
-ShaderProgram setTextured(const string& filepath, GLuint& texture){
-    ShaderProgram program;
-    program.Load(RESOURCE_FOLDER"Shaders/vertex_textured.glsl", RESOURCE_FOLDER"Shaders/fragment_textured.glsl");
-    texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
-    
-    return program;
-}
-
-
-// initialize the window
-SDL_Window* setUp(){
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* displayWindow = SDL_CreateWindow("Homework 2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1020, 720, SDL_WINDOW_OPENGL);
-    SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
-    SDL_GL_MakeCurrent(displayWindow, context);
-    
-    glViewport(0, 0, 1020, 720);
-    glClearColor(0, 0, 0, 0);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    // screen view point
-    screenRatio = float(1020) / float(720);
-    screenHeight = 5.0;
-    screenWidth = screenHeight * screenRatio;
-    
-    return displayWindow;
-}
-
-// check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
-    switch (event.type){
-        case SDL_QUIT:
-            done = true;
-            break;
-        case SDL_WINDOWEVENT_CLOSE:
-            done = true;
-            break;
-        case SDL_KEYDOWN:
-            switch (event.key.keysym.scancode){
-                case SDL_SCANCODE_Q: // quit
-                    done = true;
-                    break;
-                case SDL_SCANCODE_UP: // player control
-                    playerup = true;
-                    break;
-                case SDL_SCANCODE_DOWN: // player control
-                    playerup = false;
-                    break;
-                default:
-                    break;
-            }
-            break;
-    }
-}
 
 
 // calculate positions in advance to reduce redundancy
@@ -170,12 +76,10 @@ void updateSlide(Object& obj, float elapsed, bool& up){
 }
 
 
+// direction of Pong based on the current scorer?
 void initiatePong(Object& obj){
-    obj.velocity_x = (rand() + 10) % 10;
-    obj.velocity_y = (rand()) % 5;
-
-    // direction of Pong based on the current scorer?
-    
+    obj.velocity_x = (rand()) % 10 + 1;
+    obj.velocity_y = (rand()) % 5 + 1;
 }
 
 
@@ -201,8 +105,7 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
             collide = true;
         }
         
-//        if (i == 0) cout << objUp << " " << enDown << " " << objLeft << " " << enRight << " " << objDown << " " << enUp << " " << objRight << " " << enLeft << endl;
-        
+        // if (i == 0) cout << objUp << " " << enDown << " " << objLeft << " " << enRight << " " << objDown << " " << enUp << " " << objRight << " " << enLeft << endl;
     }
     
     if (collide) obj.velocity_x = -obj.velocity_x;
@@ -210,30 +113,24 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
     // upper / lower boundary collision
     if ((objUp > screenHeight - splitScale / 2) || (objDown < -screenHeight + splitScale / 2)) {
         obj.velocity_y = -obj.velocity_y;
-        cout << obj.velocity_y << endl;
     }
     
 }
 
-void updatePong(Object& obj, const vector<Object*>& bars, float elapsed){
+void updatePong(Object& obj, const vector<Object*>& bars, float elapsed, int& playerScore, int& enemyScore){
     collisionDetection(obj, bars);
     obj.x += elapsed * obj.velocity_x;
     obj.y += elapsed * obj.velocity_y;
-    // cos / sin?
     
     obj.modelMatrix.Identity();
     obj.modelMatrix.Translate(obj.x, obj.y, 0);
-
+    
+    if (obj.x - obj.width / 2 < -screenWidth) playerScore += 1;
+    else if (obj.x + obj.width / 2 > screenWidth) enemyScore += 1;
 //    edge detection? -> if x go beyond width / -width: score ++ for player / enemy
     
 }
 
-void win(){
-//    determine the end of game
-//    if one side scores >= 10 then win (display the result & end the game)
-//    if not: continue the game
-    
-}
 
 void dispalyGame(){
 //    display the player & computer's position (before the start of the game)
@@ -242,10 +139,18 @@ void dispalyGame(){
     
 }
 
+
+void win(){
+    //    determine the end of game
+    //    if one side scores >= 10 then win (display the result & end the game)
+    //    if not: continue the game
+    
+}
+
 int main(){
     // initial set up
     srand(time(NULL));
-    SDL_Window* displayWindow = setUp();
+    SDL_Window* displayWindow = setUp("Homework 2");
     
     // setting up objects
     ShaderProgram prog = setUntextured();
@@ -277,6 +182,7 @@ int main(){
     initiatePong(pong);
 
     // game loop
+    int playerScore = 0, enemyScore = 0;
     float lastFrameTicks = 0.0f;
     SDL_Event event;
     bool done = false;
@@ -292,7 +198,7 @@ int main(){
         
         updateSlide(enemy, elapsed, enemyUp);
         updateSlide(player, elapsed, playerUp);
-        updatePong(pong, bars, elapsed);
+        updatePong(pong, bars, elapsed, playerScore, enemyScore);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);

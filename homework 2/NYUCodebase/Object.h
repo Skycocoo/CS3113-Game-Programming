@@ -31,6 +31,7 @@ public:
     
     Object(ShaderProgram& program, bool is = false, GLuint tex = 0);
     void display();
+    void scale();
     
 private:
     ShaderProgram* program;

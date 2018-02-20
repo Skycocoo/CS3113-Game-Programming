@@ -34,3 +34,9 @@ void Object::display(){
     
     if (istexture) glDisableVertexAttribArray(program->texCoordAttribute);
 }
+
+void Object::scale(){
+    modelMatrix.Scale(width, height, 1);
+
+}
+
