@@ -179,10 +179,10 @@ void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
 }
 
 
-void dispalyGame(){
-//    display the player & computer's position (before the start of the game)
+
 //    display the score for each side in the middle of the game
-//    display the sign of an object which Pong will point towards (player or enemy)
+void displayGame(Object& disp){
+    disp.text("hafdafwei", 10, 10);
 }
 
 
@@ -197,6 +197,13 @@ int main(){
     // initial set up
     
     SDL_Window* displayWindow = setUp("Homework 2");
+    
+    // setting up texts
+    GLuint texture1;
+    ShaderProgram text = setTextured("font2.png", texture1);
+    Object disp(text, true, texture1);
+    
+    
     
     // setting up objects
     ShaderProgram prog = setUntextured();
@@ -235,6 +242,7 @@ int main(){
     bool restart = false;
     while (!done) {
         
+        
         // keyboard event
         while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, player);
         
@@ -252,8 +260,12 @@ int main(){
 //        updateSlide(player, elapsed, playerUp);
         updatePong(pong, bars, elapsed);
         
+        
+        
         // display
         glClear(GL_COLOR_BUFFER_BIT);
+        
+        displayGame(disp);
         
         drawSplit(split, splitPos);
         enemy.display();

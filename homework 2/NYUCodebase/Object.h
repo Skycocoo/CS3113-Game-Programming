@@ -10,6 +10,7 @@
 #define Object_h
 
 #include <vector>
+#include <string>
 #include "Matrix.h"
 #include "ShaderProgram.h"
 
@@ -30,6 +31,8 @@ public:
     float velocity_y = 1;
     
     Object(ShaderProgram& program, bool is = false, GLuint tex = 0);
+    
+    void text(const std::string& text, float size, float spacing);
     void display();
     void scale();
     
