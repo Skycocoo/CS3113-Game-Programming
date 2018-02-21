@@ -95,12 +95,12 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, bool& rega
                     regame = true;
                     break;
                 case SDL_SCANCODE_UP: // player control
-                    player.y += 1;
+                    if (player.y < screenHeight - player.height / 2) player.y += 1;
                     player.modelMatrix.Identity();
                     player.modelMatrix.Translate(player.x, player.y, 0);
                     break;
                 case SDL_SCANCODE_DOWN: // player control
-                    player.y -= 1;
+                    if (player.y > -screenHeight + player.height / 2) player.y -= 1;
                     player.modelMatrix.Identity();
                     player.modelMatrix.Translate(player.x, player.y, 0);
                     break;
