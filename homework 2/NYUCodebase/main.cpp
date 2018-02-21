@@ -108,14 +108,12 @@ void initiatePong(Object& pong){
 }
 
 void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
+    collisionDetection(pong, bars);
     
     pong.x += elapsed * pong.velocity_x;
     pong.y += elapsed * pong.velocity_y;
     
-    collisionDetection(pong, bars);
-    
-    pong.modelMatrix.Identity();
-    pong.modelMatrix.Translate(pong.x, pong.y, 0);
+    pong.update();
     
     if (pong.x - pong.width / 2 < -screenWidth) {
         playerScore += 1;
