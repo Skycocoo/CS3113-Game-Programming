@@ -18,6 +18,7 @@
 		6DEF23C31B96CC2600BCE792 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DEF23BE1B96CC2600BCE792 /* ShaderProgram.cpp */; };
 		D01B31302037FD29001B16FD /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = D01B312F2037FD29001B16FD /* Shaders */; };
 		D01B31342037FDFB001B16FD /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D01B31332037FDFB001B16FD /* Object.cpp */; };
+		D07FA20B203D3629000780D5 /* font2.png in Resources */ = {isa = PBXBuildFile; fileRef = D07FA20A203D3628000780D5 /* font2.png */; };
 		D0880449203DB63B00B9F0A9 /* font1.png in Resources */ = {isa = PBXBuildFile; fileRef = D0880448203DB63B00B9F0A9 /* font1.png */; };
 		D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55C4203CE80300A06EA9 /* setUp.cpp */; };
 		D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55CA203CEBA600A06EA9 /* main.cpp */; };
@@ -48,6 +49,7 @@
 		D0349960202DD68E00003B19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../Source/libraries/XcodeFrameworks/SDL2.framework; sourceTree = "<group>"; };
 		D0349961202DD68E00003B19 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		D0349962202DD68E00003B19 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
+		D07FA20A203D3628000780D5 /* font2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font2.png; sourceTree = "<group>"; };
 		D0880448203DB63B00B9F0A9 /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55C7203CE83700A06EA9 /* setUp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = setUp.h; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				D0880448203DB63B00B9F0A9 /* font1.png */,
+				D07FA20A203D3628000780D5 /* font2.png */,
 				D08D55CA203CEBA600A06EA9 /* main.cpp */,
 				6DEF23BC1B96CC2600BCE792 /* Matrix.cpp */,
 				6DEF23BD1B96CC2600BCE792 /* Matrix.h */,
@@ -222,6 +225,7 @@
 			files = (
 				D0880449203DB63B00B9F0A9 /* font1.png in Resources */,
 				6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */,
+				D07FA20B203D3629000780D5 /* font2.png in Resources */,
 				D01B31302037FD29001B16FD /* Shaders in Resources */,
 				6D5A86C619AE5C710066C1FD /* Images.xcassets in Resources */,
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,

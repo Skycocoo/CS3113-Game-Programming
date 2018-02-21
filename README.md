@@ -8,4 +8,9 @@ create simple 2D scene with textured & untextured polygons; include simple anima
 
 ## Assignment 2
 
-make PONG!; detect player wins; textured/untextured polygons; keyboard/mouse/joystick input
+make PONG
+
+
+## Assignment 3
+
+make Space Invaders

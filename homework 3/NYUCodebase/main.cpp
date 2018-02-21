@@ -6,8 +6,6 @@
 
 #include <cstdlib>
 #include <vector>
-#include <map>
-#include <fstream>
 
 // define Object as an entity in this game
 // header files for shaderprogram & matrix & sdl are included
@@ -22,36 +20,6 @@ float splitScale;
 
 int playerScore = 0;
 int enemyScore = 0;
-
-
-class XMLLoad {
-public:
-    struct Info {
-        int x;
-        int y;
-        int width;
-        int height;
-    };
-    
-    XMLLoad(const string& name){
-        ifstream open(name);
-        if (!open) {
-            cerr << "cannot open the file " << name << endl;
-            exit(1);
-        }
-        
-        
-        
-        
-    }
-    
-    map<string, Info> maps;
-    
-private:
-    
-};
-
-
 
 
 // calculate positions in advance to reduce redundancy
@@ -95,6 +63,7 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
         obj.display();
     }
 }
+
 
 // detect collision:
 //    if collide: with upper/lower boundary : velocity y = - velocity y
@@ -157,25 +126,6 @@ void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
     }
 }
 
-// update the slide bar to be automatically moved by time
-void updateSlide(Object& obj, float elapsed, bool& up){
-    float distance = elapsed * obj.velocity_y;
-
-    if (obj.y > screenHeight - distance - obj.height / 2 - splitScale / 2) up = false;
-    else if (obj.y < -screenHeight + distance + obj.height / 2 + splitScale / 2) up = true;
-    if (up) obj.y += distance;
-    else obj.y -= distance;
-
-    obj.modelMatrix.Identity();
-    obj.modelMatrix.Translate(obj.x, obj.y, 0);
-}
-
-void updatePlayer(Object& obj){
-    obj.modelMatrix.Identity();
-    obj.modelMatrix.Translate(obj.x, obj.y, 0);
-}
-
-
 void reGame(Object& pong, vector<Object*>& bars) {
     initiatePong(pong);
     playerScore = 0;
@@ -213,7 +163,7 @@ int main(){
     // setting up texts
     GLuint texture1;
     ShaderProgram text = setTextured("font1.png", texture1);
-    Object disp(text, 0, 0, 0, 0, 0, 0, true, texture1);
+    Object disp(text, true, texture1);
     
     // setting up objects
     ShaderProgram prog = setUntextured();
@@ -225,23 +175,20 @@ int main(){
 
     // player & enemy (computer control)
     vector<Object*> bars;
-    bool enemyUp = true;
-    Object player(prog, 5, 0, 0.2, 2);
-    Object enemy(prog, -5, 0, 0.2, 2, 0, 3);
+    Player player(prog, false, 0, 5, 0, 0.2, 2);
+    Enemy enemy(prog, false, 0, -5, 0, 0.2, 2, 0, 3);
     bars.push_back(&player);
     bars.push_back(&enemy);
     
     // ping pong
-    Object pong(prog, 0, 0, 0.2, 0.2, false);
+    Object pong(prog, false, 0, 0, 0, 0.2, 0.2);
     initiatePong(pong);
 
     // game loop
     float lastFrameTicks = 0.0f;
     SDL_Event event;
-    bool done = false, restart = false, regame = false;
+    bool done = false, restart = false, regame = false, enemyUp = true;
     while (!done) {
-        
-        
         // keyboard event
         while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, regame, player);
         
@@ -259,10 +206,11 @@ int main(){
         float ticks = (float)SDL_GetTicks()/1000.0f;
         float elapsed = ticks - lastFrameTicks;
         lastFrameTicks = ticks;
-        
-        updateSlide(enemy, elapsed, enemyUp);
+
         updatePong(pong, bars, elapsed);
-        updatePlayer(player);
+        player.update();
+        enemy.update(elapsed);
+        
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
