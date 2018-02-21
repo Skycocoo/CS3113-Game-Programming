@@ -32,7 +32,7 @@ public:
     
     Object(ShaderProgram& program, bool is = false, GLuint tex = 0);
     
-    void text(const std::string& text, float size, float spacing);
+    void text(const std::string& text, float size, float spacing, float x, float y);
     void display();
     void scale();
     

@@ -17,10 +17,12 @@ Object::Object(ShaderProgram& program, bool is, GLuint tex):program(&program), i
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 
-void Object::text(const string& text, float size, float spacing){
+void Object::text(const string& text, float size, float spacing, float x, float y){
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
     program->SetViewMatrix(viewMatrix);
+    
+    float space = 5;
     
     float texture_size = 1.0/16.0f;
     vector<float> vertexData;
@@ -30,12 +32,12 @@ void Object::text(const string& text, float size, float spacing){
         float texture_x = (float)(spriteIndex % 16) / 16.0f;
         float texture_y = (float)(spriteIndex / 16) / 16.0f;
         vertexData.insert(vertexData.end(), {
-            ((size+spacing) * i) + (-0.5f * size), 0.5f * size,
-            ((size+spacing) * i) + (-0.5f * size), -0.5f * size,
-            ((size+spacing) * i) + (0.5f * size), 0.5f * size,
-            ((size+spacing) * i) + (0.5f * size), -0.5f * size,
-            ((size+spacing) * i) + (0.5f * size), 0.5f * size,
-            ((size+spacing) * i) + (-0.5f * size), -0.5f * size,
+            ((size+spacing) * i)/space + (-0.5f * size) + x, 0.5f * size + y,
+            ((size+spacing) * i)/space + (-0.5f * size) + x, -0.5f * size + y,
+            ((size+spacing) * i)/space + (0.5f * size) + x, 0.5f * size + y,
+            ((size+spacing) * i)/space + (0.5f * size) + x, -0.5f * size + y,
+            ((size+spacing) * i)/space + (0.5f * size) + x, 0.5f * size + y,
+            ((size+spacing) * i)/space + (-0.5f * size) + x, -0.5f * size + y,
         });
         texCoordData.insert(texCoordData.end(), {
             texture_x, texture_y,

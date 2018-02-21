@@ -182,8 +182,8 @@ void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
 
 //    display the score for each side in the middle of the game
 void displayGame(Object& disp){
-//    disp.display();
-    disp.text("hafdafwei", 0.5, 0.0001);
+    disp.text("player: " + to_string(playerScore), 0.8, 1, 2, screenHeight - 1);
+    disp.text("enemy: " + to_string(enemyScore), 0.8, 1, -5, screenHeight - 1);
 }
 
 
