@@ -22,10 +22,10 @@ public:
     float y = 0;
     float width = 1;
     float height = 1;
-    float velocity_x = 1;
-    float velocity_y = 1;
+    float velocity_x = 0;
+    float velocity_y = 0;
     
-    Object(ShaderProgram& program, bool is = false, GLuint tex = 0);
+    Object(ShaderProgram& program, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool is = false, GLuint tex = 0);
     
     void text(const std::string& text, float size, float spacing, float x, float y);
     void display();

@@ -89,8 +89,8 @@ void updateSlide(Object& obj, float elapsed, bool& up){
 void initiatePong(Object& pong){
     srand(time(NULL));
     
-    pong.velocity_x = (rand()) % 10 - 5;
-    pong.velocity_y = (rand()) % 10 - 5;
+    while (pong.velocity_x == 0) pong.velocity_x = ((rand()) % 4 - 2) * 2;
+    while (pong.velocity_y == 0) pong.velocity_y = ((rand()) % 4 - 2) * 2;
 }
 
 
@@ -141,7 +141,7 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
 //            else if (!(objLeft > enRight || objRight < enLeft)) collidex = true;
         }
         
-        // if (i == 0) cout << objUp << " " << enDown << " " << objLeft << " " << enRight << " " << objDown << " " << enUp << " " << objRight << " " << enLeft << endl;
+//         if (i == 0) cout << objUp << " " << enDown << " " << objLeft << " " << enRight << " " << objDown << " " << enUp << " " << objRight << " " << enLeft << endl;
     }
     
     if (collidex) obj.velocity_x = -obj.velocity_x;
@@ -178,8 +178,6 @@ void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
     
 }
 
-// if one side scores >= 10 then win (display the result & end the game)
-bool win() {return (playerScore >= 1 || enemyScore >= 1);}
 
 void reGame(Object& pong, vector<Object*>& bars) {
     newRound(pong);
@@ -191,6 +189,9 @@ void reGame(Object& pong, vector<Object*>& bars) {
     }
 }
 
+// if one side scores >= 10 then win (display the result & end the game)
+bool win() {return (playerScore >= 10 || enemyScore >= 10);}
+
 // display the score for each side in the middle of the game
 void displayGame(Object& disp){
     disp.text("player: " + to_string(playerScore), 0.8, 1, 2, screenHeight - 1);
@@ -199,7 +200,7 @@ void displayGame(Object& disp){
     if (win()) {
         glClear(GL_COLOR_BUFFER_BIT);
         
-        string winner = (playerScore >= 1) ? "player" : "enemy";
+        string winner = (playerScore >= 10) ? "player" : "enemy";
         disp.text(winner + "wins", 0.8, 1, -1.5, screenHeight - 1);
         disp.text("press R to restart game",  0.8, 1, -4, screenHeight - 3);
         disp.text("press Q to end the game",  0.8, 1, -4, screenHeight - 5);
@@ -233,22 +234,18 @@ int main(){
     // player & enemy (computer control)
     vector<Object*> bars;
     
-//    bool playerUp = true;
-    Object player(prog, false);
-    player.x = 5;
-    player.velocity_y = 3;
+//        Object(ShaderProgram& program, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool is = false, GLuint tex = 0);
+    Object player(prog, 5, 0, 0.2, 2);
     player.modelMatrix.Translate(player.x, player.y, 0);
     
     bool enemyUp = true;
-    Object enemy(prog, false);
-    enemy.x = -5;
-    enemy.velocity_y = 3;
+    Object enemy(prog, -5, 0, 0.2, 2, 0, 3, false);
     
     bars.push_back(&player);
     bars.push_back(&enemy);
     
     // ping pong
-    Object pong(prog, false);
+    Object pong(prog, 0, 0, 0.2, 0.2, false);
     initiatePong(pong);
 
     // game loop
@@ -277,7 +274,6 @@ int main(){
         lastFrameTicks = ticks;
         
         updateSlide(enemy, elapsed, enemyUp);
-//        updateSlide(player, elapsed, playerUp);
         updatePong(pong, bars, elapsed);
         
         
@@ -286,7 +282,6 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         displayGame(disp);
-        
         drawSplit(split, splitPos);
         enemy.display();
         player.display();

@@ -8,7 +8,7 @@ using namespace std;
 extern float screenWidth;
 extern float screenHeight;
 
-Object::Object(ShaderProgram& program, bool is, GLuint tex):program(&program), istexture(is), texture(tex){
+Object::Object(ShaderProgram& program, float x, float y, float width, float height, float velocity_x, float velocity_y, bool is, GLuint tex): program(&program), x(x), y(y), width(width), height(height), velocity_x(velocity_x), velocity_y(velocity_y), istexture(is), texture(tex){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 
@@ -56,7 +56,14 @@ void Object::text(const string& text, float size, float spacing, float x, float 
     glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
+void Object::scale(){
+    modelMatrix.Scale(width, height, 1);
+    
+}
+
 void Object::display(){
+    this->scale();
+    
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
     program->SetViewMatrix(viewMatrix);
@@ -75,8 +82,5 @@ void Object::display(){
     if (istexture) glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
-void Object::scale(){
-    modelMatrix.Scale(width, height, 1);
 
-}
 
