@@ -6,6 +6,8 @@
 
 #include <cstdlib>
 #include <vector>
+#include <map>
+#include <fstream>
 
 // define Object as an entity in this game
 // header files for shaderprogram & matrix & sdl are included
@@ -20,6 +22,36 @@ float splitScale;
 
 int playerScore = 0;
 int enemyScore = 0;
+
+
+class XMLLoad {
+public:
+    struct Info {
+        int x;
+        int y;
+        int width;
+        int height;
+    };
+    
+    XMLLoad(const string& name){
+        ifstream open(name);
+        if (!open) {
+            cerr << "cannot open the file " << name << endl;
+            exit(1);
+        }
+        
+        
+        
+        
+    }
+    
+    map<string, Info> maps;
+    
+private:
+    
+};
+
+
 
 
 // calculate positions in advance to reduce redundancy
