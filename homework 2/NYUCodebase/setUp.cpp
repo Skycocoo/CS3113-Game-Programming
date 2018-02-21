@@ -80,7 +80,7 @@ SDL_Window* setUp(const string& name){
 }
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, Object& player){
+void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, Object& player){
     switch (event.type){
         case SDL_QUIT:
             done = true;
@@ -93,13 +93,16 @@ void checkKeyboard(const SDL_Event& event, bool& done, Object& player){
                 case SDL_SCANCODE_Q: // quit
                     done = true;
                     break;
+                case SDL_SCANCODE_O: // quit
+                    restart = true;
+                    break;
                 case SDL_SCANCODE_UP: // player control
-                    player.y += 2;
+                    player.y += 1;
                     player.modelMatrix.Identity();
                     player.modelMatrix.Translate(player.x, player.y, 0);
                     break;
                 case SDL_SCANCODE_DOWN: // player control
-                    player.y -= 2;
+                    player.y -= 1;
                     player.modelMatrix.Identity();
                     player.modelMatrix.Translate(player.x, player.y, 0);
                     break;

@@ -86,9 +86,11 @@ void updateSlide(Object& obj, float elapsed, bool& up){
 
 
 // direction of Pong based on the current scorer?
-void initiatePong(Object& obj){
-    obj.velocity_x = (rand()) % 10 + 1;
-    obj.velocity_y = (rand()) % 5 + 1;
+void initiatePong(Object& pong){
+    srand(time(NULL));
+    
+    pong.velocity_x = (rand()) % 10 - 5;
+    pong.velocity_y = (rand()) % 10 - 5;
 }
 
 
@@ -96,8 +98,9 @@ void initiatePong(Object& obj){
 //    if collide: with upper/lower boundary : velocity y = - velocity y
 //    with bars: verlocity x = - velocity x
 void collisionDetection(Object& obj, const vector<Object*>& bars){
-    bool collide = false;
+    bool collidex = false, collidey = false;
     
+
     float   objUp = obj.y + obj.height / 2,
         objDown = obj.y - obj.height / 2,
         objLeft = obj.x - obj.width / 2,
@@ -109,15 +112,40 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
             enLeft = bars[i]->x - bars[i]->width / 2,
             enRight = bars[i]->x + bars[i]->width / 2;
         
+        
+ 
         // intersecting
         if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)){
-            collide = true;
+            float lengthx = 0, lengthy = 0;
+            
+            if (objLeft < enLeft) lengthx = (objRight < enRight) ? objRight - enLeft : enRight - enLeft;
+            else lengthx = (objRight < enRight) ? objRight - objLeft : enRight - objLeft;
+            
+            if (objUp > enUp) lengthy = (objDown > enDown) ? enUp - objDown : enUp - enDown;
+            else lengthy = (objDown > enDown) ? objUp - objDown : objUp - enDown;
+            
+            if (lengthx > lengthy) collidey = true;
+            else if (lengthx < lengthy) collidex = true;
+            else {
+                collidey = true;
+                collidex = true;
+            }
+            
+//            if ((obj.height / 2 + bars[i]->height / 2) < (obj.y - bars[i]->y) < (sqrt(2) * obj.height / 2 + sqrt(2) * bars[i]->height / 2)) collidey = true;
+//            if ((obj.width / 2 + bars[i]->width / 2) < (obj.x - bars[i]->x) < (sqrt(2) * obj.width / 2 + sqrt(2) * bars[i]->width / 2)) collidex = true;
+//
+//            if (objUp > enDown || objDown < enUp) collidey = true;
+//            if (objLeft < enRight || objRight > enLeft) collidex = true;
+            
+//            if (!(objUp < enDown || objDown > enUp)) collidey = true;
+//            else if (!(objLeft > enRight || objRight < enLeft)) collidex = true;
         }
         
         // if (i == 0) cout << objUp << " " << enDown << " " << objLeft << " " << enRight << " " << objDown << " " << enUp << " " << objRight << " " << enLeft << endl;
     }
     
-    if (collide) obj.velocity_x = -obj.velocity_x;
+    if (collidex) obj.velocity_x = -obj.velocity_x;
+    if (collidey) obj.velocity_y = -obj.velocity_y;
     
     // upper / lower boundary collision
     if ((objUp > screenHeight - splitScale / 2) || (objDown < -screenHeight + splitScale / 2)) {
@@ -126,17 +154,28 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
     
 }
 
-void updatePong(Object& obj, const vector<Object*>& bars, float elapsed){
-    collisionDetection(obj, bars);
-    obj.x += elapsed * obj.velocity_x;
-    obj.y += elapsed * obj.velocity_y;
+void newRound(Object& pong){
+    pong.x = 0;
+    pong.y = 0;
+    initiatePong(pong);
+}
+
+void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
+    collisionDetection(pong, bars);
+    pong.x += elapsed * pong.velocity_x;
+    pong.y += elapsed * pong.velocity_y;
     
-    obj.modelMatrix.Identity();
-    obj.modelMatrix.Translate(obj.x, obj.y, 0);
+    pong.modelMatrix.Identity();
+    pong.modelMatrix.Translate(pong.x, pong.y, 0);
     
-    if (obj.x - obj.width / 2 < -screenWidth) playerScore += 1;
-    else if (obj.x + obj.width / 2 > screenWidth) enemyScore += 1;
-    // need to restart the game
+    if (pong.x - pong.width / 2 < -screenWidth) {
+        playerScore += 1;
+        newRound(pong);
+    } else if (pong.x + pong.width / 2 > screenWidth) {
+        enemyScore += 1;
+        newRound(pong);
+    }
+    
 }
 
 
@@ -144,9 +183,6 @@ void dispalyGame(){
 //    display the player & computer's position (before the start of the game)
 //    display the score for each side in the middle of the game
 //    display the sign of an object which Pong will point towards (player or enemy)
-    
-    
-    
 }
 
 
@@ -159,7 +195,7 @@ void win(){
 
 int main(){
     // initial set up
-    srand(time(NULL));
+    
     SDL_Window* displayWindow = setUp("Homework 2");
     
     // setting up objects
@@ -196,10 +232,16 @@ int main(){
     float lastFrameTicks = 0.0f;
     SDL_Event event;
     bool done = false;
+    bool restart = false;
     while (!done) {
         
         // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done, player);
+        while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, player);
+        
+        if (restart){
+            newRound(pong);
+            restart = false;
+        }
         
         // update parameters
         float ticks = (float)SDL_GetTicks()/1000.0f;

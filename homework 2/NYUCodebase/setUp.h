@@ -31,6 +31,6 @@ ShaderProgram setTextured(const std::string& filepath, GLuint& texture);
 SDL_Window* setUp(const std::string& name);
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, Object& player);
+void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, Object& player);
 
 #endif /* setUp_h */
