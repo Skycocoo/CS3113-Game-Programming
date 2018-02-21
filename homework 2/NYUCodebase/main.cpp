@@ -178,21 +178,36 @@ void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
     
 }
 
+// if one side scores >= 10 then win (display the result & end the game)
+bool win() {return (playerScore >= 1 || enemyScore >= 1);}
 
+void reGame(Object& pong, vector<Object*>& bars) {
+    newRound(pong);
+    playerScore = 0;
+    enemyScore = 0;
+    
+    for (size_t i = 0; i < bars.size(); i++){
+        bars[i]->y = 0;
+    }
+}
 
-//    display the score for each side in the middle of the game
+// display the score for each side in the middle of the game
 void displayGame(Object& disp){
     disp.text("player: " + to_string(playerScore), 0.8, 1, 2, screenHeight - 1);
     disp.text("enemy: " + to_string(enemyScore), 0.8, 1, -5, screenHeight - 1);
-}
-
-
-void win(){
-    //    determine the end of game
-    //    if one side scores >= 10 then win (display the result & end the game)
-    //    if not: continue the game
     
+    if (win()) {
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        string winner = (playerScore >= 1) ? "player" : "enemy";
+        disp.text(winner + "wins", 0.8, 1, -1.5, screenHeight - 1);
+        disp.text("press R to restart game",  0.8, 1, -4, screenHeight - 3);
+        disp.text("press Q to end the game",  0.8, 1, -4, screenHeight - 5);
+    }
 }
+
+
+
 
 int main(){
     // initial set up
@@ -239,17 +254,21 @@ int main(){
     // game loop
     float lastFrameTicks = 0.0f;
     SDL_Event event;
-    bool done = false;
-    bool restart = false;
+    bool done = false, restart = false, regame = false;
     while (!done) {
         
         
         // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, player);
+        while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, regame, player);
         
         if (restart){
             newRound(pong);
             restart = false;
+        }
+        
+        if (regame){
+            reGame(pong, bars);
+            regame = false;
         }
         
         // update parameters

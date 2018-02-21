@@ -1,10 +1,5 @@
-//
-//  setUp.h
-//  NYUCodebase
-//
-//  Created by 罗予希 on 20/02/2018.
-//  Copyright © 2018 Ivan Safrin. All rights reserved.
-//
+// Yuxi Luo (yl4217), February 15, 2018
+// Homework 2, PONG!, CS3113 Game Programming
 
 #ifndef setUp_h
 #define setUp_h
@@ -31,6 +26,6 @@ ShaderProgram setTextured(const std::string& filepath, GLuint& texture);
 SDL_Window* setUp(const std::string& name);
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, Object& player);
+void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, bool& regame, Object& player);
 
 #endif /* setUp_h */

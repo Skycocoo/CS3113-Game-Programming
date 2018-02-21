@@ -1,10 +1,5 @@
-//
-//  Object.cpp
-//  NYUCodebase
-//
-//  Created by Yuxi Luo (Github @ Skycocoo) on 17/02/2018.
-//  Copyright © 2018 Ivan Safrin. All rights reserved.
-//
+// Yuxi Luo (yl4217), February 15, 2018
+// Homework 2, PONG!, CS3113 Game Programming
 
 #include "Object.h"
 using namespace std;

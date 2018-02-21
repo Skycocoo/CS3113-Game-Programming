@@ -1,10 +1,5 @@
-//
-//  setUp.cpp
-//  NYUCodebase
-//
-//  Created by 罗予希 on 20/02/2018.
-//  Copyright © 2018 Ivan Safrin. All rights reserved.
-//
+// Yuxi Luo (yl4217), February 15, 2018
+// Homework 2, PONG!, CS3113 Game Programming
 
 
 #include "setUp.h"
@@ -80,7 +75,7 @@ SDL_Window* setUp(const string& name){
 }
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, Object& player){
+void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, bool& regame, Object& player){
     switch (event.type){
         case SDL_QUIT:
             done = true;
@@ -95,6 +90,9 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, Object& pl
                     break;
                 case SDL_SCANCODE_O: // quit
                     restart = true;
+                    break;
+                case SDL_SCANCODE_R:
+                    regame = true;
                     break;
                 case SDL_SCANCODE_UP: // player control
                     player.y += 1;
