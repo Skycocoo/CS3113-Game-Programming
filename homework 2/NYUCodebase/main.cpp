@@ -67,6 +67,8 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
 // detect collision:
 //    if collide: with upper/lower boundary : velocity y = - velocity y
 //    with bars: verlocity x = - velocity x
+//    https://stackoverflow.com/questions/10808929/2d-collision-detection-for-pong
+gi
 void collisionDetection(Object& obj, const vector<Object*>& bars){
     bool collide = false;
     
@@ -83,7 +85,9 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
         
         // intersecting
         if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)){
-            collide = true;
+            if ((obj.velocity_x > 0 && bars[i]->x > 0) || (obj.velocity_x < 0 && bars[i]->x < 0)){
+                collide = true;
+            }
         }
     }
     
@@ -105,9 +109,11 @@ void initiatePong(Object& pong){
 }
 
 void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
-    collisionDetection(pong, bars);
+    
     pong.x += elapsed * pong.velocity_x;
     pong.y += elapsed * pong.velocity_y;
+    
+    collisionDetection(pong, bars);
     
     pong.modelMatrix.Identity();
     pong.modelMatrix.Translate(pong.x, pong.y, 0);
