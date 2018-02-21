@@ -182,7 +182,8 @@ void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
 
 //    display the score for each side in the middle of the game
 void displayGame(Object& disp){
-    disp.text("hafdafwei", 10, 10);
+//    disp.display();
+    disp.text("hafdafwei", 0.5, 0.0001);
 }
 
 
@@ -200,7 +201,7 @@ int main(){
     
     // setting up texts
     GLuint texture1;
-    ShaderProgram text = setTextured("font2.png", texture1);
+    ShaderProgram text = setTextured("font1.png", texture1);
     Object disp(text, true, texture1);
     
     

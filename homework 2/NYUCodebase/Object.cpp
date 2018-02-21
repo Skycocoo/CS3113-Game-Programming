@@ -18,6 +18,10 @@ Object::Object(ShaderProgram& program, bool is, GLuint tex):program(&program), i
 }
 
 void Object::text(const string& text, float size, float spacing){
+    program->SetModelMatrix(modelMatrix);
+    program->SetProjectionMatrix(projectionMatrix);
+    program->SetViewMatrix(viewMatrix);
+    
     float texture_size = 1.0/16.0f;
     vector<float> vertexData;
     vector<float> texCoordData;
@@ -42,7 +46,7 @@ void Object::text(const string& text, float size, float spacing){
             texture_x, texture_y + texture_size,
         }); }
     
-    glUseProgram(program->programID);
+//    glUseProgram(program->programID);
     glBindTexture(GL_TEXTURE_2D, texture);
     
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertexData.data());
