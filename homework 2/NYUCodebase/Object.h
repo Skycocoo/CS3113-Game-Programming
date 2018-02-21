@@ -25,11 +25,11 @@ public:
     float velocity_x = 0;
     float velocity_y = 0;
     
-    Object(ShaderProgram& program, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool is = false, GLuint tex = 0);
+    Object(ShaderProgram& program, bool is = false, GLuint tex = 0, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0);
     
     void text(const std::string& text, float size, float spacing, float x, float y);
     void display();
-    void scale();
+    void update();
     
 private:
     ShaderProgram* program;
@@ -40,6 +40,19 @@ private:
     std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
     
+};
+
+class Player: public Object {
+public:
+    using Object::Object;
+};
+
+class Enemy: public Object {
+public:
+    Enemy(ShaderProgram& program, bool is = false, GLuint tex = 0, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool up = true);
+    void update(float elapsed);
+private:
+    bool up;
 };
 
 #endif /* Object_h */
