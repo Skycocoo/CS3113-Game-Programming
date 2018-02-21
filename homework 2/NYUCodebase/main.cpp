@@ -68,7 +68,7 @@ void drawSplit(Object& obj, const vector<Matrix>& splitPos){
 //    if collide: with upper/lower boundary : velocity y = - velocity y
 //    with bars: verlocity x = - velocity x
 //    https://stackoverflow.com/questions/10808929/2d-collision-detection-for-pong
-gi
+
 void collisionDetection(Object& obj, const vector<Object*>& bars){
     bool collide = false;
     
