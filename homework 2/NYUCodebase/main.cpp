@@ -1,6 +1,12 @@
 // Yuxi Luo (yl4217), February 15, 2018
 // Homework 2, PONG!, CS3113 Game Programming
 
+// To do:
+// update constructor of Object
+// clear up main()
+// determine the winning condition
+// change the movement of the player bar
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -17,6 +23,9 @@ float screenRatio;
 float screenHeight;
 float screenWidth;
 float splitScale;
+
+int playerScore = 0;
+int enemyScore = 0;
 
 
 
@@ -117,7 +126,7 @@ void collisionDetection(Object& obj, const vector<Object*>& bars){
     
 }
 
-void updatePong(Object& obj, const vector<Object*>& bars, float elapsed, int& playerScore, int& enemyScore){
+void updatePong(Object& obj, const vector<Object*>& bars, float elapsed){
     collisionDetection(obj, bars);
     obj.x += elapsed * obj.velocity_x;
     obj.y += elapsed * obj.velocity_y;
@@ -127,8 +136,7 @@ void updatePong(Object& obj, const vector<Object*>& bars, float elapsed, int& pl
     
     if (obj.x - obj.width / 2 < -screenWidth) playerScore += 1;
     else if (obj.x + obj.width / 2 > screenWidth) enemyScore += 1;
-//    edge detection? -> if x go beyond width / -width: score ++ for player / enemy
-    
+    // need to restart the game
 }
 
 
@@ -136,6 +144,8 @@ void dispalyGame(){
 //    display the player & computer's position (before the start of the game)
 //    display the score for each side in the middle of the game
 //    display the sign of an object which Pong will point towards (player or enemy)
+    
+    
     
 }
 
@@ -164,10 +174,11 @@ int main(){
     // player & enemy (computer control)
     vector<Object*> bars;
     
-    bool playerUp = true;
+//    bool playerUp = true;
     Object player(prog, false);
     player.x = 5;
     player.velocity_y = 3;
+    player.modelMatrix.Translate(player.x, player.y, 0);
     
     bool enemyUp = true;
     Object enemy(prog, false);
@@ -182,14 +193,13 @@ int main(){
     initiatePong(pong);
 
     // game loop
-    int playerScore = 0, enemyScore = 0;
     float lastFrameTicks = 0.0f;
     SDL_Event event;
     bool done = false;
     while (!done) {
         
         // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done, playerUp);
+        while (SDL_PollEvent(&event)) checkKeyboard(event, done, player);
         
         // update parameters
         float ticks = (float)SDL_GetTicks()/1000.0f;
@@ -197,8 +207,8 @@ int main(){
         lastFrameTicks = ticks;
         
         updateSlide(enemy, elapsed, enemyUp);
-        updateSlide(player, elapsed, playerUp);
-        updatePong(pong, bars, elapsed, playerScore, enemyScore);
+//        updateSlide(player, elapsed, playerUp);
+        updatePong(pong, bars, elapsed);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);

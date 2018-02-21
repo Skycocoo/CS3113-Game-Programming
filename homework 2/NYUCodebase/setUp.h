@@ -15,6 +15,8 @@
 #include <SDL_image.h>
 #include <string>
 
+#include "Object.h"
+
 // from lecture slide Jan 31, 2018
 GLuint LoadTexture(const char *filePath);
 
@@ -29,6 +31,6 @@ ShaderProgram setTextured(const std::string& filepath, GLuint& texture);
 SDL_Window* setUp(const std::string& name);
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup);
+void checkKeyboard(const SDL_Event& event, bool& done, Object& player);
 
 #endif /* setUp_h */

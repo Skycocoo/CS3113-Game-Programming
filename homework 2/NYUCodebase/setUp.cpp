@@ -6,6 +6,7 @@
 //  Copyright © 2018 Ivan Safrin. All rights reserved.
 //
 
+
 #include "setUp.h"
 #include "stb_image.h"
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
@@ -79,7 +80,7 @@ SDL_Window* setUp(const string& name){
 }
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
+void checkKeyboard(const SDL_Event& event, bool& done, Object& player){
     switch (event.type){
         case SDL_QUIT:
             done = true;
@@ -93,10 +94,14 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& playerup){
                     done = true;
                     break;
                 case SDL_SCANCODE_UP: // player control
-                    playerup = true;
+                    player.y += 2;
+                    player.modelMatrix.Identity();
+                    player.modelMatrix.Translate(player.x, player.y, 0);
                     break;
                 case SDL_SCANCODE_DOWN: // player control
-                    playerup = false;
+                    player.y -= 2;
+                    player.modelMatrix.Identity();
+                    player.modelMatrix.Translate(player.x, player.y, 0);
                     break;
                 default:
                     break;
