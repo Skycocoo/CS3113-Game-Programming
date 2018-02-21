@@ -84,10 +84,15 @@ void updateSlide(Object& obj, float elapsed, bool& up){
     obj.modelMatrix.Translate(obj.x, obj.y, 0);
 }
 
+void updatePlayer(Object& obj){
+    obj.modelMatrix.Identity();
+    obj.modelMatrix.Translate(obj.x, obj.y, 0);
+}
+
 
 // direction of Pong based on the current scorer?
 void initiatePong(Object& pong){
-    srand(time(NULL));
+    
     
     while (pong.velocity_x == 0) pong.velocity_x = ((rand()) % 4 - 2) * 2;
     while (pong.velocity_y == 0) pong.velocity_y = ((rand()) % 4 - 2) * 2;
@@ -192,6 +197,7 @@ void reGame(Object& pong, vector<Object*>& bars) {
 // if one side scores >= 10 then win (display the result & end the game)
 bool win() {return (playerScore >= 10 || enemyScore >= 10);}
 
+
 // display the score for each side in the middle of the game
 void displayGame(Object& disp){
     disp.text("player: " + to_string(playerScore), 0.8, 1, 2, screenHeight - 1);
@@ -211,6 +217,8 @@ void displayGame(Object& disp){
 
 
 int main(){
+    //        Object(ShaderProgram& program, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool is = false, GLuint tex = 0);
+    
     // initial set up
     
     SDL_Window* displayWindow = setUp("Homework 2");
@@ -218,7 +226,7 @@ int main(){
     // setting up texts
     GLuint texture1;
     ShaderProgram text = setTextured("font1.png", texture1);
-    Object disp(text, true, texture1);
+    Object disp(text, 0, 0, 0, 0, 0, 0, true, texture1);
     
     
     
@@ -234,9 +242,9 @@ int main(){
     // player & enemy (computer control)
     vector<Object*> bars;
     
-//        Object(ShaderProgram& program, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool is = false, GLuint tex = 0);
+
     Object player(prog, 5, 0, 0.2, 2);
-    player.modelMatrix.Translate(player.x, player.y, 0);
+//    player.modelMatrix.Translate(player.x, player.y, 0);
     
     bool enemyUp = true;
     Object enemy(prog, -5, 0, 0.2, 2, 0, 3, false);
@@ -253,7 +261,7 @@ int main(){
     SDL_Event event;
     bool done = false, restart = false, regame = false;
     while (!done) {
-        
+        srand(time(NULL));
         
         // keyboard event
         while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, regame, player);
@@ -275,6 +283,7 @@ int main(){
         
         updateSlide(enemy, elapsed, enemyUp);
         updatePong(pong, bars, elapsed);
+        updatePlayer(player);
         
         
         
