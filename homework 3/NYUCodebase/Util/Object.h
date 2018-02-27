@@ -6,8 +6,9 @@
 
 #include <vector>
 #include <string>
-#include "Matrix.h"
 #include "ShaderProgram.h"
+#include "../Math/Matrix.h"
+
 
 // create an object class to handle parameters
 class Object{

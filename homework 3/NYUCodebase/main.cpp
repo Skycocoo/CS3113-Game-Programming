@@ -9,7 +9,7 @@
 
 // define Object as an entity in this game
 // header files for shaderprogram & matrix & sdl are included
-#include "Object.h"
+#include "Util/Object.h"
 #include "setUp.h"
 
 using namespace std;
@@ -108,14 +108,12 @@ void initiatePong(Object& pong){
 }
 
 void updatePong(Object& pong, const vector<Object*>& bars, float elapsed){
+    collisionDetection(pong, bars);
     
     pong.x += elapsed * pong.velocity_x;
     pong.y += elapsed * pong.velocity_y;
     
-    collisionDetection(pong, bars);
-    
-    pong.modelMatrix.Identity();
-    pong.modelMatrix.Translate(pong.x, pong.y, 0);
+    pong.update();
     
     if (pong.x - pong.width / 2 < -screenWidth) {
         playerScore += 1;
@@ -172,7 +170,7 @@ int main(){
     Object split(prog, false);
     vector<Matrix> splitPos;
     splitInit(split, splitPos, 20);
-
+    
     // player & enemy (computer control)
     vector<Object*> bars;
     Player player(prog, false, 0, 5, 0, 0.2, 2);
@@ -183,7 +181,7 @@ int main(){
     // ping pong
     Object pong(prog, false, 0, 0, 0, 0.2, 0.2);
     initiatePong(pong);
-
+    
     // game loop
     float lastFrameTicks = 0.0f;
     SDL_Event event;
@@ -206,7 +204,7 @@ int main(){
         float ticks = (float)SDL_GetTicks()/1000.0f;
         float elapsed = ticks - lastFrameTicks;
         lastFrameTicks = ticks;
-
+        
         updatePong(pong, bars, elapsed);
         player.update();
         enemy.update(elapsed);

@@ -4,7 +4,6 @@
 #include "Object.h"
 using namespace std;
 
-
 extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;

@@ -10,7 +10,7 @@
 #include <SDL_image.h>
 #include <string>
 
-#include "Object.h"
+#include "Util/Object.h"
 
 // from lecture slide Jan 31, 2018
 GLuint LoadTexture(const char *filePath);

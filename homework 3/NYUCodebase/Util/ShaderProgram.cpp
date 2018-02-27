@@ -1,4 +1,3 @@
-
 #include "ShaderProgram.h"
 
 void ShaderProgram::Load(const char *vertexShaderFile, const char *fragmentShaderFile) {
