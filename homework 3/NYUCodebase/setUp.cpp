@@ -1,5 +1,5 @@
-// Yuxi Luo (yl4217), February 15, 2018
-// Homework 2, PONG!, CS3113 Game Programming
+// Yuxi Luo (yl4217), February 26, 2018
+// CS3113 Game Programming
 
 
 #include "setUp.h"
@@ -39,7 +39,7 @@ GLuint LoadTexture(const char *filePath) {
 // untextured shader
 ShaderProgram setUntextured(){
     ShaderProgram program;
-    program.Load(RESOURCE_FOLDER"Shaders/vertex.glsl", RESOURCE_FOLDER"Shaders/fragment.glsl");
+    program.Load(RESOURCE_FOLDER"Shad/vertex.glsl", RESOURCE_FOLDER"Shad/fragment.glsl");
     glUseProgram(program.programID);
 
     return program;
@@ -48,7 +48,7 @@ ShaderProgram setUntextured(){
 // textured shader
 ShaderProgram setTextured(const string& filepath, GLuint& texture){
     ShaderProgram program;
-    program.Load(RESOURCE_FOLDER"Shaders/vertex_textured.glsl", RESOURCE_FOLDER"Shaders/fragment_textured.glsl");
+    program.Load(RESOURCE_FOLDER"Shad/vertex_textured.glsl", RESOURCE_FOLDER"Shad/fragment_textured.glsl");
     texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
 
     return program;
@@ -76,7 +76,7 @@ SDL_Window* setUp(const string& name){
 }
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, bool& regame, Object& player){
+void checkKeyboard(const SDL_Event& event, bool& done){
     switch (event.type){
         case SDL_QUIT:
             done = true;
@@ -89,24 +89,24 @@ void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, bool& rega
                 case SDL_SCANCODE_Q: // quit
                     done = true;
                     break;
-                case SDL_SCANCODE_O: // quit
-                    restart = true;
-                    break;
-                case SDL_SCANCODE_R:
-                    regame = true;
-                    break;
-                case SDL_SCANCODE_UP: // player control
-                    if (player.y < screenHeight - player.height / 2 - splitScale / 2) player.y += 1;
-                    player.modelMatrix.Identity();
-                    player.modelMatrix.Translate(player.x, player.y, 0);
-                    break;
-                case SDL_SCANCODE_DOWN: // player control
-                    if (player.y > -screenHeight + player.height / 2 + splitScale / 2) player.y -= 1;
-                    player.modelMatrix.Identity();
-                    player.modelMatrix.Translate(player.x, player.y, 0);
-                    break;
-                default:
-                    break;
+//                case SDL_SCANCODE_O: // quit
+//                    restart = true;
+//                    break;
+//                case SDL_SCANCODE_R:
+//                    regame = true;
+//                    break;
+//                case SDL_SCANCODE_UP: // player control
+//                    if (player.y < screenHeight - player.height / 2 - splitScale / 2) player.y += 1;
+//                    player.modelMatrix.Identity();
+//                    player.modelMatrix.Translate(player.x, player.y, 0);
+//                    break;
+//                case SDL_SCANCODE_DOWN: // player control
+//                    if (player.y > -screenHeight + player.height / 2 + splitScale / 2) player.y -= 1;
+//                    player.modelMatrix.Identity();
+//                    player.modelMatrix.Translate(player.x, player.y, 0);
+//                    break;
+//                default:
+//                    break;
             }
             break;
     }

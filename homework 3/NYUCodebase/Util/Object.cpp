@@ -1,5 +1,5 @@
-// Yuxi Luo (yl4217), February 15, 2018
-// Homework 2, PONG!, CS3113 Game Programming
+// Yuxi Luo (yl4217), February 26, 2018
+// CS3113 Game Programming
 
 #include "Object.h"
 using namespace std;

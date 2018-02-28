@@ -14,7 +14,6 @@
 		6D5A86E319AE5CD10066C1FD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5A86E219AE5CD10066C1FD /* SDL2.framework */; };
 		6D5AC2D019AE6280004CB1BF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2CF19AE6280004CB1BF /* OpenGL.framework */; };
 		6D5AC2D219AE6A1E004CB1BF /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */; };
-		D0880449203DB63B00B9F0A9 /* font1.png in Resources */ = {isa = PBXBuildFile; fileRef = D0880448203DB63B00B9F0A9 /* font1.png */; };
 		D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55C4203CE80300A06EA9 /* setUp.cpp */; };
 		D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55CA203CEBA600A06EA9 /* main.cpp */; };
 		D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282EC2044F46F00B873AE /* Matrix.cpp */; };
@@ -23,7 +22,8 @@
 		D0D282FC2044F4EE00B873AE /* XMLLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282F42044F4EE00B873AE /* XMLLoad.cpp */; };
 		D0D282FD2044F4EE00B873AE /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282F52044F4EE00B873AE /* GameState.cpp */; };
 		D0D282FE2044F4EE00B873AE /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */; };
-		D0D283092044F7C200B873AE /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = D0D283082044F7C200B873AE /* Shaders */; };
+		D0D283092044F7C200B873AE /* Shad in Resources */ = {isa = PBXBuildFile; fileRef = D0D283082044F7C200B873AE /* Shad */; };
+		D0D2830C2044FBD500B873AE /* Asset in Resources */ = {isa = PBXBuildFile; fileRef = D0D2830B2044FBD400B873AE /* Asset */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +45,6 @@
 		D0349961202DD68E00003B19 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		D0349962202DD68E00003B19 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		D068FAB22044F00300E2801F /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
-		D0880448203DB63B00B9F0A9 /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55CA203CEBA600A06EA9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D0D282EB2044F46A00B873AE /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
@@ -60,8 +59,9 @@
 		D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
 		D0D282F92044F4EE00B873AE /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
 		D0D282FA2044F4EE00B873AE /* XMLLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLLoad.h; sourceTree = "<group>"; };
-		D0D283082044F7C200B873AE /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shaders; sourceTree = "<group>"; };
+		D0D283082044F7C200B873AE /* Shad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shad; sourceTree = "<group>"; };
 		D0D2830A2044F80300B873AE /* setUp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = setUp.h; sourceTree = "<group>"; };
+		D0D2830B2044FBD400B873AE /* Asset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Asset; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,13 +163,13 @@
 			isa = PBXGroup;
 			children = (
 				D08D55CA203CEBA600A06EA9 /* main.cpp */,
-				D0D282F22044F4D700B873AE /* Util */,
-				D0D282EA2044F44100B873AE /* Math */,
-				D0D283082044F7C200B873AE /* Shaders */,
 				D0D2830A2044F80300B873AE /* setUp.h */,
 				D08D55C4203CE80300A06EA9 /* setUp.cpp */,
 				D068FAB22044F00300E2801F /* stb_image.h */,
-				D0880448203DB63B00B9F0A9 /* font1.png */,
+				D0D282F22044F4D700B873AE /* Util */,
+				D0D282EA2044F44100B873AE /* Math */,
+				D0D2830B2044FBD400B873AE /* Asset */,
+				D0D283082044F7C200B873AE /* Shad */,
 			);
 			name = Code;
 			sourceTree = "<group>";
@@ -188,14 +188,14 @@
 		D0D282F22044F4D700B873AE /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */,
 				D0D282F92044F4EE00B873AE /* ShaderProgram.h */,
-				D0D282F52044F4EE00B873AE /* GameState.cpp */,
+				D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */,
 				D0D282F62044F4EE00B873AE /* GameState.h */,
-				D0D282F32044F4EE00B873AE /* Object.cpp */,
+				D0D282F52044F4EE00B873AE /* GameState.cpp */,
 				D0D282F72044F4EE00B873AE /* Object.h */,
-				D0D282F42044F4EE00B873AE /* XMLLoad.cpp */,
+				D0D282F32044F4EE00B873AE /* Object.cpp */,
 				D0D282FA2044F4EE00B873AE /* XMLLoad.h */,
+				D0D282F42044F4EE00B873AE /* XMLLoad.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -253,11 +253,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0880449203DB63B00B9F0A9 /* font1.png in Resources */,
-				D0D283092044F7C200B873AE /* Shaders in Resources */,
+				D0D283092044F7C200B873AE /* Shad in Resources */,
 				6D5A86B819AE5C710066C1FD /* InfoPlist.strings in Resources */,
 				6D5A86C619AE5C710066C1FD /* Images.xcassets in Resources */,
 				6D5A86BE19AE5C710066C1FD /* Credits.rtf in Resources */,
+				D0D2830C2044FBD500B873AE /* Asset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

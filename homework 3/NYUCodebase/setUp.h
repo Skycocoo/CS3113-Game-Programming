@@ -1,5 +1,5 @@
-// Yuxi Luo (yl4217), February 15, 2018
-// Homework 2, PONG!, CS3113 Game Programming
+// Yuxi Luo (yl4217), February 26, 2018
+// CS3113 Game Programming
 
 #ifndef setUp_h
 #define setUp_h
@@ -26,6 +26,6 @@ ShaderProgram setTextured(const std::string& filepath, GLuint& texture);
 SDL_Window* setUp(const std::string& name);
 
 // check keyboard event
-void checkKeyboard(const SDL_Event& event, bool& done, bool& restart, bool& regame, Object& player);
+void checkKeyboard(const SDL_Event& event, bool& done);
 
 #endif /* setUp_h */

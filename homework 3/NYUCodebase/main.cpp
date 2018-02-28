@@ -1,5 +1,5 @@
-// Yuxi Luo (yl4217), February 15, 2018
-// Homework 2, PONG!, CS3113 Game Programming
+// Yuxi Luo (yl4217), February 26, 2018
+// Homework 3, Space Invaders, CS3113 Game Programming
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -10,6 +10,7 @@
 // define Object as an entity in this game
 // header files for shaderprogram & matrix & sdl are included
 #include "Util/Object.h"
+#include "Util/XMLLoad.h"
 #include "setUp.h"
 
 using namespace std;
@@ -152,72 +153,70 @@ void displayGame(Object& disp){
     }
 }
 
+class SheetSprite {
+public:
+    SheetSprite(){};
+    SheetSprite(unsigned int textureID, float u, float v, float width, float height, float size): textureID(textureID), u(u), v(v), width(width), height(height), size(size){};
+    
+    void Draw(ShaderProgram *program){
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        GLfloat texCoords[] = {
+            u, v+height,
+            u+width, v,
+            u, v,
+            u+width, v,
+            u, v+height,
+            u+width, v+height
+        };
+        float aspect = width / height;
+        float vertices[] = {
+            -0.5f * size * aspect, -0.5f * size,
+            0.5f * size * aspect, 0.5f * size,
+            -0.5f * size * aspect, 0.5f * size,
+            0.5f * size * aspect, 0.5f * size,
+            -0.5f * size * aspect, -0.5f * size ,
+            0.5f * size * aspect, -0.5f * size};
+        // draw our arrays
+    }
+    float size;
+    unsigned int textureID;
+    float u;
+    float v;
+    float width;
+    float height;
+};
+
+void Render(SheetSprite& enemySprite, ShaderProgram* program) {
+    enemySprite.Draw(program);
+}
+
+
 
 int main(){
     // initial set up
     srand(time(NULL));
-    SDL_Window* displayWindow = setUp("Homework 2");
+    SDL_Window* displayWindow = setUp("Homework 3");
+    
+    XMLLoad("sheet.xml");
+    
     
     // setting up texts
-    GLuint texture1;
-    ShaderProgram text = setTextured("font1.png", texture1);
-    Object disp(text, true, texture1);
+    GLuint texture;
+    ShaderProgram shad = setTextured("sheet.png", texture);
+    SheetSprite t;
+    t.textureID = texture;
     
-    // setting up objects
-    ShaderProgram prog = setUntextured();
-    
-    // split line
-    Object split(prog, false);
-    vector<Matrix> splitPos;
-    splitInit(split, splitPos, 20);
-    
-    // player & enemy (computer control)
-    vector<Object*> bars;
-    Player player(prog, false, 0, 5, 0, 0.2, 2);
-    Enemy enemy(prog, false, 0, -5, 0, 0.2, 2, 0, 3);
-    bars.push_back(&player);
-    bars.push_back(&enemy);
-    
-    // ping pong
-    Object pong(prog, false, 0, 0, 0, 0.2, 0.2);
-    initiatePong(pong);
-    
-    // game loop
-    float lastFrameTicks = 0.0f;
+
     SDL_Event event;
-    bool done = false, restart = false, regame = false, enemyUp = true;
+    bool done = false;
     while (!done) {
         // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done, restart, regame, player);
-        
-        if (restart){
-            initiatePong(pong);
-            restart = false;
-        }
-        
-        if (regame){
-            reGame(pong, bars);
-            regame = false;
-        }
-        
-        // update parameters
-        float ticks = (float)SDL_GetTicks()/1000.0f;
-        float elapsed = ticks - lastFrameTicks;
-        lastFrameTicks = ticks;
-        
-        updatePong(pong, bars, elapsed);
-        player.update();
-        enemy.update(elapsed);
-        
-        
+        while (SDL_PollEvent(&event)) checkKeyboard(event, done);
+
         // display
         glClear(GL_COLOR_BUFFER_BIT);
         
-        displayGame(disp);
-        drawSplit(split, splitPos);
-        enemy.display();
-        player.display();
-        pong.display();
+        Render(t, &shad);
         
         SDL_GL_SwapWindow(displayWindow);
     }
