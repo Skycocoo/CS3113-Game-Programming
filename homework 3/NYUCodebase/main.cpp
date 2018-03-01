@@ -197,30 +197,31 @@ int main(){
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Homework 3");
     
-    XMLLoad("sheet.xml");
+    XMLLoad xml ("Asset/sheet.xml");
+    xml.display();
     
+//    // setting up texts
+//    GLuint texture;
+//    ShaderProgram shad = setTextured("Asset/sheet.png", texture);
+//    SheetSprite t;
+//    t.textureID = texture;
+//
+//
+//    SDL_Event event;
+//    bool done = false;
+//    while (!done) {
+//        // keyboard event
+//        while (SDL_PollEvent(&event)) checkKeyboard(event, done);
+//
+//        // display
+//        glClear(GL_COLOR_BUFFER_BIT);
+//
+//        Render(t, &shad);
+//
+//        SDL_GL_SwapWindow(displayWindow);
+//    }
+//
+//    SDL_Quit();
     
-    // setting up texts
-    GLuint texture;
-    ShaderProgram shad = setTextured("sheet.png", texture);
-    SheetSprite t;
-    t.textureID = texture;
-    
-
-    SDL_Event event;
-    bool done = false;
-    while (!done) {
-        // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done);
-
-        // display
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        Render(t, &shad);
-        
-        SDL_GL_SwapWindow(displayWindow);
-    }
-    
-    SDL_Quit();
     return 0;
 }
