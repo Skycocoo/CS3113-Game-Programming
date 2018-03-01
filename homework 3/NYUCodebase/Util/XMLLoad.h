@@ -38,12 +38,13 @@ public:
         
         std::string first, subtext, name, x, y, width, height;
         
-        // first line contains the information about the entire sheet
+        // skip the first line (not useful)
         getline(ifs, first);
         
+        
+        // assume the pattern is name="beam0.png" x="143" y="377" width="43" height="31"/>
+        // substr: start position, length of the substring
         while (ifs >> subtext >> name >> x >> y >> width >> height){
-            // assume the pattern is name="beam0.png" x="143" y="377" width="43" height="31"/>
-            // substr: start position, length of the substring
             name = name.substr(6, name.size() - 6 - 1);
             x = x.substr(3, x.size() - 3 - 1);
             y = y.substr(3, y.size() - 3 - 1);
@@ -51,17 +52,13 @@ public:
             height = height.substr(8, height.size() - 8 - 3);
             
             table[name] = Data(stoi(x), stoi(y), stoi(width), stoi(height));
-            
         }
-        
-        
-        
         ifs.close();
     }
     
     
     
-    void display(std::ostream& os = std::cout){
+    void display(std::ostream& os = std::cout) const {
         std::cout << "XML sheet: " << name << std::endl;
         for (auto i = table.begin(); i != table.end(); i++){
             std::cout << i->first << " " << i->second;
@@ -69,11 +66,16 @@ public:
     }
     
     void getKeys() const {
-        
+        int style = 0;
+        for (auto i = table.begin(); i != table.end(); i++){
+            std::cout << i->first << " ";
+            if (style % 3 == 0) std::cout << std::endl;
+            ++style;
+        }
     }
     
-    Data getData(const std::string& name) const {
-        return Data(0,0,0,0);
+    Data getData(const std::string& name) {
+        return table[name];
     }
     
     

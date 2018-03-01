@@ -198,7 +198,7 @@ int main(){
     SDL_Window* displayWindow = setUp("Homework 3");
     
     XMLLoad xml ("Asset/sheet.xml");
-    xml.display();
+    cout << xml.getData("wingYellow_7.png");
     
 //    // setting up texts
 //    GLuint texture;
