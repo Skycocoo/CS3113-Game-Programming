@@ -80,7 +80,7 @@ void Object::display(){
 void Object::update(){
     modelMatrix.Identity();
     
-    modelMatrix.Translate(x, y, 0);
+    modelMatrix.Translate(x, y, 1);
     modelMatrix.Scale(width, height, 1);
 }
 

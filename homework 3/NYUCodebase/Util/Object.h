@@ -6,54 +6,47 @@
 
 #include <vector>
 #include <string>
+
 #include "ShaderProgram.h"
 #include "../Math/Matrix.h"
 
+#include "glm/glm.hpp"
 
 // create an object class to handle parameters
 class Object{
 public:
+    Object(ShaderProgram& program, bool istexture = false, GLuint texture = 0, glm::vec3 pos = glm::vec3(), glm::vec3 size = glm::vec3(), glm::vec3 velo = glm::vec3());
+
+//    void text(const std::string& text, float size, float spacing, float x, float y);
+    void display();
+    void update(float elapsed);
+
+protected:
+    // shader
+    ShaderProgram* program;
+    
+    // texture
+    bool istexture = false;
+    GLuint texture;
+    
     // matrices
     Matrix projectionMatrix;
     Matrix modelMatrix;
     Matrix viewMatrix;
-    
-    // positions
-    float x = 0;
-    float y = 0;
-    float width = 1;
-    float height = 1;
-    float velocity_x = 0;
-    float velocity_y = 0;
-    
-    Object(ShaderProgram& program, bool is = false, GLuint tex = 0, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0);
-    
-    void text(const std::string& text, float size, float spacing, float x, float y);
-    void display();
-    void update();
-    
-private:
-    ShaderProgram* program;
-    
-    bool istexture = false;
-    GLuint texture;
-    
+
+    // vectors
+    glm::vec3 pos;
+    glm::vec3 size;
+    glm::vec3 velo;
+    glm::vec3 acce;
+
+    // vertices
     std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-    
+
 };
 
-class Player: public Object {
-public:
-    using Object::Object;
-};
 
-class Enemy: public Object {
-public:
-    Enemy(ShaderProgram& program, bool is = false, GLuint tex = 0, float x = 0, float y = 0, float width = 1, float height = 1, float velocity_x = 0, float velocity_y = 0, bool up = true);
-    void update(float elapsed);
-private:
-    bool up;
-};
+
 
 #endif /* Object_h */
