@@ -9,22 +9,7 @@
 #include <map>
 #include <string>
 
-
-#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
-
-
-class Data {
-public:
-    friend std::ostream& operator<<(std::ostream& os, const Data& data);
-    
-    Data();
-    Data(float x, float y, float width, float height);
-    
-    float x;
-    float y;
-    float width;
-    float height;
-};
+#include "XMLData.h"
 
 class XMLLoad{
 public:
@@ -32,11 +17,11 @@ public:
     
     void display(std::ostream& os = std::cout) const;
     void getKeys() const;
-    Data getData(const std::string& name);
+    XMLData getData(const std::string& name);
 
 private:
     std::string name;
-    std::map<std::string, Data> table;
+    std::map<std::string, XMLData> table;
 };
 
 #endif /* XMLLoad_h */

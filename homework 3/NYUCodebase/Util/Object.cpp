@@ -8,7 +8,7 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
-Object::Object(ShaderProgram& program, bool istexture, GLuint texture, glm::vec3 pos, glm::vec3 size, glm::vec3 velo): program(&program), istexture(istexture), texture(texture), pos(pos), size(size), velo(velo){
+Object::Object(ShaderProgram& program, GLuint texture, glm::vec3 pos, glm::vec3 size, glm::vec3 velo): program(&program), texture(texture), pos(pos), size(size), velo(velo){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 
@@ -20,7 +20,7 @@ void Object::display(){
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
     glEnableVertexAttribArray(program->positionAttribute);
     
-    if (istexture){
+    if (glIsTexture(texture)){
         glBindTexture(GL_TEXTURE_2D, texture);
         glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
         glEnableVertexAttribArray(program->texCoordAttribute);
@@ -28,7 +28,7 @@ void Object::display(){
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glDisableVertexAttribArray(program->positionAttribute);
     
-    if (istexture) glDisableVertexAttribArray(program->texCoordAttribute);
+    if (glIsTexture(texture)) glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
 void Object::update(float elapsed){

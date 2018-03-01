@@ -9,13 +9,12 @@
 
 #include "ShaderProgram.h"
 #include "../Math/Matrix.h"
-
 #include "glm/glm.hpp"
 
 // create an object class to handle parameters
 class Object{
 public:
-    Object(ShaderProgram& program, bool istexture = false, GLuint texture = 0, glm::vec3 pos = glm::vec3(), glm::vec3 size = glm::vec3(), glm::vec3 velo = glm::vec3());
+    Object(ShaderProgram& program, GLuint texture = 0, glm::vec3 pos = glm::vec3(), glm::vec3 size = glm::vec3(), glm::vec3 velo = glm::vec3());
 
     void display();
     void update(float elapsed);
@@ -25,7 +24,6 @@ protected:
     ShaderProgram* program;
     
     // texture
-    bool istexture = false;
     GLuint texture;
     
     // matrices

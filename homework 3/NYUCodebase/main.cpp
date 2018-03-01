@@ -87,7 +87,7 @@ int main(){
     
     
     XMLLoad xml ("Asset/sheet.xml");
-    Data a = xml.getData("playerShip2_orange.png");
+    XMLData a = xml.getData("playerShip2_orange.png");
     GLuint texture;
     ShaderProgram shad = setTextured("Asset/sheet.png", texture);
     // assume the size of texture sheet is 1024 * 1024

@@ -16,6 +16,7 @@
 		6D5AC2D219AE6A1E004CB1BF /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */; };
 		D03D20D420488781000A9935 /* glm in Resources */ = {isa = PBXBuildFile; fileRef = D03D20D320488781000A9935 /* glm */; };
 		D03D25072048A326000A9935 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03D25062048A326000A9935 /* Text.cpp */; };
+		D03D250C2048BA77000A9935 /* XMLData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03D250B2048BA77000A9935 /* XMLData.cpp */; };
 		D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55C4203CE80300A06EA9 /* setUp.cpp */; };
 		D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55CA203CEBA600A06EA9 /* main.cpp */; };
 		D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282EC2044F46F00B873AE /* Matrix.cpp */; };
@@ -48,6 +49,8 @@
 		D03D20D320488781000A9935 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = glm; path = ../../include/glm; sourceTree = "<group>"; };
 		D03D25062048A326000A9935 /* Text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		D03D25082048A331000A9935 /* Text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
+		D03D250A2048BA68000A9935 /* XMLData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLData.h; sourceTree = "<group>"; };
+		D03D250B2048BA77000A9935 /* XMLData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XMLData.cpp; sourceTree = "<group>"; };
 		D068FAB22044F00300E2801F /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55CA203CEBA600A06EA9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -199,6 +202,8 @@
 				D03D25062048A326000A9935 /* Text.cpp */,
 				D0D282FA2044F4EE00B873AE /* XMLLoad.h */,
 				D0D282F42044F4EE00B873AE /* XMLLoad.cpp */,
+				D03D250A2048BA68000A9935 /* XMLData.h */,
+				D03D250B2048BA77000A9935 /* XMLData.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 				D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */,
 				D0D282FD2044F4EE00B873AE /* GameState.cpp in Sources */,
 				D0D282FB2044F4EE00B873AE /* Object.cpp in Sources */,
+				D03D250C2048BA77000A9935 /* XMLData.cpp in Sources */,
 				D03D25072048A326000A9935 /* Text.cpp in Sources */,
 				D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */,
 			);

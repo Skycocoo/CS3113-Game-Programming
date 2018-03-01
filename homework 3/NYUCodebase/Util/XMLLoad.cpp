@@ -3,14 +3,7 @@
 
 #include "XMLLoad.h"
 
-std::ostream& operator<<(std::ostream& os, const Data& data){
-        os << "x: " << data.x << " y: " << data.y << " width: " << data.width << " height: " << data.height << std::endl;
-        return os;
-    }
-Data::Data(){}
-Data::Data(float x, float y, float width, float height): x(x), y(y), width(width), height(height){}
-
-
+#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
 XMLLoad::XMLLoad(const std::string& filepath): name(filepath){
     std::ifstream ifs (RESOURCE_FOLDER + filepath);
@@ -33,7 +26,7 @@ XMLLoad::XMLLoad(const std::string& filepath): name(filepath){
         width = width.substr(7, width.size() - 7 - 1);
         height = height.substr(8, height.size() - 8 - 3);
         
-        table[name] = Data(stoi(x), stoi(y), stoi(width), stoi(height));
+        table[name] = XMLData(stoi(x), stoi(y), stoi(width), stoi(height));
     }
     ifs.close();
 }
@@ -54,6 +47,6 @@ void XMLLoad::getKeys() const {
     }
 }
 
-Data XMLLoad::getData(const std::string& name) {
+XMLData XMLLoad::getData(const std::string& name) {
     return table[name];
 }
