@@ -44,9 +44,13 @@ public:
         while (ifs >> subtext >> name >> x >> y >> width >> height){
             // assume the pattern is name="beam0.png" x="143" y="377" width="43" height="31"/>
             // substr: start position, length of the substring
-//            name = name.substr(name.find_first_of("\"") + 1, name.size() - name.find_first_of("\"") - 2);
+            name = name.substr(6, name.size() - 6 - 1);
+            x = x.substr(3, x.size() - 3 - 1);
+            y = y.substr(3, y.size() - 3 - 1);
+            width = width.substr(7, width.size() - 7 - 1);
+            height = height.substr(8, height.size() - 8 - 3);
             
-            table[name.substr(6, name.size() - 6 - 1)] = Data(stoi(x.substr(3, x.size() - 3 - 1)), stoi(y.substr(3, y.size() - 3 - 1)), stoi(width.substr(7, width.size() - 7 - 1)), stoi(height.substr(7, height.size() - 7 - 1)));
+            table[name] = Data(stoi(x), stoi(y), stoi(width), stoi(height));
             
         }
         
@@ -60,7 +64,7 @@ public:
     void display(std::ostream& os = std::cout){
         std::cout << "XML sheet: " << name << std::endl;
         for (auto i = table.begin(); i != table.end(); i++){
-            std::cout << i->first << " " << i->second << std::endl;
+            std::cout << i->first << " " << i->second;
         }
     }
     
