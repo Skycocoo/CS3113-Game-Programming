@@ -13,6 +13,10 @@
 #include "Util/XMLLoad.h"
 #include "setUp.h"
 
+#include "glm/glm.hpp"
+
+
+
 using namespace std;
 float screenRatio;
 float screenHeight;
