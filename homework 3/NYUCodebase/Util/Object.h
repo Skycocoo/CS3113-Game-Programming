@@ -17,7 +17,6 @@ class Object{
 public:
     Object(ShaderProgram& program, bool istexture = false, GLuint texture = 0, glm::vec3 pos = glm::vec3(), glm::vec3 size = glm::vec3(), glm::vec3 velo = glm::vec3());
 
-//    void text(const std::string& text, float size, float spacing, float x, float y);
     void display();
     void update(float elapsed);
 

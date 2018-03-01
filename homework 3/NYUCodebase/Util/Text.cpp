@@ -4,6 +4,14 @@
 #include "Text.h"
 using namespace std;
 
+extern float screenWidth;
+extern float screenHeight;
+extern float splitScale;
+
+Text::Text(ShaderProgram& program, GLuint texture): Object(program, true, texture){
+    projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
+}
+
 void Text::display(const string& text, float size, float spacing, float x, float y){
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
@@ -13,7 +21,7 @@ void Text::display(const string& text, float size, float spacing, float x, float
     float texture_size = 1.0/16.0;
     
     // center the text
-    x = x - float(text.size()) / float(2) * (size + spacing) / shrink;
+    x = x - float(text.size() - 1) / float(2) * (size + spacing) / shrink;
     
     vector<float> vertexData;
     vector<float> texCoordData;
@@ -38,7 +46,7 @@ void Text::display(const string& text, float size, float spacing, float x, float
             texture_x, texture_y + texture_size,
         }); }
     
-    //    glUseProgram(program->programID);
+    glUseProgram(program->programID);
     glBindTexture(GL_TEXTURE_2D, texture);
     
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertexData.data());
