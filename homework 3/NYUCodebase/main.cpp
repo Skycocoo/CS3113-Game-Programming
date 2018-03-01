@@ -7,16 +7,10 @@
 #include <cstdlib>
 #include <vector>
 
-// define Object as an entity in this game
-// header files for shaderprogram & matrix & sdl are included
 #include "Util/Text.h"
 #include "Util/Object.h"
 #include "Util/XMLLoad.h"
 #include "setUp.h"
-
-//#include "glm/glm.hpp"
-
-
 
 using namespace std;
 float screenRatio;
@@ -24,13 +18,10 @@ float screenHeight;
 float screenWidth;
 float splitScale;
 
-int playerScore = 0;
-int enemyScore = 0;
-
 
 // display the score for each side in the middle of the game
 void displayGame(Text& disp){
-    disp.display("player: " + to_string(playerScore), 0.8, 1, 2, screenHeight - 1);
+    disp.display("test", 0.8, 1, 0, 0);
 }
 
 class SheetSprite {

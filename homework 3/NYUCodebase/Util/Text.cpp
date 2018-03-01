@@ -8,10 +8,13 @@ void Text::display(const string& text, float size, float spacing, float x, float
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
     program->SetViewMatrix(viewMatrix);
-    
+
     float shrink = 5.0;
-    
     float texture_size = 1.0/16.0;
+    
+    // center the text
+    x = x - float(text.size()) / float(2) * (size + spacing) / shrink;
+    
     vector<float> vertexData;
     vector<float> texCoordData;
     for (int i = 0; i < text.size(); i++) {
