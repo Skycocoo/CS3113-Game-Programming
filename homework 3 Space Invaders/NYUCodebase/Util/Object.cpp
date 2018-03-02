@@ -46,6 +46,11 @@ void Object::setScale(float size){
     shape *= size;
 }
 
+void Object::setShape(glm::vec3 shape){
+    this->shape = shape;
+}
+
+
 void Object::setVelo(const glm::vec3& velo){
     this->velo = velo;
 }
@@ -87,6 +92,7 @@ void Object::setData(const XMLData& data){
     shape.x = w;
     shape.y = h;
 }
+
 
 // collision detection
 bool Object::collide(const Object& rhs){

@@ -21,7 +21,10 @@ enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 
 class Bullet: public Object{
 public:
-    Bullet(ShaderProgram* program, glm::vec3 pos, glm::vec3 velo = glm::vec3(2.0)): Object(program, 0, pos, velo){}
+    Bullet(ShaderProgram* program, glm::vec3 pos, glm::vec3 velo = glm::vec3(0, 0.7, 0)): Object(program, 0, pos, velo){
+        Object::setShape(glm::vec3(0.05, 0.3, 0));
+    }
+    
     void update(float elapsed){
         pos += elapsed * velo;
         Object::update();
@@ -151,25 +154,34 @@ int main(){
     XMLLoad xml ("Asset/sheet.xml");
 
     GLuint texture;
-    ShaderProgram shad = setTextured("Asset/sheet.png", texture);
-    Object sprite(&shad, texture);
+    ShaderProgram tex1 = setTextured("Asset/sheet.png", texture);
+    Object sprite(&tex1, texture);
     sprite.setData(xml.getData("playerShip2_orange.png"));
 
     GLuint texture2;
-    ShaderProgram shad2 = setTextured("Asset/font1.png", texture2);
-    Text disp(&shad2, texture2);
+    ShaderProgram tex2 = setTextured("Asset/font1.png", texture2);
+    Text disp(&tex2, texture2);
 
-
+    ShaderProgram untex = setUntextured();
+    Bullet bul (&untex, glm::vec3(0, -3, 0));
 
     SDL_Event event;
     bool done = false;
+    float lastFrameTicks = 0.0f;
     while (!done) {
         // keyboard event
         while (SDL_PollEvent(&event)) checkKeyboard(event, done);
-
+        
+        // update parameters
+        float ticks = (float)SDL_GetTicks()/1000.0f;
+        float elapsed = ticks - lastFrameTicks;
+        lastFrameTicks = ticks;
+        
+        bul.update(elapsed);
+        
         // display
         glClear(GL_COLOR_BUFFER_BIT);
-
+        
         sprite.display();
 
         SDL_GL_SwapWindow(displayWindow);

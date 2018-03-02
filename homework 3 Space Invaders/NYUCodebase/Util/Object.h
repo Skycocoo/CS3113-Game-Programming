@@ -22,6 +22,7 @@ public:
     void display();
 
     void setScale(float size);
+    void setShape(glm::vec3 shape);
     void setVelo(const glm::vec3& velo);
     void setVelo(float x, float y, float z = 1.0);
     void setRotate(float rot); // rotate: angle (in radian)
