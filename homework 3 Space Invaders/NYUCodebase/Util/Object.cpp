@@ -88,6 +88,33 @@ void Object::setData(const XMLData& data){
     shape.y = h;
 }
 
+// collision detection
+bool Object::collide(const Object& rhs){
+    bool collide = false;
+        
+    float   objUp = pos.y + shape.y / 2,
+    objDown = pos.y - shape.y / 2,
+    objLeft = pos.x - shape.x / 2,
+    objRight = pos.x + shape.x / 2;
+    
+    
+    float enUp = rhs.pos.y + rhs.shape.y / 2,
+    enDown = rhs.pos.y - rhs.shape.y / 2,
+    enLeft = rhs.pos.x - rhs.shape.x / 2,
+    enRight = rhs.pos.x + rhs.shape.x / 2;
+    
+    
+    // intersecting
+    if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
+    
+    // avoid stuck in the collision bar in collision handling function
+    
+    return collide;
+}
+
+
+
+
 //Enemy::Enemy(ShaderProgram& program, bool is, GLuint tex, float x, float y, float width, float height, float velocity_x, float velocity_y, bool up): Object(program, is, tex, x, y, width, height, velocity_x, velocity_y), up(up){}
 //
 //void Enemy::update(float elapsed) {

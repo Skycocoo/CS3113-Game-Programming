@@ -24,11 +24,10 @@ public:
     void setScale(float size);
     void setVelo(const glm::vec3& velo);
     void setVelo(float x, float y, float z = 1.0);
-
-    // rotate: angle (in radian)
-    void setRotate(float rot);
-
+    void setRotate(float rot); // rotate: angle (in radian)
     void setData(const XMLData& data);
+    
+    bool collide (const Object& rhs);
 
 protected:
     // shader
@@ -50,7 +49,7 @@ protected:
     float rotate = 0.0;
 
     // vertices
-    glm::vec3 shape;
+    glm::vec3 shape; // shape.x: width; shape.y: height; shape.z: 0 / 1
     std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
 
