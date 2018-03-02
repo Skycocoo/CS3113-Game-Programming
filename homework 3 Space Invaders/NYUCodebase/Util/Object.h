@@ -21,9 +21,11 @@ public:
     void update(float elapsed);
     void display();
     
-    void scale(float size);
+    void setScale(float size);
+    void setVelo(const glm::vec3& velo);
+    void setVelo(float x, float y, float z = 1.0);
     
-    void setupData(const XMLData& data);
+    void setData(const XMLData& data);
 
 protected:
     // shader

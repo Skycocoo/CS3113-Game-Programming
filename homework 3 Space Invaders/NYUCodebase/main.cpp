@@ -34,7 +34,7 @@ int main(){
     GLuint texture;
     ShaderProgram shad = setTextured("Asset/sheet.png", texture);
     Object sprite(shad, texture);
-    sprite.setupData(xml.getData("playerShip2_orange.png"));
+    sprite.setData(xml.getData("playerShip2_orange.png"));
     
     GLuint texture2;
     ShaderProgram shad2 = setTextured("Asset/font1.png", texture2);

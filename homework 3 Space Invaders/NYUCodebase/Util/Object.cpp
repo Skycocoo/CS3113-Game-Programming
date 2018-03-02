@@ -40,11 +40,20 @@ void Object::display(){
     if (glIsTexture(texture)) glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
-void Object::scale(float size){
+void Object::setScale(float size){
     shape *= size;
 }
 
-void Object::setupData(const XMLData& data){
+void Object::setVelo(const glm::vec3& velo){
+    this->velo = velo;
+}
+void Object::setVelo(float x, float y, float z){
+    this->velo.x = x;
+    this->velo.y = y;
+    this->velo.z = z;
+}
+
+void Object::setData(const XMLData& data){
     // assume the shape of sheetsprite is 1024 * 1024
     float u = data.x / 1024.0, v = data.y / 1024.0, width = data.width / 1024.0, height = data.height / 1024.0;
     
