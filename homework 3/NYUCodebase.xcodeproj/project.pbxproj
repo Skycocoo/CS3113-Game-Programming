@@ -51,6 +51,7 @@
 		D03D25082048A331000A9935 /* Text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		D03D250A2048BA68000A9935 /* XMLData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLData.h; sourceTree = "<group>"; };
 		D03D250B2048BA77000A9935 /* XMLData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XMLData.cpp; sourceTree = "<group>"; };
+		D03D250D2048BB9A000A9935 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		D068FAB22044F00300E2801F /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55CA203CEBA600A06EA9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -192,6 +193,7 @@
 		D0D282F22044F4D700B873AE /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				D03D250D2048BB9A000A9935 /* Util.h */,
 				D0D282F92044F4EE00B873AE /* ShaderProgram.h */,
 				D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */,
 				D0D282F62044F4EE00B873AE /* GameState.h */,

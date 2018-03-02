@@ -8,9 +8,18 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
-Object::Object(ShaderProgram& program, GLuint texture, glm::vec3 pos, glm::vec3 size, glm::vec3 velo): program(&program), texture(texture), pos(pos), size(size), velo(velo){
+Object::Object(ShaderProgram& program, GLuint texture, glm::vec3 pos, glm::vec3 velo): program(&program), texture(texture), pos(pos), velo(velo), shape(glm::vec3(1, 1, 1)){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
+
+
+void Object::update(float elapsed){
+    modelMatrix.Identity();
+    
+    modelMatrix.Translate(velo.x, velo.y, velo.z);
+    modelMatrix.Scale(shape.x, shape.y, shape.z);
+}
+
 
 void Object::display(){
     program->SetModelMatrix(modelMatrix);
@@ -31,13 +40,40 @@ void Object::display(){
     if (glIsTexture(texture)) glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
-void Object::update(float elapsed){
-    modelMatrix.Identity();
-    
-    modelMatrix.Translate(velo.x, velo.y, velo.z);
-    modelMatrix.Scale(size.x, size.y, size.z);
+void Object::scale(float size){
+    shape *= size;
 }
 
+void Object::setupData(const XMLData& data){
+    // assume the shape of sheetsprite is 1024 * 1024
+    float u = data.x / 1024.0, v = data.y / 1024.0, width = data.width / 1024.0, height = data.height / 1024.0;
+    
+    // rescale the image so that the max edge length is 1
+    float w = (width / height < 1) ? width / height : 1.0, h = (width / height < 1) ? 1.0 : height / width;
+    
+    vertices = {
+        -0.5f * w, -0.5f * h,
+        0.5f * w, 0.5f * h,
+        -0.5f * w, 0.5f * h,
+        0.5f * w, 0.5f * h,
+        -0.5f * w, -0.5f * h ,
+        0.5f * w, -0.5f * h
+    };
+    
+    texCoords = {
+        u, v+height,
+        u+width, v,
+        u, v,
+        u+width, v,
+        u, v+height,
+        u+width, v+height
+    };
+    
+    shape.x = w;
+    shape.y = h;
+    std::cout << w << " " << h << std::endl;
+
+}
 
 //Enemy::Enemy(ShaderProgram& program, bool is, GLuint tex, float x, float y, float width, float height, float velocity_x, float velocity_y, bool up): Object(program, is, tex, x, y, width, height, velocity_x, velocity_y), up(up){}
 //
