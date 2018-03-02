@@ -8,7 +8,7 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
-Text::Text(ShaderProgram& program, GLuint texture): Object(program, texture){
+Text::Text(ShaderProgram* program, GLuint texture): Object(program, texture){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 

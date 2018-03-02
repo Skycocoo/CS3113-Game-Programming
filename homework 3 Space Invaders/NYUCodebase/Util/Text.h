@@ -8,7 +8,7 @@
 
 class Text: public Object{
 public:
-    Text(ShaderProgram& program, GLuint texture);
+    Text(ShaderProgram* program, GLuint texture);
     
     void display(const std::string& text, float size, float spacing, float x, float y);
 };

@@ -16,24 +16,27 @@
 // create an object class to handle parameters
 class Object{
 public:
-    Object(ShaderProgram& program, GLuint texture = 0, glm::vec3 pos = glm::vec3(0, 0, 0), glm::vec3 velo = glm::vec3(0, 0, 0));
+    Object(ShaderProgram* program, GLuint texture = 0, glm::vec3 pos = glm::vec3(0, 0, 0), glm::vec3 velo = glm::vec3(0, 0, 0));
 
-    void update(float elapsed);
+    void update(float elapsed = 0);
     void display();
-    
+
     void setScale(float size);
     void setVelo(const glm::vec3& velo);
     void setVelo(float x, float y, float z = 1.0);
-    
+
+    // rotate: angle (in radian)
+    void setRotate(float rot);
+
     void setData(const XMLData& data);
 
 protected:
     // shader
     ShaderProgram* program;
-    
+
     // texture
     GLuint texture;
-    
+
     // matrices
     Matrix projectionMatrix;
     Matrix modelMatrix;
@@ -43,6 +46,8 @@ protected:
     glm::vec3 pos;
     glm::vec3 velo;
     glm::vec3 acce;
+
+    float rotate = 0.0;
 
     // vertices
     glm::vec3 shape;

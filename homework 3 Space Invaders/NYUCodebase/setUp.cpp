@@ -85,29 +85,7 @@ void checkKeyboard(const SDL_Event& event, bool& done){
             done = true;
             break;
         case SDL_KEYDOWN:
-            switch (event.key.keysym.scancode){
-                case SDL_SCANCODE_Q: // quit
-                    done = true;
-                    break;
-//                case SDL_SCANCODE_O: // quit
-//                    restart = true;
-//                    break;
-//                case SDL_SCANCODE_R:
-//                    regame = true;
-//                    break;
-//                case SDL_SCANCODE_UP: // player control
-//                    if (player.y < screenHeight - player.height / 2 - splitScale / 2) player.y += 1;
-//                    player.modelMatrix.Identity();
-//                    player.modelMatrix.Translate(player.x, player.y, 0);
-//                    break;
-//                case SDL_SCANCODE_DOWN: // player control
-//                    if (player.y > -screenHeight + player.height / 2 + splitScale / 2) player.y -= 1;
-//                    player.modelMatrix.Identity();
-//                    player.modelMatrix.Translate(player.x, player.y, 0);
-//                    break;
-//                default:
-//                    break;
-            }
+            if (event.key.keysym.scancode == SDL_SCANCODE_Q) done = true;
             break;
     }
 }
