@@ -18,7 +18,6 @@ float splitScale;
 
 enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 
-
 class Bullet: public Object{
 public:
     Bullet(ShaderProgram* program, glm::vec3 pos, glm::vec3 velo = glm::vec3(0, 0.7, 0)): Object(program, 0, pos, velo){
@@ -47,18 +46,25 @@ public:
     }
     
     void display(){
-        // player display & palyer's bullet display
+        this->display();
+        for(size_t i = 0; i < bul.size(); i++) bul[i].display();
     }
     
+    // max amount of bullets: 20
     void addBullet(){
-        // if (bul.size() > 20) return;
-    }
-    void delBullet(int index){
-        // remove the bullet when collide
+        // bullet from current position
+        if (bul.size() < 20) bul.push_back(Bullet(program, pos));
     }
     
-    int getLives() const {return lives;}
-    void decLives(){lives -= 1;}
+    // remove the bullet when collide
+    void delBullet(int index){
+        // bul.erase(bul.begin() + index);
+        bul[index] = bul[bul.size() - 1];
+        bul.pop_back();
+    }
+    
+    int getLives() const { return lives; }
+    void decLives(){ lives -= 1; }
 
 private:
     int lives = 5;
