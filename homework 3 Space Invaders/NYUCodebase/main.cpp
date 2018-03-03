@@ -54,8 +54,8 @@ class Player: public Object{
 public:
     vector<Bullet> bul;
     
-    Player(GLuint texture, const XMLData& data, const XMLData& bullet, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), bullet(bullet){
-        Object::setData(data);
+    Player(GLuint texture, const vector<XMLData>& data, const XMLData& bullet, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), data(data), bullet(bullet){
+        Object::setData(data[0]);
     }
 
     void control(float distance){
@@ -83,18 +83,28 @@ public:
     }
     
     // remove the bullet when collide
-    void delBullet(int index){
+    void delBullet(size_t index){
         // bul.erase(bul.begin() + index);
         bul[index] = bul[bul.size() - 1];
         bul.pop_back();
     }
     
-    int getLives() const { return lives; }
-    void decLives(){ lives -= 1; }
+    int getLives() const {
+        return lives;
+        
+    }
+    
+    void decLives(){
+        lives -= 1;
+        Object::setData(data[4 - lives]);
+    }
 
 private:
-    int lives = 5;
+    int lives = 4;
+    vector<XMLData> data;
+    
     XMLData bullet;
+    
 };
 
 
@@ -119,7 +129,7 @@ public:
     }
     
     // remove the bullet when collide
-    void delBullet(int index){
+    void delBullet(size_t index){
         bul.erase(bul.begin() + index);
     }
     
@@ -196,6 +206,10 @@ public:
     void addBullets(){
         if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet(bullet);
     }
+    
+    void delEne(size_t index){
+        ene.erase(ene.begin() + index);
+    }
 
 private:
     int numEn;
@@ -212,28 +226,50 @@ private:
 
 class GameState{
 public:
-    GameState(Object& player, Object& enemygroup): player(&player), enemygroup(&enemygroup){}
+    GameState(Player& player, EnemyGroup& enemygroup): player(&player), enemygroup(&enemygroup){}
     
+    // bullets: disappear when collide
     void checkCollision(){
-        // bullets:
-        // players' bullet: collide with enemy / with board
-        // enemy's bullet: collide with player / with board
         
-        // delbullet when collide
+        // players' bullet: collide with enemy / with board
+        for (size_t i = 0; i < player->bul.size(); i++){
+            for (size_t j = 0; j < enemygroup->ene.size(); j++){
+                if (player->bul[i].collide(enemygroup->ene[j])){
+                    player->delBullet(i);
+                    enemygroup->delEne(j);
+                }
+            }
+        }
+        
+        // enemy's bullet: collide with player / with board
+        for (size_t i = 0; i < enemygroup->ene.size(); i++){
+            for (size_t j = 0; j < enemygroup->ene[i].bul.size(); j++){
+                if (enemygroup->ene[i].bul[j].collide(*player)){
+                    player->decLives();
+                    enemygroup->ene[i].delBullet(j);
+                }
+            }
+        }
     }
     
     void update(float elapsed){
         // player, enemygroup update
         // collision detection
+        
+        checkCollision();
+        
+        player->update(elapsed);
+        enemygroup->update(elapsed);
     }
     
     void render(){
-        
+        player->render();
+        enemygroup->render();
     }
     
 private:
-    Object* player;
-    Object* enemygroup;
+    Player* player;
+    EnemyGroup* enemygroup;
 };
 
 
@@ -276,9 +312,18 @@ int main(){
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
     
+    vector<XMLData> playerlife;
+    playerlife.push_back(xml.getData("playerShip1_blue.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+    
     EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), xml.getData("laserRed13.png"), glm::vec3(0, 2, 0));
-    Player play(texture, xml.getData("playerShip1_blue.png"), xml.getData("laserBlue13.png"), glm::vec3(0, -4, 0));
+    Player play(texture, playerlife, xml.getData("laserBlue13.png"), glm::vec3(0, -4, 0));
 
+    GameState game(play, ene);
+    
+    
     SDL_Event event;
     bool done = false;
     float lastFrameTicks = 0.0f;
@@ -294,14 +339,12 @@ int main(){
         float elapsed = ticks - lastFrameTicks;
         lastFrameTicks = ticks;
         
-        ene.update(elapsed);
-        play.update(elapsed);
+        game.update(elapsed);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
-        
-        ene.render();
-        play.render();
+
+        game.render();g
         displayGame(disp);
 
         SDL_GL_SwapWindow(displayWindow);
