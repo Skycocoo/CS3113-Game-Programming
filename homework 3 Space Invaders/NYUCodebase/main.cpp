@@ -55,7 +55,7 @@ public:
     }
     
     void render(){
-        this->render();
+        Object::render();
         for(size_t i = 0; i < bul.size(); i++) bul[i].render();
     }
     
@@ -119,8 +119,8 @@ public:
     
     // render enemy & bullets
     void render(){
-        for (size_t i = 0; i < bul.size(); i++) bul[i].render();
         Object::render();
+        for (size_t i = 0; i < bul.size(); i++) bul[i].render();
     }
     
 };
@@ -231,17 +231,17 @@ int main(){
     SDL_Window* displayWindow = setUp("Homework 3 Space Invaders");
 
     XMLLoad xml ("Asset/sheet.xml");
+    untextured = setUntextured();
 
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
     Text disp(&textured, text);
     
-    untextured = setUntextured();
-    
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
     
-    EnemyGroup ene(texture, xml.getData("playerShip2_orange.png"), xml.getData("laserRed13.png"), glm::vec3(0, 2, 0));
+    EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), xml.getData("laserRed13.png"), glm::vec3(0, 2, 0));
+    Player play(texture, xml.getData("playerShip1_blue.png"), xml.getData("laserBlue13.png"), glm::vec3(0, -4, 0));
 
     SDL_Event event;
     bool done = false;
@@ -256,11 +256,13 @@ int main(){
         lastFrameTicks = ticks;
         
         ene.update(elapsed);
+        play.update(0);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
         
         ene.render();
+        play.render();
         displayGame(disp);
 
         SDL_GL_SwapWindow(displayWindow);
