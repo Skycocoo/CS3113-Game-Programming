@@ -14,18 +14,17 @@ using namespace std;
 
 
 float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0, edge = 1.0;
+
 ShaderProgram textured;
 ShaderProgram untextured;
+
 
 enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 
 
 class Bullet: public Object{
 public:
-    Bullet(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&textured, texture, pos, velo){
-        Object::setShape(glm::vec3(1, 0.1, 0));
-        Object::setData(data);
-    }
+    
     Bullet(const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&untextured, 0, pos, velo){
         Object::setShape(glm::vec3(0.05, 0.4, 0));
     }
@@ -35,9 +34,19 @@ public:
         Object::update();
     }
     
+    void render(bool player = false){
+        if (player) program->SetColor(13.0/255.0, 132.0/255.0, 1, 1);
+        Object::render();
+    }
+    
     bool beyound(){
         return (pos.y < -screenHeight || pos.y > screenHeight);
     }
+    
+    //    Bullet(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&textured, texture, pos, velo){
+    //        Object::setShape(glm::vec3(0.1, 0.1, 0));
+    //        Object::setData(data);
+    //    }
     
 };
 
@@ -49,20 +58,28 @@ public:
         Object::setData(data);
     }
 
-    void update(float distance){
-        pos.x += distance;
+    void control(float distance){
+        if ((pos.x + distance + shape.x / 2 < screenWidth) && (pos.x + distance - shape.x / 2 > -screenWidth)) pos.x += distance;
+    }
+    
+    void update(float elapsed){
         Object::update();
+        for (size_t i = 0; i < bul.size(); i++) {
+            bul[i].update(elapsed);
+            if (bul[i].beyound()) delBullet(i);
+        }
     }
     
     void render(){
         Object::render();
-        for(size_t i = 0; i < bul.size(); i++) bul[i].render();
+        
+        for (size_t i = 0; i < bul.size(); i++) bul[i].render(true);
     }
     
     // max amount of bullets: 20
     void addBullet(){
         // bullet from current position
-        if (bul.size() < 20) bul.push_back(Bullet(texture, bullet, pos));
+        if (bul.size() < 20) bul.push_back(Bullet(glm::vec3(pos.x, pos.y + shape.y / 2, 0)));
     }
     
     // remove the bullet when collide
@@ -120,6 +137,7 @@ public:
     // render enemy & bullets
     void render(){
         Object::render();
+        untextured.SetColor(1, 1, 1, 1);
         for (size_t i = 0; i < bul.size(); i++) bul[i].render();
     }
     
@@ -133,7 +151,7 @@ public:
     // enemy group don't use shaderprogram itself
     // shaderprogram & texture & data is for enemy
     // need to restructure enemygroup
-    EnemyGroup(GLuint texture, const XMLData& data, const XMLData& bullet, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 15, int numCol = 5): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos), velo(velo), bullet(bullet){
+    EnemyGroup(GLuint texture, const XMLData& data, const XMLData& bullet, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 12, int numCol = 6): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos), velo(velo), bullet(bullet){
         
         // create enemy objects
         float posX = pos.x, posY = pos.y, size = 0.8, spacing = 0.3;
@@ -223,6 +241,24 @@ void displayGame(Text& disp){
     disp.render("Space Invaders", 0.8, 1, 0, 4.5);
 }
 
+void updatePlayer(const SDL_Event& event, Player& play){
+    switch (event.type){
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.scancode){
+                case SDL_SCANCODE_SPACE:
+                    play.addBullet();
+                    break;
+                case SDL_SCANCODE_LEFT:
+                    play.control(-1);
+                    break;
+                case SDL_SCANCODE_RIGHT:
+                    play.control(1);
+                    break;
+            }
+            break;
+    }
+}
+
 
 
 int main(){
@@ -248,7 +284,10 @@ int main(){
     float lastFrameTicks = 0.0f;
     while (!done) {
         // keyboard event
-        while (SDL_PollEvent(&event)) checkKeyboard(event, done);
+        while (SDL_PollEvent(&event)) {
+            checkKeyboard(event, done);
+            updatePlayer(event, play);
+        }
         
         // update parameters
         float ticks = (float)SDL_GetTicks()/1000.0f;
@@ -256,7 +295,7 @@ int main(){
         lastFrameTicks = ticks;
         
         ene.update(elapsed);
-        play.update(0);
+        play.update(elapsed);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);

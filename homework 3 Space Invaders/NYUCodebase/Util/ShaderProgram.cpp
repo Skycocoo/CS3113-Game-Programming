@@ -22,7 +22,7 @@ void ShaderProgram::Load(const char *vertexShaderFile, const char *fragmentShade
     modelMatrixUniform = glGetUniformLocation(programID, "modelMatrix");
     projectionMatrixUniform = glGetUniformLocation(programID, "projectionMatrix");
     viewMatrixUniform = glGetUniformLocation(programID, "viewMatrix");
-	colorUniform = glGetUniformLocation(programID, "color");
+	colorUniform = glGetUniformLocation(programID, "vcolor");
     
     positionAttribute = glGetAttribLocation(programID, "position");
     texCoordAttribute = glGetAttribLocation(programID, "texCoord");
