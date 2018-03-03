@@ -13,7 +13,7 @@
 using namespace std;
 
 
-float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0;
+float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0, edge = 1.0;
 ShaderProgram textured;
 ShaderProgram untextured;
 
@@ -33,6 +33,10 @@ public:
     void update(float elapsed){
         pos += elapsed * velo;
         Object::update();
+    }
+    
+    bool beyound(){
+        return (pos.y < -screenHeight || pos.y > screenHeight);
     }
     
 };
@@ -77,9 +81,52 @@ private:
 };
 
 
-class EnemyGroup{
-class Enemy;
+
+class Enemy: public Object{
+public:
+    vector<Bullet> bul;
     
+    Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo): Object(&textured, texture, pos, velo){
+        Object::setData(data);
+    }
+    
+    // add bullets
+    void addBullet(const XMLData& bullet){
+        if (bul.size() < 3){
+            bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0)));
+            
+            // // decide not to use texture for bullets
+            // Bullet temp (texture, bullet, glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0));
+            // temp.setRotate(90 / 180 * M_PI);
+        }
+    }
+    
+    // remove the bullet when collide
+    void delBullet(int index){
+        bul.erase(bul.begin() + index);
+    }
+    
+    // update positiin
+    void update(float elapsed){
+        pos += elapsed * velo;
+        Object::update();
+        
+        for (size_t i = 0; i < bul.size(); i++) {
+            bul[i].update(elapsed);
+            if (bul[i].beyound()) delBullet(i);
+        }
+    }
+    
+    // render enemy & bullets
+    void render(){
+        for (size_t i = 0; i < bul.size(); i++) bul[i].render();
+        Object::render();
+    }
+    
+};
+
+
+class EnemyGroup{
 public:
     vector<Enemy> ene;
     
@@ -102,7 +149,6 @@ public:
                 ene.push_back(temp);
             }
         }
-        
         shape = glm::vec3(4 * step + size, 2 * step + size, 0);
     }
     
@@ -115,14 +161,12 @@ public:
         
         // update position for enemies
         // if approach to the edge : reverse sign of every velocity x
-        if (((pos.x - shape.x / 2 < -screenWidth) && (velo.x < 0))||((pos.x + shape.x / 2 > screenWidth) && (velo.x > 0))){
+        if (((pos.x - shape.x / 2 - edge < -screenWidth) && (velo.x < 0))||((pos.x + shape.x / 2 + edge > screenWidth) && (velo.x > 0))){
             velo.x = -velo.x;
             for (size_t i = 0; i < ene.size(); i++) ene[i].setVelo(velo);
         }
         
         for (size_t i = 0; i < ene.size(); i++) ene[i].update(elapsed);
-        
-        
     }
     
     // render enemies
@@ -133,9 +177,7 @@ public:
     // add bullets
     void addBullets(){
         if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet(bullet);
-        
     }
-    
 
 private:
     int numEn;
@@ -147,44 +189,6 @@ private:
     glm::vec3 shape;
     
     XMLData bullet;
-    
-    class Enemy: public Object{
-    public:
-        vector<Bullet> bul;
-        
-        Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo): Object(&textured, texture, pos, velo){
-            Object::setData(data);
-        }
-        
-        void addBullet(const XMLData& bullet){
-            if (bul.size() < 2){
-//                Bullet temp (texture, bullet, glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0));
-//                temp.setRotate(90 / 180 * M_PI);
-                bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0)));
-            }
-        }
-        
-        // remove the bullet when collide
-        void delBullet(int index){
-            bul.erase(bul.begin() + index);
-        }
-        
-        void update(float elapsed){
-            pos += elapsed * velo;
-            Object::update();
-            
-            for (size_t i = 0; i < bul.size(); i++) bul[i].update(elapsed);
-        }
-        
-        void render(){
-            
-            for (size_t i = 0; i < bul.size(); i++) bul[i].render();
-            
-            Object::render();
-            
-        }
-    };
-
 };
 
 
@@ -215,7 +219,9 @@ private:
 };
 
 
-
+void displayGame(Text& disp){
+    disp.render("Space Invaders", 0.8, 1, 0, 4.5);
+}
 
 
 
@@ -226,16 +232,16 @@ int main(){
 
     XMLLoad xml ("Asset/sheet.xml");
 
-//    GLuint texture;
-//    textured = setTextured("Asset/font1.png", texture);
-//    Text disp(&textured, texture);
+    GLuint text;
+    textured = setTextured("Asset/font1.png", text);
+    Text disp(&textured, text);
     
     untextured = setUntextured();
     
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
     
-    EnemyGroup ene(texture, xml.getData("playerShip2_orange.png"), xml.getData("laserRed13.png"), glm::vec3(0, 3, 0));
+    EnemyGroup ene(texture, xml.getData("playerShip2_orange.png"), xml.getData("laserRed13.png"), glm::vec3(0, 2, 0));
 
     SDL_Event event;
     bool done = false;
@@ -255,6 +261,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
         
         ene.render();
+        displayGame(disp);
 
         SDL_GL_SwapWindow(displayWindow);
     }
