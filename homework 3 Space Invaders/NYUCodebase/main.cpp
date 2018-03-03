@@ -15,25 +15,27 @@ using namespace std;
 
 float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0;
 ShaderProgram textured;
-//ShaderProgram untextured;
+ShaderProgram untextured;
 
 enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
-
 
 
 class Bullet: public Object{
 public:
     Bullet(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&textured, texture, pos, velo){
-        Object::setShape(glm::vec3(0.05, 0.3, 0));
+        Object::setShape(glm::vec3(1, 0.1, 0));
         Object::setData(data);
+    }
+    Bullet(const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&untextured, 0, pos, velo){
+        Object::setShape(glm::vec3(0.05, 0.4, 0));
     }
     
     void update(float elapsed){
         pos += elapsed * velo;
         Object::update();
     }
+    
 };
-
 
 class Player: public Object{
 public:
@@ -87,7 +89,7 @@ public:
     EnemyGroup(GLuint texture, const XMLData& data, const XMLData& bullet, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 15, int numCol = 5): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos), velo(velo), bullet(bullet){
         
         // create enemy objects
-        float posX = pos.x, posY = pos.y, size = 1, spacing = 0.5;
+        float posX = pos.x, posY = pos.y, size = 0.8, spacing = 0.3;
         float step = size + spacing;
         
         for (int i = 0; i < numRow; i++){
@@ -101,7 +103,6 @@ public:
             }
         }
         
-        // need to update the shape of enemygroup
         shape = glm::vec3(4 * step + size, 2 * step + size, 0);
     }
     
@@ -109,28 +110,30 @@ public:
         // update position for enemy group
         pos += elapsed * velo;
         
+        // add bullets for enemy
+        addBullets();
+        
         // update position for enemies
         // if approach to the edge : reverse sign of every velocity x
         if (((pos.x - shape.x / 2 < -screenWidth) && (velo.x < 0))||((pos.x + shape.x / 2 > screenWidth) && (velo.x > 0))){
             velo.x = -velo.x;
-            for (size_t i = 0; i < ene.size(); i++){
-                ene[i].setVelo(velo);
-                ene[i].update(elapsed);
-            }
-        } else for (size_t i = 0; i < ene.size(); i++) ene[i].update(elapsed);
+            for (size_t i = 0; i < ene.size(); i++) ene[i].setVelo(velo);
+        }
         
-        addBullets();
+        for (size_t i = 0; i < ene.size(); i++) ene[i].update(elapsed);
+        
+        
     }
     
+    // render enemies
     void render(){
-        // loop throug every enemy
         for (size_t i = 0; i < ene.size(); i++) ene[i].render();
     }
     
+    // add bullets
     void addBullets(){
-        for (size_t i = 0; i < ene.size(); i++){
-            if (rand() % 1000 < 5) ene[i].addBullet(bullet);
-        }
+        if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet(bullet);
+        
     }
     
 
@@ -154,16 +157,16 @@ private:
         }
         
         void addBullet(const XMLData& bullet){
-            if (bul.size() < 20){
-                Bullet temp (texture, bullet, pos, glm::vec3(0, -0.7, 0));
-                temp.setRotate(90 / 180 * M_PI);
-                temp.setScale(0.5);
-                bul.push_back(temp);
+            if (bul.size() < 2){
+//                Bullet temp (texture, bullet, glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0));
+//                temp.setRotate(90 / 180 * M_PI);
+                bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0)));
             }
         }
         
+        // remove the bullet when collide
         void delBullet(int index){
-            // remove the bullet when collide
+            bul.erase(bul.begin() + index);
         }
         
         void update(float elapsed){
@@ -174,8 +177,11 @@ private:
         }
         
         void render(){
-            Object::render();
+            
             for (size_t i = 0; i < bul.size(); i++) bul[i].render();
+            
+            Object::render();
+            
         }
     };
 
@@ -224,11 +230,12 @@ int main(){
 //    textured = setTextured("Asset/font1.png", texture);
 //    Text disp(&textured, texture);
     
+    untextured = setUntextured();
+    
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
-
-//    untextured = setUntextured();
-    EnemyGroup ene(texture, xml.getData("playerShip2_orange.png"), xml.getData("laserBlue01.png"), glm::vec3(0));
+    
+    EnemyGroup ene(texture, xml.getData("playerShip2_orange.png"), xml.getData("laserRed13.png"), glm::vec3(0, 3, 0));
 
     SDL_Event event;
     bool done = false;

@@ -54,6 +54,7 @@ void Object::setShape(const glm::vec3& shape){
 void Object::setVelo(const glm::vec3& velo){
     this->velo = velo;
 }
+
 void Object::setVelo(float x, float y, float z){
     this->velo.x = x;
     this->velo.y = y;
