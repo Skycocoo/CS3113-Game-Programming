@@ -12,7 +12,7 @@ Text::Text(ShaderProgram* program, GLuint texture): Object(program, texture){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 
-void Text::display(const string& text, float size, float spacing, float x, float y){
+void Text::render(const string& text, float size, float spacing, float x, float y){
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
     program->SetViewMatrix(viewMatrix);
