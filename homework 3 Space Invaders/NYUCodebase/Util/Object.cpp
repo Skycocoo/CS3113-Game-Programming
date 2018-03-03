@@ -65,6 +65,10 @@ void Object::setRotate(float rot){
     this->rotate = rot;
 }
 
+void Object::setPos(const glm::vec3& pos){
+    this->pos = pos;
+}
+
 void Object::setData(const XMLData& data){
     // assume the shape of sheetsprite is 1024 * 1024
     float u = data.x / 1024.0, v = data.y / 1024.0, width = data.width / 1024.0, height = data.height / 1024.0;

@@ -19,9 +19,6 @@ ShaderProgram textured;
 ShaderProgram untextured;
 
 
-enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
-
-
 class Bullet: public Object{
 public:
     
@@ -35,7 +32,7 @@ public:
     }
     
     void render(bool player = false){
-        if (player) program->SetColor(13.0/255.0, 132.0/255.0, 1, 1);
+        if (player) program->SetColor(0 / 255.0, 199 / 255.0, 255 / 255.0, 1);
         Object::render();
     }
     
@@ -45,11 +42,21 @@ public:
 };
 
 class Player: public Object{
+    
+private:
+    class Live: public Object{
+    public:
+        Live(GLuint texture, const XMLData& data): Object(&textured, texture){
+            Object::setData(data);
+        }
+    };
+    
 public:
     vector<Bullet> bul;
     
-    Player(GLuint texture, const vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), data(data){
+    Player(GLuint texture, const vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), live(texture, data[data.size()-1]), data(data){
         Object::setData(data[0]);
+        
     }
 
     void control(float distance){
@@ -70,10 +77,19 @@ public:
         for (size_t i = 0; i < bul.size(); i++) bul[i].render(true);
     }
     
+    void renderLives(){
+        for (int i = 0; i < lives; i++){
+            live.setPos(glm::vec3(3.5 + i, 3, 0));
+            live.update();
+            live.render();
+        }
+    }
+    
     // max amount of bullets: 20
     void addBullet(){
         // bullet from current position
         if (bul.size() < 20) bul.push_back(Bullet(glm::vec3(pos.x, pos.y + shape.y / 2, 0), glm::vec3(0, 3, 0)));
+        else return;
     }
     
     // remove the bullet when collide
@@ -85,17 +101,29 @@ public:
     
     int getLives() const {
         return lives;
-        
+    }
+    
+    int getScore() const {
+        return score;
     }
     
     void decLives(){
         lives -= 1;
-        Object::setData(data[4 - lives]);
+        Object::setData(data[3 - lives]);
+    }
+    
+    void incScore(int s){
+        score += s;
     }
 
 private:
-    int lives = 4;
+    // 3 2 1 0
+    int lives = 3;
+    int score = 0;
+    Live live;
     vector<XMLData> data;// bullets: disappear when collide
+    
+
 };
 
 
@@ -110,9 +138,8 @@ public:
     
     // add bullets
     void addBullet(){
-        if (bul.size() < 3){
-            bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -2, 0)));
-        }
+        if (bul.size() < 3) bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -2, 0)));
+        else return;
     }
     
     // remove the bullet when collide
@@ -189,9 +216,11 @@ public:
     // add bullets
     void addBullets(){
         if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet();
+        else return;
     }
     
     void delEne(size_t index){
+        numEn -= 1;
         ene.erase(ene.begin() + index);
     }
 
@@ -208,7 +237,9 @@ private:
 
 class GameState{
 public:
-    GameState(Player& player, EnemyGroup& enemygroup): player(&player), enemygroup(&enemygroup){}
+    enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
+    
+    GameState(Player& player, EnemyGroup& enemygroup, Text& disp): player(&player), enemygroup(&enemygroup), disp(&disp){}
     
     // bullets: disappear when collide
     void checkCollision(){
@@ -218,6 +249,7 @@ public:
             for (size_t j = 0; j < enemygroup->ene.size(); j++){
                 if (player->bul[i].collide(enemygroup->ene[j])){
                     player->delBullet(i);
+                    player->incScore(10);
                     enemygroup->delEne(j);
                 }
             }
@@ -244,17 +276,28 @@ public:
     void render(){
         player->render();
         enemygroup->render();
+        
+        displayTitle();
+        displayScores();
+    }
+    
+    void displayTitle(){
+        disp->render("Space Invaders", 0.8, 1, 0, 4.5);
+    }
+    
+    void displayScores(){
+        disp->render("Score: " + to_string(player->getScore()), 0.4, 1, -4, 3);
+        disp->render("Lives: ", 0.4, 1, 2, 3);
+        player->renderLives();
+        
     }
     
 private:
     Player* player;
     EnemyGroup* enemygroup;
+    Text* disp;
 };
 
-
-void displayGame(Text& disp){
-    disp.render("Space Invaders", 0.8, 1, 0, 4.5);
-}
 
 void updatePlayer(const SDL_Event& event, Player& play){
     switch (event.type){
@@ -296,11 +339,12 @@ int main(){
     playerlife.push_back(xml.getData("playerShip1_damage1.png"));
     playerlife.push_back(xml.getData("playerShip1_damage2.png"));
     playerlife.push_back(xml.getData("playerShip1_damage3.png"));
+    playerlife.push_back(xml.getData("playerLife1_blue.png"));
     
     EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
     Player play(texture, playerlife, glm::vec3(0, -4, 0));
 
-    GameState game(play, ene);
+    GameState game(play, ene, disp);
     
     
     SDL_Event event;
@@ -324,7 +368,6 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
 
         game.render();
-        displayGame(disp);
 
         SDL_GL_SwapWindow(displayWindow);
     }
