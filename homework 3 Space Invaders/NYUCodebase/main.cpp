@@ -35,7 +35,6 @@ class Player: public Object{
 public:
     vector<Bullet> bul;
     
-    
     Player(ShaderProgram* program, GLuint texture, const XMLData& data, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(program, texture, pos){
         Object::setData(data);
     }
@@ -71,33 +70,58 @@ private:
 };
 
 
-
-class EnemyGroup: public Object{
+// dont have to inherit from object
+class EnemyGroup{
 private: class Enemy;
 public:
     vector<Enemy> ene;
     
-    EnemyGroup(ShaderProgram* program, GLuint texture, const XMLData& data, glm::vec3 pos, glm::vec3 velo = glm::vec3(0.1, 0, 0), int numEn = 15, int numRow = 5): Object(program, 0, pos, velo), numEn(numEn), numRow(numRow){
-        // create enemy objects
+    // enemy group don't use shaderprogram itself
+    // shaderprogram & texture & data is for enemy
+    // need to restructure enemygroup
+    EnemyGroup(ShaderProgram* program, GLuint texture, const XMLData& data, glm::vec3 pos, glm::vec3 velo = glm::vec3(0.1, 0, 0), int numEn = 15, int numCol = 5): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos){
         
-        // need to update the shape of enemygroup (by calculating the numen & numrow)
+        // create enemy objects
+        float posX = pos.x, posY = pos.y, size = 0.5, spacing = 0.5;
+        float step = size + spacing;
+        
+        for (int i = 0; i < numRow; i++){
+            float relativeY = i - float(numRow - 1) / float(2);
+            
+            for (int j = 0; j < numCol; j++){
+                float relativeX = j - float(numCol - 1) / float(2);
+                Enemy temp (program, texture, data, glm::vec3(posX + relativeX * step, posY + relativeY * step, 0));
+                temp.setScale(size);
+                ene.push_back(temp);
+            }
+        }
+        
+        // need to update the shape of enemygroup
+        shape = glm::vec3(4 * step + size, 2 * step + size, 0);
     }
     
     void update(float elapsed){
         // loop throug every enemy
         // if approach to the edge : reverse sign of velocity x for every enemy
         // control addbullet()
+        for (size_t i = 0; i < ene.size(); i++) ene[i].update(elapsed);
     }
     
     void display(){
         // loop throug every enemy
+        for (size_t i = 0; i < ene.size(); i++) ene[i].display();
     }
 
 private:
     int numEn;
+    int numCol;
     int numRow;
     
+    glm::vec3 pos;
+    glm::vec3 shape;
+    
     class Enemy: public Object{
+    public:
         vector<Bullet> bul;
         
         Enemy(ShaderProgram* program, GLuint texture, const XMLData& data, glm::vec3 pos, glm::vec3 velo = glm::vec3(0.1, 0, 0)): Object(program, texture, pos, velo){
@@ -169,7 +193,9 @@ int main(){
     Text disp(&tex2, texture2);
 
     ShaderProgram untex = setUntextured();
-    Bullet bul (&untex, glm::vec3(0, -3, 0));
+    Bullet bul(&untex, glm::vec3(0, -3, 0));
+    
+    EnemyGroup ene(&tex1, texture, xml.getData("playerShip2_orange.png"), glm::vec3(0));
 
     SDL_Event event;
     bool done = false;
@@ -184,11 +210,13 @@ int main(){
         lastFrameTicks = ticks;
         
         bul.update(elapsed);
+        ene.update(elapsed);
         
         // display
         glClear(GL_COLOR_BUFFER_BIT);
         
         sprite.display();
+        ene.display();
 
         SDL_GL_SwapWindow(displayWindow);
     }

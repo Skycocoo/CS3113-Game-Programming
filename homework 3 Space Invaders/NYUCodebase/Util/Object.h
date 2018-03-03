@@ -18,8 +18,8 @@ class Object{
 public:
     Object(ShaderProgram* program, GLuint texture = 0, glm::vec3 pos = glm::vec3(0, 0, 0), glm::vec3 velo = glm::vec3(0, 0, 0));
 
-    void update(float elapsed = 0);
-    void display();
+    virtual void update(float elapsed = 0);
+    virtual void display();
 
     void setScale(float size);
     void setShape(glm::vec3 shape);
@@ -55,6 +55,8 @@ protected:
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
 
 };
+
+
 
 
 
