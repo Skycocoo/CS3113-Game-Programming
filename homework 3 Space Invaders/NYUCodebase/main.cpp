@@ -42,19 +42,13 @@ public:
     bool beyound(){
         return (pos.y < -screenHeight || pos.y > screenHeight);
     }
-    
-    //    Bullet(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&textured, texture, pos, velo){
-    //        Object::setShape(glm::vec3(0.1, 0.1, 0));
-    //        Object::setData(data);
-    //    }
-    
 };
 
 class Player: public Object{
 public:
     vector<Bullet> bul;
     
-    Player(GLuint texture, const vector<XMLData>& data, const XMLData& bullet, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), data(data), bullet(bullet){
+    Player(GLuint texture, const vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), data(data){
         Object::setData(data[0]);
     }
 
@@ -79,7 +73,7 @@ public:
     // max amount of bullets: 20
     void addBullet(){
         // bullet from current position
-        if (bul.size() < 20) bul.push_back(Bullet(glm::vec3(pos.x, pos.y + shape.y / 2, 0)));
+        if (bul.size() < 20) bul.push_back(Bullet(glm::vec3(pos.x, pos.y + shape.y / 2, 0), glm::vec3(0, 3, 0)));
     }
     
     // remove the bullet when collide
@@ -101,10 +95,7 @@ public:
 
 private:
     int lives = 4;
-    vector<XMLData> data;
-    
-    XMLData bullet;
-    
+    vector<XMLData> data;// bullets: disappear when collide
 };
 
 
@@ -118,13 +109,9 @@ public:
     }
     
     // add bullets
-    void addBullet(const XMLData& bullet){
+    void addBullet(){
         if (bul.size() < 3){
-            bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0)));
-            
-            // // decide not to use texture for bullets
-            // Bullet temp (texture, bullet, glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -0.7, 0));
-            // temp.setRotate(90 / 180 * M_PI);
+            bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -2, 0)));
         }
     }
     
@@ -157,11 +144,8 @@ public:
 class EnemyGroup{
 public:
     vector<Enemy> ene;
-    
-    // enemy group don't use shaderprogram itself
-    // shaderprogram & texture & data is for enemy
-    // need to restructure enemygroup
-    EnemyGroup(GLuint texture, const XMLData& data, const XMLData& bullet, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 12, int numCol = 6): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos), velo(velo), bullet(bullet){
+
+    EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 12, int numCol = 6): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos), velo(velo){
         
         // create enemy objects
         float posX = pos.x, posY = pos.y, size = 0.8, spacing = 0.3;
@@ -204,7 +188,7 @@ public:
     
     // add bullets
     void addBullets(){
-        if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet(bullet);
+        if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet();
     }
     
     void delEne(size_t index){
@@ -219,8 +203,6 @@ private:
     glm::vec3 pos;
     glm::vec3 velo;
     glm::vec3 shape;
-    
-    XMLData bullet;
 };
 
 
@@ -253,9 +235,6 @@ public:
     }
     
     void update(float elapsed){
-        // player, enemygroup update
-        // collision detection
-        
         checkCollision();
         
         player->update(elapsed);
@@ -316,10 +295,10 @@ int main(){
     playerlife.push_back(xml.getData("playerShip1_blue.png"));
     playerlife.push_back(xml.getData("playerShip1_damage1.png"));
     playerlife.push_back(xml.getData("playerShip1_damage2.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
     
-    EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), xml.getData("laserRed13.png"), glm::vec3(0, 2, 0));
-    Player play(texture, playerlife, xml.getData("laserBlue13.png"), glm::vec3(0, -4, 0));
+    EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
+    Player play(texture, playerlife, glm::vec3(0, -4, 0));
 
     GameState game(play, ene);
     
@@ -344,7 +323,7 @@ int main(){
         // display
         glClear(GL_COLOR_BUFFER_BIT);
 
-        game.render();g
+        game.render();
         displayGame(disp);
 
         SDL_GL_SwapWindow(displayWindow);
