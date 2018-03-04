@@ -236,6 +236,10 @@ public:
         numEn -= 1;
         ene.erase(ene.begin() + index);
     }
+    
+    int getEne() const {
+        return numEn;
+    }
 
 private:
     int numEn;
@@ -279,6 +283,7 @@ public:
         player = Player(texture, playerlife, glm::vec3(0, -4, 0));
     }
     
+    
     // bullets: disappear when collide
     void checkCollision(){
         
@@ -312,6 +317,7 @@ public:
                 checkCollision();
                 player.update(elapsed);
                 enemygroup.update(elapsed);
+                if (player.getLives() == 0 || enemygroup.getEne() == 0) mode = STATE_GAME_OVER;
                 break;
             case STATE_GAME_OVER:
                 break;
