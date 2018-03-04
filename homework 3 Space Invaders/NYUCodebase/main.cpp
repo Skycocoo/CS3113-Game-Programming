@@ -48,6 +48,7 @@ private:
     public:
         Live(GLuint texture, const XMLData& data): Object(&textured, texture){
             Object::setData(data);
+            Object::setScale(0.5);
         }
     };
     
@@ -79,7 +80,7 @@ public:
     
     void renderLives(){
         for (int i = 0; i < lives; i++){
-            live.setPos(glm::vec3(3.5 + i, 3, 0));
+            live.setPos(glm::vec3(4.5 + 0.5 * i, 3.5, 0));
             live.update();
             live.render();
         }
@@ -165,6 +166,10 @@ public:
         for (size_t i = 0; i < bul.size(); i++) bul[i].render();
     }
     
+    float getX() const {
+        return pos.x;
+    }
+    
 };
 
 
@@ -172,10 +177,10 @@ class EnemyGroup{
 public:
     vector<Enemy> ene;
 
-    EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 12, int numCol = 6): numEn(numEn), numCol(numCol), numRow(numEn/numCol), pos(pos), velo(velo){
+    EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 12, int numCol = 6): numEn(numEn), numCol(numCol), numRow(numEn/numCol), size(0.8), velo(velo){
         
         // create enemy objects
-        float posX = pos.x, posY = pos.y, size = 0.8, spacing = 0.3;
+        float posX = pos.x, posY = pos.y, spacing = 0.3;
         float step = size + spacing;
         
         for (int i = 0; i < numRow; i++){
@@ -184,23 +189,27 @@ public:
             for (int j = 0; j < numCol; j++){
                 float relativeX = j - float(numCol - 1) / float(2);
                 Enemy temp (texture, data, glm::vec3(posX + relativeX * step, posY + relativeY * step, 0), velo);
-                temp.setScale(size);
+                temp.setShape(glm::vec3(size));
                 ene.push_back(temp);
             }
         }
-        shape = glm::vec3(4 * step + size, 2 * step + size, 0);
     }
     
     void update(float elapsed){
-        // update position for enemy group
-        pos += elapsed * velo;
-        
         // add bullets for enemy
         addBullets();
         
         // update position for enemies
         // if approach to the edge : reverse sign of every velocity x
-        if (((pos.x - shape.x / 2 - edge < -screenWidth) && (velo.x < 0))||((pos.x + shape.x / 2 + edge > screenWidth) && (velo.x > 0))){
+        
+        float minX = 6, maxX = -6; // beyound the range of the screenwidth
+        
+        for (size_t i = 0; i < ene.size(); i++){
+            if (ene[i].getX() < minX) minX = ene[i].getX();
+            else if (ene[i].getX() > maxX) maxX = ene[i].getX();
+        }
+        
+        if ((((minX - size / 2 - edge) < -screenWidth) && (velo.x < 0))||(((maxX + size / 2 + edge) > screenWidth) && (velo.x > 0))){
             velo.x = -velo.x;
             for (size_t i = 0; i < ene.size(); i++) ene[i].setVelo(velo);
         }
@@ -229,9 +238,8 @@ private:
     int numCol;
     int numRow;
     
-    glm::vec3 pos;
+    float size;
     glm::vec3 velo;
-    glm::vec3 shape;
 };
 
 
@@ -239,7 +247,7 @@ class GameState{
 public:
     enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
     
-    GameState(Player& player, EnemyGroup& enemygroup, Text& disp): player(&player), enemygroup(&enemygroup), disp(&disp){}
+    GameState(Text& disp, Player& player, EnemyGroup& enemygroup): disp(&disp), player(&player), enemygroup(&enemygroup){}
     
     // bullets: disappear when collide
     void checkCollision(){
@@ -286,16 +294,16 @@ public:
     }
     
     void displayScores(){
-        disp->render("Score: " + to_string(player->getScore()), 0.4, 1, -4, 3);
-        disp->render("Lives: ", 0.4, 1, 2, 3);
+        disp->render("Score: " + to_string(player->getScore()), 0.4, 1, -4, 3.5);
+        disp->render("Lives: ", 0.4, 1, 3.5, 3.5);
         player->renderLives();
         
     }
     
 private:
+    Text* disp;
     Player* player;
     EnemyGroup* enemygroup;
-    Text* disp;
 };
 
 
@@ -344,7 +352,7 @@ int main(){
     EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
     Player play(texture, playerlife, glm::vec3(0, -4, 0));
 
-    GameState game(play, ene, disp);
+    GameState game(disp, play, ene);
     
     
     SDL_Event event;

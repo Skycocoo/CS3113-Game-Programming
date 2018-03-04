@@ -43,7 +43,7 @@ void Object::render(){
 }
 
 void Object::setScale(float size){
-    shape *= size;
+    this->shape *= size;
 }
 
 void Object::setShape(const glm::vec3& shape){
