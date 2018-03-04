@@ -113,8 +113,11 @@ void GameState::displayLevel(){
 }
 
 void GameState::displayOver(){
-    disp.render("Space Invaders", 1, 2, 0, 3.5);
-    disp.render("Game Over", 1, 2, 0, 2);
+    disp.render("Game Over", 1, 2, 0, 1.5);
+    
+    std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
+    disp.render(winner + " wins", 1, 2, 0, 0);
+    
     disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
 }
 

@@ -11,7 +11,7 @@
 #include "Text.h"
 
 class GameState{
-public:g
+public:
     Player player;
     EnemyGroup enemygroup;
     

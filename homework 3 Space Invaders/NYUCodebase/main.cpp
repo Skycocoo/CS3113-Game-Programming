@@ -1,6 +1,11 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // Homework 3, Space Invaders, CS3113 Game Programming
 
+// !!!Important!!!
+// please clone with git clone --recursive https://github.com/Skycocoo/CS3113-Game-Programming.git
+// since I'm using gitmodules to include glm
+
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
