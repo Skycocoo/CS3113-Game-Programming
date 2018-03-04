@@ -5,6 +5,8 @@
 
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
+XMLLoad::XMLLoad(){}
+
 XMLLoad::XMLLoad(const std::string& filepath): name(filepath){
     std::ifstream ifs (RESOURCE_FOLDER + filepath);
     if (!ifs) {

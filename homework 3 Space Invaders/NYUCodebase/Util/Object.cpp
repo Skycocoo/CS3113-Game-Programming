@@ -8,6 +8,9 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
+Object::Object(){}
+
+
 Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const glm::vec3& velo): program(program), texture(texture), pos(pos), velo(velo), shape(glm::vec3(1, 1, 1)){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }

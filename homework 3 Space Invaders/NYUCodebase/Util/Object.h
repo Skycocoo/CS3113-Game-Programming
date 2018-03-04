@@ -16,6 +16,7 @@
 // create an object class to handle parameters
 class Object{
 public:
+    Object();
     Object(ShaderProgram* program, GLuint texture = 0, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3 &velo = glm::vec3(0, 0, 0));
 
     virtual void update(float elapsed = 0);

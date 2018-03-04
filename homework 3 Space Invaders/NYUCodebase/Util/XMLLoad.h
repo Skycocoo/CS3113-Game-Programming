@@ -13,6 +13,7 @@
 
 class XMLLoad{
 public:
+    XMLLoad();
     XMLLoad(const std::string& filepath);
     
     void display(std::ostream& os = std::cout) const;

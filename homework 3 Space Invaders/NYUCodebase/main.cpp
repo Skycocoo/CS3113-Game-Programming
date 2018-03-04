@@ -12,7 +12,9 @@
 
 using namespace std;
 
+enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 
+GameMode mode = STATE_MAIN_MENU;
 float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0, edge = 1.0;
 
 ShaderProgram textured;
@@ -21,7 +23,6 @@ ShaderProgram untextured;
 
 class Bullet: public Object{
 public:
-    
     Bullet(const glm::vec3& pos, const glm::vec3& velo = glm::vec3(0, 0.7, 0)): Object(&untextured, 0, pos, velo){
         Object::setShape(glm::vec3(0.05, 0.4, 0));
     }
@@ -46,6 +47,7 @@ class Player: public Object{
 private:
     class Live: public Object{
     public:
+        Live(){}
         Live(GLuint texture, const XMLData& data): Object(&textured, texture){
             Object::setData(data);
             Object::setScale(0.5);
@@ -55,6 +57,7 @@ private:
 public:
     vector<Bullet> bul;
     
+    Player(){}
     Player(GLuint texture, const vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, -3, 0)): Object(&textured, texture, pos), live(texture, data[data.size()-1]), data(data){
         Object::setData(data[0]);
         
@@ -177,6 +180,8 @@ class EnemyGroup{
 public:
     vector<Enemy> ene;
 
+    EnemyGroup(){}
+    
     EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo = glm::vec3(2, 0, 0), int numEn = 12, int numCol = 6): numEn(numEn), numCol(numCol), numRow(numEn/numCol), size(0.8), velo(velo){
         
         // create enemy objects
@@ -199,16 +204,15 @@ public:
         // add bullets for enemy
         addBullets();
         
-        // update position for enemies
-        // if approach to the edge : reverse sign of every velocity x
-        
-        float minX = 6, maxX = -6; // beyound the range of the screenwidth
-        
+        // beyound the range of the screenwidth
+        float minX = 6, maxX = -6;
         for (size_t i = 0; i < ene.size(); i++){
             if (ene[i].getX() < minX) minX = ene[i].getX();
             else if (ene[i].getX() > maxX) maxX = ene[i].getX();
         }
         
+        // update position for enemies
+        // if approach to the edge : reverse sign of every velocity x
         if ((((minX - size / 2 - edge) < -screenWidth) && (velo.x < 0))||(((maxX + size / 2 + edge) > screenWidth) && (velo.x > 0))){
             velo.x = -velo.x;
             for (size_t i = 0; i < ene.size(); i++) ene[i].setVelo(velo);
@@ -245,65 +249,119 @@ private:
 
 class GameState{
 public:
-    enum GameMode{STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
     
-    GameState(Text& disp, Player& player, EnemyGroup& enemygroup): disp(&disp), player(&player), enemygroup(&enemygroup){}
+    Player player;
+    EnemyGroup enemygroup;
+    
+    GameState(){
+        xml = XMLLoad("Asset/sheet.xml");
+        untextured = setUntextured();
+        
+        GLuint text;
+        textured = setTextured("Asset/font1.png", text);
+        disp = Text(&textured, text);
+      
+        init();
+    }
+    
+    void init(){
+        GLuint texture;
+        textured = setTextured("Asset/sheet.png", texture);
+        
+        vector<XMLData> playerlife;
+        playerlife.push_back(xml.getData("playerShip1_blue.png"));
+        playerlife.push_back(xml.getData("playerShip1_damage1.png"));
+        playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+        playerlife.push_back(xml.getData("playerShip1_damage3.png"));
+        playerlife.push_back(xml.getData("playerLife1_blue.png"));
+        
+        enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
+        player = Player(texture, playerlife, glm::vec3(0, -4, 0));
+    }
     
     // bullets: disappear when collide
     void checkCollision(){
         
         // players' bullet: collide with enemy / with board
-        for (size_t i = 0; i < player->bul.size(); i++){
-            for (size_t j = 0; j < enemygroup->ene.size(); j++){
-                if (player->bul[i].collide(enemygroup->ene[j])){
-                    player->delBullet(i);
-                    player->incScore(10);
-                    enemygroup->delEne(j);
+        for (size_t i = 0; i < player.bul.size(); i++){
+            for (size_t j = 0; j < enemygroup.ene.size(); j++){
+                if (player.bul[i].collide(enemygroup.ene[j])){
+                    player.delBullet(i);
+                    player.incScore(10);
+                    enemygroup.delEne(j);
                 }
             }
         }
         
         // enemy's bullet: collide with player / with board
-        for (size_t i = 0; i < enemygroup->ene.size(); i++){
-            for (size_t j = 0; j < enemygroup->ene[i].bul.size(); j++){
-                if (enemygroup->ene[i].bul[j].collide(*player)){
-                    player->decLives();
-                    enemygroup->ene[i].delBullet(j);
+        for (size_t i = 0; i < enemygroup.ene.size(); i++){
+            for (size_t j = 0; j < enemygroup.ene[i].bul.size(); j++){
+                if (enemygroup.ene[i].bul[j].collide(player)){
+                    player.decLives();
+                    enemygroup.ene[i].delBullet(j);
                 }
             }
         }
     }
     
     void update(float elapsed){
-        checkCollision();
-        
-        player->update(elapsed);
-        enemygroup->update(elapsed);
+        switch (mode){
+            case STATE_MAIN_MENU:
+                break;
+            case STATE_GAME_LEVEL:
+                checkCollision();
+                player.update(elapsed);
+                enemygroup.update(elapsed);
+                break;
+            case STATE_GAME_OVER:
+                break;
+        }
     }
+    
     
     void render(){
-        player->render();
-        enemygroup->render();
-        
-        displayTitle();
-        displayScores();
+        switch (mode){
+            case STATE_MAIN_MENU:
+                displayMainMenu();
+                break;
+            case STATE_GAME_LEVEL:
+                displayLevel();
+                break;
+            case STATE_GAME_OVER:
+                displayOver();
+                break;
+        }
+
     }
     
-    void displayTitle(){
-        disp->render("Space Invaders", 0.8, 1, 0, 4.5);
+    
+    void displayMainMenu(){
+        disp.render("Space Invaders", 1, 2, 0, 3.5);
+        disp.render("<=   =>   to move", 0.5, 1, 0, 1);
+        disp.render("[     ]  to fight", 0.5, 1, 0, 0);
+        
+        disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
     }
     
-    void displayScores(){
-        disp->render("Score: " + to_string(player->getScore()), 0.4, 1, -4, 3.5);
-        disp->render("Lives: ", 0.4, 1, 3.5, 3.5);
-        player->renderLives();
+    void displayLevel(){
+        player.render();
+        enemygroup.render();
         
+        disp.render("Score: " + to_string(player.getScore()), 0.4, 1, -4, 3.5);
+        disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
+        player.renderLives();
     }
+    
+    void displayOver(){
+        disp.render("Space Invaders", 1, 2, 0, 3.5);
+        disp.render("Game Over", 1, 2, 0, 2);
+        disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
+    }
+    
     
 private:
-    Text* disp;
-    Player* player;
-    EnemyGroup* enemygroup;
+    XMLLoad xml;
+    Text disp;
 };
 
 
@@ -325,6 +383,28 @@ void updatePlayer(const SDL_Event& event, Player& play){
     }
 }
 
+void updateGame(const SDL_Event& event, GameState& game){
+    switch (event.type){
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.scancode){
+                case SDL_SCANCODE_B:
+                    if (mode == STATE_GAME_OVER) game.init();
+                    mode = STATE_GAME_LEVEL;
+                    break;
+                case SDL_SCANCODE_SPACE:
+                    if (mode == STATE_GAME_LEVEL) game.player.addBullet();
+                    break;
+                case SDL_SCANCODE_LEFT:
+                    if (mode == STATE_GAME_LEVEL) game.player.control(-1);
+                    break;
+                case SDL_SCANCODE_RIGHT:
+                    if (mode == STATE_GAME_LEVEL) game.player.control(1);
+                    break;
+            }
+            break;
+    }
+}
+
 
 
 int main(){
@@ -332,27 +412,9 @@ int main(){
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Homework 3 Space Invaders");
 
-    XMLLoad xml ("Asset/sheet.xml");
-    untextured = setUntextured();
 
-    GLuint text;
-    textured = setTextured("Asset/font1.png", text);
-    Text disp(&textured, text);
-    
-    GLuint texture;
-    textured = setTextured("Asset/sheet.png", texture);
-    
-    vector<XMLData> playerlife;
-    playerlife.push_back(xml.getData("playerShip1_blue.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
-    playerlife.push_back(xml.getData("playerLife1_blue.png"));
-    
-    EnemyGroup ene(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
-    Player play(texture, playerlife, glm::vec3(0, -4, 0));
 
-    GameState game(disp, play, ene);
+    GameState game;
     
     
     SDL_Event event;
@@ -362,7 +424,7 @@ int main(){
         // keyboard event
         while (SDL_PollEvent(&event)) {
             checkKeyboard(event, done);
-            updatePlayer(event, play);
+            updateGame(event, game);
         }
         
         // update parameters
