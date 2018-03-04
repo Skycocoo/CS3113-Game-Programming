@@ -14,6 +14,9 @@
 		6D5A86E319AE5CD10066C1FD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5A86E219AE5CD10066C1FD /* SDL2.framework */; };
 		6D5AC2D019AE6280004CB1BF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2CF19AE6280004CB1BF /* OpenGL.framework */; };
 		6D5AC2D219AE6A1E004CB1BF /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */; };
+		D02A412B204B8B09007CB2DD /* Bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A412A204B8B09007CB2DD /* Bullet.cpp */; };
+		D02A412D204B8B2C007CB2DD /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A412C204B8B2C007CB2DD /* Player.cpp */; };
+		D02A4131204B8B50007CB2DD /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A4130204B8B50007CB2DD /* Enemy.cpp */; };
 		D03D20D420488781000A9935 /* glm in Resources */ = {isa = PBXBuildFile; fileRef = D03D20D320488781000A9935 /* glm */; };
 		D03D25072048A326000A9935 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03D25062048A326000A9935 /* Text.cpp */; };
 		D03D250C2048BA77000A9935 /* XMLData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03D250B2048BA77000A9935 /* XMLData.cpp */; };
@@ -43,6 +46,12 @@
 		6D5A86E219AE5CD10066C1FD /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		6D5AC2CF19AE6280004CB1BF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		D02A4129204B8AF5007CB2DD /* Bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bullet.h; sourceTree = "<group>"; };
+		D02A412A204B8B09007CB2DD /* Bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bullet.cpp; sourceTree = "<group>"; };
+		D02A412C204B8B2C007CB2DD /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		D02A412E204B8B35007CB2DD /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		D02A412F204B8B3F007CB2DD /* Enemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
+		D02A4130204B8B50007CB2DD /* Enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
 		D0349960202DD68E00003B19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../Source/libraries/XcodeFrameworks/SDL2.framework; sourceTree = "<group>"; };
 		D0349961202DD68E00003B19 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		D0349962202DD68E00003B19 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
@@ -206,6 +215,12 @@
 				D0D282F42044F4EE00B873AE /* XMLLoad.cpp */,
 				D03D250A2048BA68000A9935 /* XMLData.h */,
 				D03D250B2048BA77000A9935 /* XMLData.cpp */,
+				D02A4129204B8AF5007CB2DD /* Bullet.h */,
+				D02A412A204B8B09007CB2DD /* Bullet.cpp */,
+				D02A412E204B8B35007CB2DD /* Player.h */,
+				D02A412C204B8B2C007CB2DD /* Player.cpp */,
+				D02A412F204B8B3F007CB2DD /* Enemy.h */,
+				D02A4130204B8B50007CB2DD /* Enemy.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -279,11 +294,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D02A4131204B8B50007CB2DD /* Enemy.cpp in Sources */,
 				D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */,
 				D0D282FE2044F4EE00B873AE /* ShaderProgram.cpp in Sources */,
 				D0D282FC2044F4EE00B873AE /* XMLLoad.cpp in Sources */,
 				D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */,
 				D0D282FD2044F4EE00B873AE /* GameState.cpp in Sources */,
+				D02A412D204B8B2C007CB2DD /* Player.cpp in Sources */,
+				D02A412B204B8B09007CB2DD /* Bullet.cpp in Sources */,
 				D0D282FB2044F4EE00B873AE /* Object.cpp in Sources */,
 				D03D250C2048BA77000A9935 /* XMLData.cpp in Sources */,
 				D03D25072048A326000A9935 /* Text.cpp in Sources */,

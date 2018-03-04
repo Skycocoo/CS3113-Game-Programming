@@ -6,10 +6,19 @@
 #define Util_h
 
 #include "ShaderProgram.h"
+
 #include "GameState.h"
+
 #include "Object.h"
 #include "Text.h"
+#include "Bullet.h"
+#include "Player.h"
+#include "Enemy.h"
+
+
 #include "XMLLoad.h"
 #include "XMLData.h"
+
+
 
 #endif /* Util_h */
