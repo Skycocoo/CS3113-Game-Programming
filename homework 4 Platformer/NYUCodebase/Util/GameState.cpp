@@ -12,9 +12,10 @@ extern GameMode mode;
 extern float fixedStep;
 extern int maxStep;
 
-GameState::GameState(): xml(XMLLoad("Asset/sheet.xml")){
-    // default: loading spritesheet & font
+GameState::GameState(){
+    // default: loading font
     untextured = setUntextured();
+    
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);

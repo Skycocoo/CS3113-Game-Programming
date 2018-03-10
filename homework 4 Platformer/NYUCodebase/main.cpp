@@ -31,14 +31,31 @@ GameMode mode = STATE_MAIN_MENU;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-class SpaceInvader: public GameState{
+// to do: seperate enemygroup from GameState
+class Pong: public GameState{
+public:
+    Pong(): GameState::GameState(){
+        init();
+    }
     
+    void init(){
+        
+    }
+};
+
+
+
+class SpaceInvader: public GameState{
 public:
     SpaceInvader(): GameState::GameState(){
         init();
     }
     
     void init(){
+        
+        xml = XMLLoad("Asset/sheet.xml");
+        
+        
         GLuint texture;
         textured = setTextured("Asset/sheet.png", texture);
         
