@@ -15,7 +15,7 @@ extern int maxStep;
 GameState::GameState(){
     // default: loading font
     untextured = setUntextured();
-    
+
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);
@@ -106,28 +106,8 @@ void GameState::render(){
 }
 
 
-void GameState::displayMainMenu(){
-    disp.render("Space Invaders", 1, 2, 0, 3.5);
-    disp.render("<=   =>   to move", 0.5, 1, 0, 1);
-    disp.render("[     ]  to fight", 0.5, 1, 0, 0);
+void GameState::displayMainMenu(){}
 
-    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
-}
+void GameState::displayLevel(){}
 
-void GameState::displayLevel(){
-    player.render();
-    enemygroup.render();
-
-    disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
-    disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
-    player.renderLives();
-}
-
-void GameState::displayOver(){
-    disp.render("Game Over", 1, 2, 0, 1.5);
-
-    std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
-    disp.render(winner + " wins", 1, 2, 0, 0);
-
-    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
-}
+void GameState::displayOver(){}

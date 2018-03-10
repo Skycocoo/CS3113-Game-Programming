@@ -28,9 +28,9 @@ public:
     void fixedUpdate(float lastFrameTicks, float accumulator);
     void render();
 
-    void displayMainMenu();
-    void displayLevel();
-    void displayOver();
+    virtual void displayMainMenu();
+    virtual void displayLevel();
+    virtual void displayOver();
 
 
 };
