@@ -9,7 +9,19 @@
 #include <map>
 #include <string>
 
-#include "XMLData.h"
+class XMLData {
+public:
+    friend std::ostream& operator<<(std::ostream& os, const XMLData& data);
+    
+    XMLData();
+    XMLData(float x, float y, float width, float height);
+    
+    float x;
+    float y;
+    float width;
+    float height;
+};
+
 
 class XMLLoad{
 public:

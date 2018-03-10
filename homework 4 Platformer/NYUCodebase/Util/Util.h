@@ -9,15 +9,14 @@
 
 #include "GameState.h"
 
-#include "Object.h"
-#include "Text.h"
-#include "Bullet.h"
-#include "Player.h"
-#include "Enemy.h"
+#include "Objects/Object.h"
+#include "Objects/Text.h"
+#include "Objects/Bullet.h"
+#include "Objects/Player.h"
+#include "Objects/Enemy.h"
 
 
 #include "XMLLoad.h"
-#include "XMLData.h"
 
 
 

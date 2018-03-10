@@ -7,7 +7,6 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "XMLLoad.h"
-#include "XMLData.h"
 #include "Text.h"
 
 class GameState{

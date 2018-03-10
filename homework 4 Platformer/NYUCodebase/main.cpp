@@ -30,6 +30,8 @@ GameMode mode = STATE_MAIN_MENU;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
 void updateGame(const SDL_Event& event, GameState& game){
     switch (event.type){
         case SDL_KEYDOWN:
