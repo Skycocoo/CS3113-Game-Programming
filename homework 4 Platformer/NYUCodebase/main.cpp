@@ -17,19 +17,18 @@
 
 using namespace std;
 
+///////////////////////////////////////////GLOBAL VARIABLES///////////////////////////////////////////
+
+float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0, edge = 1.0;
+ShaderProgram textured, untextured;
+
+float fixedStep = 0.0166666f; // 60 FPS (1.0f/60.0f) (update sixty times a second)
+int maxStep = 3;
+
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 GameMode mode = STATE_MAIN_MENU;
 
-float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0, edge = 1.0;
-
-// fixed timestep to accomodate different devices
-// 60 FPS (1.0f/60.0f) (update sixty times a second)
-float fixedStep = 0.0166666f;
-int maxStep = 3;
-
-ShaderProgram textured;
-ShaderProgram untextured;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void updateGame(const SDL_Event& event, GameState& game){
     switch (event.type){
