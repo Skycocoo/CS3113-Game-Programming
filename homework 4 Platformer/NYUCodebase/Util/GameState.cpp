@@ -12,36 +12,21 @@ extern GameMode mode;
 extern float fixedStep;
 extern int maxStep;
 
-GameState::GameState(){
-    xml = XMLLoad("Asset/sheet.xml");
+GameState::GameState(): xml(XMLLoad("Asset/sheet.xml")){
+    // default: loading spritesheet & font
     untextured = setUntextured();
-    
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);
-    
-    init();
-}
 
-void GameState::init(){
-    GLuint texture;
-    textured = setTextured("Asset/sheet.png", texture);
-    
-    std::vector<XMLData> playerlife;
-    playerlife.push_back(xml.getData("playerShip1_blue.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
-    playerlife.push_back(xml.getData("playerLife1_blue.png"));
-    
-    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
-    player = Player(texture, playerlife, glm::vec3(0, -4, 0));
+    // need to implement: initialize the game
+    // init();
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(){
-    
+
     // players' bullet: collide with enemy / with board
     for (size_t i = 0; i < player.bul.size(); i++){
         for (size_t j = 0; j < enemygroup.ene.size(); j++){
@@ -52,7 +37,7 @@ void GameState::checkCollision(){
             }
         }
     }
-    
+
     // enemy's bullet: collide with player / with board
     for (size_t i = 0; i < enemygroup.ene.size(); i++){
         for (size_t j = 0; j < enemygroup.ene[i].bul.size(); j++){
@@ -84,20 +69,20 @@ void GameState::fixedUpdate(float lastFrameTicks, float accumulator){
     float ticks = (float)SDL_GetTicks()/1000.0f;
     float elapsed = ticks - lastFrameTicks;
     lastFrameTicks = ticks;
-    
+
     // get elapsed time
     elapsed += accumulator;
     if (elapsed < fixedStep) {
         accumulator = elapsed;
         return;
     }
-    
+
     int count = 0;
     while (elapsed >= fixedStep) {
         update(fixedStep);
         elapsed -= fixedStep;
         count += 1;
-        
+
         if (count >= maxStep) break;
     }
     accumulator = elapsed;
@@ -116,7 +101,7 @@ void GameState::render(){
             displayOver();
             break;
     }
-    
+
 }
 
 
@@ -124,14 +109,14 @@ void GameState::displayMainMenu(){
     disp.render("Space Invaders", 1, 2, 0, 3.5);
     disp.render("<=   =>   to move", 0.5, 1, 0, 1);
     disp.render("[     ]  to fight", 0.5, 1, 0, 0);
-    
+
     disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
 }
 
 void GameState::displayLevel(){
     player.render();
     enemygroup.render();
-    
+
     disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
     disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
     player.renderLives();
@@ -139,10 +124,9 @@ void GameState::displayLevel(){
 
 void GameState::displayOver(){
     disp.render("Game Over", 1, 2, 0, 1.5);
-    
+
     std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
     disp.render(winner + " wins", 1, 2, 0, 0);
-    
+
     disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
 }
-

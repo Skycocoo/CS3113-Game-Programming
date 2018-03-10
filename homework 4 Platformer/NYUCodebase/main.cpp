@@ -31,6 +31,32 @@ GameMode mode = STATE_MAIN_MENU;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+class SpaceInvader: public GameState{
+    
+public:
+    SpaceInvader(): GameState::GameState(){
+        init();
+    }
+    
+    void init(){
+        GLuint texture;
+        textured = setTextured("Asset/sheet.png", texture);
+        
+        std::vector<XMLData> playerlife;
+        playerlife.push_back(xml.getData("playerShip1_blue.png"));
+        playerlife.push_back(xml.getData("playerShip1_damage1.png"));
+        playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+        playerlife.push_back(xml.getData("playerShip1_damage3.png"));
+        playerlife.push_back(xml.getData("playerLife1_blue.png"));
+        
+        enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
+        player = Player(texture, playerlife, glm::vec3(0, -4, 0));
+    }
+
+};
+
+
+
 
 void updateGame(const SDL_Event& event, GameState& game){
     switch (event.type){
@@ -61,7 +87,7 @@ int main(){
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Homework 3 Space Invaders");
 
-    GameState game;
+    SpaceInvader game;
     
     SDL_Event event;
     bool done = false;

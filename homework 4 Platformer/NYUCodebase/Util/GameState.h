@@ -6,29 +6,33 @@
 
 #include "Player.h"
 #include "Enemy.h"
-#include "XMLLoad.h"
 #include "Text.h"
+
+#include "XMLLoad.h"
 
 class GameState{
 public:
+    // public fields
+    XMLLoad xml;
+    Text disp;
+
     Player player;
     EnemyGroup enemygroup;
-    
+
+    // methods
     GameState();
-    void init();
-    
+    virtual void init() = 0;
+
     void checkCollision();
     void update(float elapsed);
     void fixedUpdate(float lastFrameTicks, float accumulator);
     void render();
-    
+
     void displayMainMenu();
     void displayLevel();
     void displayOver();
-    
-private:
-    XMLLoad xml;
-    Text disp;
+
+
 };
 
 
