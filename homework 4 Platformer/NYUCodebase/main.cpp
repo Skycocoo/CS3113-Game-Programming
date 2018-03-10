@@ -48,17 +48,15 @@ public:
 class SpaceInvader: public GameState{
 public:
     SpaceInvader(): GameState::GameState(){
+        // load xml & texture once
+        xml = XMLLoad("Asset/sheet.xml");
+        textured = setTextured("Asset/sheet.png", texture);
+        
+        // initialize the game
         init();
     }
     
     void init(){
-        
-        xml = XMLLoad("Asset/sheet.xml");
-        
-        
-        GLuint texture;
-        textured = setTextured("Asset/sheet.png", texture);
-        
         std::vector<XMLData> playerlife;
         playerlife.push_back(xml.getData("playerShip1_blue.png"));
         playerlife.push_back(xml.getData("playerShip1_damage1.png"));

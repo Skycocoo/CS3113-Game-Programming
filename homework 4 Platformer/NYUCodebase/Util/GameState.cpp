@@ -20,6 +20,8 @@ GameState::GameState(){
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);
 
+    // inheritance: should take care of loading xml & spritesheet
+
     // need to implement: initialize the game
     // init();
 }

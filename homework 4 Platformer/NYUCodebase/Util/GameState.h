@@ -19,6 +19,8 @@ public:
     Player player;
     EnemyGroup enemygroup;
 
+    GLuint texture;
+
     // methods
     GameState();
     virtual void init() = 0;
