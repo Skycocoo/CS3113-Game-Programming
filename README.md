@@ -24,3 +24,5 @@ make PONG
 ## Assignment 3
 
 make Space Invaders
+
+> bugs: when the enemy is destroyed, its bullets also disappear
