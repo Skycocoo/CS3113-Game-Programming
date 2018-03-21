@@ -28,9 +28,9 @@ public:
     void setVelo(float x, float y, float z = 1.0);
     void setRotate(float rot); // rotate: angle (in radian)
     void setPos(const glm::vec3& pos);
-    
+
     void setData(const XMLData& data);
-    
+
     bool collide (const Object& rhs);
 
 protected:
