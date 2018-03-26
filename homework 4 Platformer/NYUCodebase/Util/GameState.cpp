@@ -13,15 +13,29 @@ extern float fixedStep;
 extern int maxStep;
 
 GameState::GameState(){
-    // default: loading font
+    xml = XMLLoad("Asset/sheet.xml");
     untextured = setUntextured();
 
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);
 
-    // need to implement: initialize the game
-    // init();
+    init();
+}
+
+void GameState::init(){
+    GLuint texture;
+    textured = setTextured("Asset/sheet.png", texture);
+
+    std::vector<XMLData> playerlife;
+    playerlife.push_back(xml.getData("playerShip1_blue.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
+    playerlife.push_back(xml.getData("playerLife1_blue.png"));
+
+    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
+    player = Player(texture, playerlife, glm::vec3(0, -4, 0));
 }
 
 
@@ -106,8 +120,28 @@ void GameState::render(){
 }
 
 
-void GameState::displayMainMenu(){}
+void GameState::displayMainMenu(){
+    disp.render("Space Invaders", 1, 2, 0, 3.5);
+    disp.render("<=   =>   to move", 0.5, 1, 0, 1);
+    disp.render("[     ]  to fight", 0.5, 1, 0, 0);
 
-void GameState::displayLevel(){}
+    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
+}
 
-void GameState::displayOver(){}
+void GameState::displayLevel(){
+    player.render();
+    enemygroup.render();
+
+    disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
+    disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
+    player.renderLives();
+}
+
+void GameState::displayOver(){
+    disp.render("Game Over", 1, 2, 0, 1.5);
+
+    std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
+    disp.render(winner + " wins", 1, 2, 0, 0);
+
+    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
+}
