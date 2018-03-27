@@ -14,7 +14,6 @@
 		6D5A86E319AE5CD10066C1FD /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5A86E219AE5CD10066C1FD /* SDL2.framework */; };
 		6D5AC2D019AE6280004CB1BF /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2CF19AE6280004CB1BF /* OpenGL.framework */; };
 		6D5AC2D219AE6A1E004CB1BF /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */; };
-		D02A412B204B8B09007CB2DD /* Bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A412A204B8B09007CB2DD /* Bullet.cpp */; };
 		D02A412D204B8B2C007CB2DD /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A412C204B8B2C007CB2DD /* Player.cpp */; };
 		D02A4131204B8B50007CB2DD /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A4130204B8B50007CB2DD /* Enemy.cpp */; };
 		D03D20D420488781000A9935 /* glm in Resources */ = {isa = PBXBuildFile; fileRef = D03D20D320488781000A9935 /* glm */; };
@@ -45,8 +44,6 @@
 		6D5A86E219AE5CD10066C1FD /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		6D5AC2CF19AE6280004CB1BF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
-		D02A4129204B8AF5007CB2DD /* Bullet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bullet.h; sourceTree = "<group>"; };
-		D02A412A204B8B09007CB2DD /* Bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bullet.cpp; sourceTree = "<group>"; };
 		D02A412C204B8B2C007CB2DD /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		D02A412E204B8B35007CB2DD /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		D02A412F204B8B3F007CB2DD /* Enemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
@@ -194,8 +191,6 @@
 				D0D282F32044F4EE00B873AE /* Object.cpp */,
 				D03D25082048A331000A9935 /* Text.h */,
 				D03D25062048A326000A9935 /* Text.cpp */,
-				D02A4129204B8AF5007CB2DD /* Bullet.h */,
-				D02A412A204B8B09007CB2DD /* Bullet.cpp */,
 				D02A412E204B8B35007CB2DD /* Player.h */,
 				D02A412C204B8B2C007CB2DD /* Player.cpp */,
 				D02A412F204B8B3F007CB2DD /* Enemy.h */,
@@ -304,7 +299,6 @@
 				D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */,
 				D0D282FD2044F4EE00B873AE /* GameState.cpp in Sources */,
 				D02A412D204B8B2C007CB2DD /* Player.cpp in Sources */,
-				D02A412B204B8B09007CB2DD /* Bullet.cpp in Sources */,
 				D0D282FB2044F4EE00B873AE /* Object.cpp in Sources */,
 				D03D25072048A326000A9935 /* Text.cpp in Sources */,
 				D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */,

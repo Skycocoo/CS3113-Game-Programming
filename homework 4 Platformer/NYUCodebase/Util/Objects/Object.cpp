@@ -11,7 +11,7 @@ extern float splitScale;
 Object::Object(){}
 
 
-Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const glm::vec3& velo): program(program), texture(texture), pos(pos), velo(velo), shape(glm::vec3(1, 1, 1)){
+Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const glm::vec3& velo): program(program), texture(texture), pos(pos), velo(velo), shape(glm::vec3(1, 1, 1)), fric(glm::vec3(0.2, 0.2, 0.2)){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 

@@ -5,7 +5,7 @@
 #define Player_h
 
 #include "Object.h"
-#include "Bullet.h"
+
 
 class Player: public Object{
 private:
@@ -16,19 +16,13 @@ private:
     };
     
 public:
-    std::vector<Bullet> bul;
-    
     Player();
     Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, -3, 0));
     
-    void control(float distance);
+    void control(float disp);
     void update(float elapsed);
     void render();
     void renderLives();
-    
-
-    void addBullet();
-    void delBullet(size_t index);
     
     int getLives() const;
     int getScore() const;

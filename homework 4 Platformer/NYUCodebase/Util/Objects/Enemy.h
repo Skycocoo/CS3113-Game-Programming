@@ -5,16 +5,10 @@
 #define Enemy_h
 
 #include "Object.h"
-#include "Bullet.h"
 
 class Enemy: public Object{
 public:
-    std::vector<Bullet> bul;
-    
     Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo);
-    
-    void addBullet();
-    void delBullet(size_t index);
     
     void update(float elapsed);
     void render();
@@ -33,8 +27,6 @@ public:
     
     void update(float elapsed);
     void render();
-    
-    void addBullets();
     
     void delEne(size_t index);
     int getEne() const;

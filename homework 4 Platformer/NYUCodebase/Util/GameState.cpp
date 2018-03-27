@@ -42,26 +42,6 @@ void GameState::init(){
 // bullets: disappear when collide
 void GameState::checkCollision(){
 
-    // players' bullet: collide with enemy / with board
-    for (size_t i = 0; i < player.bul.size(); i++){
-        for (size_t j = 0; j < enemygroup.ene.size(); j++){
-            if (player.bul[i].collide(enemygroup.ene[j])){
-                player.delBullet(i);
-                player.incScore(10);
-                enemygroup.delEne(j);
-            }
-        }
-    }
-
-    // enemy's bullet: collide with player / with board
-    for (size_t i = 0; i < enemygroup.ene.size(); i++){
-        for (size_t j = 0; j < enemygroup.ene[i].bul.size(); j++){
-            if (enemygroup.ene[i].bul[j].collide(player)){
-                player.decLives();
-                enemygroup.ene[i].delBullet(j);
-            }
-        }
-    }
 }
 
 void GameState::update(float elapsed){
@@ -121,16 +101,15 @@ void GameState::render(){
 
 
 void GameState::displayMainMenu(){
-    disp.render("Space Invaders", 1, 2, 0, 3.5);
+    disp.render("Platformer", 1, 2, 0, 3.5);
     disp.render("<=   =>   to move", 0.5, 1, 0, 1);
-    disp.render("[     ]  to fight", 0.5, 1, 0, 0);
 
     disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
 }
 
 void GameState::displayLevel(){
     player.render();
-    enemygroup.render();
+//    enemygroup.render();
 
     disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
     disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
@@ -140,8 +119,8 @@ void GameState::displayLevel(){
 void GameState::displayOver(){
     disp.render("Game Over", 1, 2, 0, 1.5);
 
-    std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
-    disp.render(winner + " wins", 1, 2, 0, 0);
+//    std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
+//    disp.render(winner + " wins", 1, 2, 0, 0);
 
-    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
+//    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
 }

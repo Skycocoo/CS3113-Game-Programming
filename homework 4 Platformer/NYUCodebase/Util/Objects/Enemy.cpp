@@ -12,40 +12,21 @@ Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const gl
     Object::setData(data);
 }
 
-// add bullets
-void Enemy::addBullet(){
-    if (bul.size() < 3) bul.push_back(Bullet(glm::vec3(pos.x, pos.y - shape.y / 2, 0), glm::vec3(0, -2, 0)));
-    else return;
-}
-
-// remove the bullet when collide
-void Enemy::delBullet(size_t index){
-    bul.erase(bul.begin() + index);
-}
-
 // update positiin
 void Enemy::update(float elapsed){
     pos += elapsed * velo;
     Object::update();
-    
-    for (size_t i = 0; i < bul.size(); i++) {
-        bul[i].update(elapsed);
-        if (bul[i].beyound()) delBullet(i);
-    }
 }
 
 // render enemy & bullets
 void Enemy::render(){
     Object::render();
     untextured.SetColor(1, 1, 1, 1);
-    for (size_t i = 0; i < bul.size(); i++) bul[i].render();
 }
 
 float Enemy::getX() const {
     return pos.x;
 }
-
-
 
 
 EnemyGroup::EnemyGroup(){}
@@ -69,8 +50,6 @@ EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos
 }
 
 void EnemyGroup::update(float elapsed){
-    // add bullets for enemy
-    addBullets();
     
     // beyound the range of the screenwidth
     float minX = 6, maxX = -6;
@@ -92,12 +71,6 @@ void EnemyGroup::update(float elapsed){
 // render enemies
 void EnemyGroup::render(){
     for (size_t i = 0; i < ene.size(); i++) ene[i].render();
-}
-
-// add bullets
-void EnemyGroup::addBullets(){
-    if (rand() % 100 < 1) ene[rand() % ene.size()].addBullet();
-    else return;
 }
 
 void EnemyGroup::delEne(size_t index){

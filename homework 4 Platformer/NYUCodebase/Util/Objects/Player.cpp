@@ -22,21 +22,27 @@ Player::Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos):
     
 }
 
-void Player::control(float distance){
-    if ((pos.x + distance + shape.x / 2 < screenWidth) && (pos.x + distance - shape.x / 2 > -screenWidth)) pos.x += distance;
+void Player::control(float disp){
+    velo.x += disp;
 }
 
 void Player::update(float elapsed){
-    Object::update();
-    for (size_t i = 0; i < bul.size(); i++) {
-        bul[i].update(elapsed);
-        if (bul[i].beyound()) delBullet(i);
+    // apply friction
+    Object::lerp(velo, fric * elapsed);
+    velo += acce * elapsed;
+    
+    // check boundary
+    if ((pos.x + shape.x / 2 <= screenWidth) && (pos.x - shape.x / 2 >= -screenWidth))  pos += velo * elapsed;
+    else {
+        Object::lerp(pos, glm::vec3(0.0001, 0, 0));
+        velo.x = 0;
     }
+    
+    Object::update();
 }
 
 void Player::render(){
     Object::render();
-    for (size_t i = 0; i < bul.size(); i++) bul[i].render(true);
 }
 
 void Player::renderLives(){
@@ -46,24 +52,6 @@ void Player::renderLives(){
         live.render();
     }
 }
-
-// max amount of bullets: 10
-void Player::addBullet(){
-    
-    // bullet from current position
-    if (bul.size() < 10) bul.push_back(Bullet(glm::vec3(pos.x, pos.y + shape.y / 2, 0), glm::vec3(0, 3, 0)));
-    else return;
-}
-
-
-// remove the bullet when collide
-void Player::delBullet(size_t index){
-    
-    // bul.erase(bul.begin() + index);
-    bul[index] = bul[bul.size() - 1];
-    bul.pop_back();
-}
-
 
 
 int Player::getLives() const {
