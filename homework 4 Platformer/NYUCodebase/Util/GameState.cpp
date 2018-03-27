@@ -35,7 +35,7 @@ void GameState::init(){
     playerlife.push_back(xml.getData("playerLife1_blue.png"));
 
     enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
-    player = Player(texture, playerlife, glm::vec3(0, -4, 0));
+    player = Player(texture, playerlife);
 }
 
 

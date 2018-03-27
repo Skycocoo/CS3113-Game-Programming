@@ -51,6 +51,7 @@ protected:
     glm::vec3 acce;
     
     glm::vec3 fric;
+    glm::vec3 grav;
 
     float rotate = 0.0;
 

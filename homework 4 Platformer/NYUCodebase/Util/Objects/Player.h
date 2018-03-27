@@ -17,7 +17,7 @@ private:
     
 public:
     Player();
-    Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, -3, 0));
+    Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, 4, 0));
     
     void control(float disp);
     void update(float elapsed);
