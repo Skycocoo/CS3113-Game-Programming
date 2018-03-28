@@ -27,21 +27,22 @@ void GameState::init(){
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
 
-    std::vector<XMLData> playerlife;
-    playerlife.push_back(xml.getData("playerShip1_blue.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
-    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
-    playerlife.push_back(xml.getData("playerLife1_blue.png"));
+//    std::vector<XMLData> playerlife;
+//    playerlife.push_back(xml.getData("playerShip1_blue.png"));
+//    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
+//    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
+//    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
+//    playerlife.push_back(xml.getData("playerLife1_blue.png"));
 
-    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
-    player = Player(texture, playerlife);
+//    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
+    player = Player(texture, xml.getData("playerShip1_blue.png"), glm::vec3(2, 4, 0));
+    test = Player(texture, xml.getData("enemyBlack1.png"), glm::vec3(-2, 4, 0));
 }
 
 
 // bullets: disappear when collide
-void GameState::checkCollision(){
-
+void GameState::checkCollision(float elapsed){
+    player.collide(elapsed, test);
 }
 
 void GameState::update(float elapsed){
@@ -49,10 +50,11 @@ void GameState::update(float elapsed){
         case STATE_MAIN_MENU:
             break;
         case STATE_GAME_LEVEL:
-            checkCollision();
-            player.update(elapsed);
-            enemygroup.update(elapsed);
-            if (player.getLives() == 0 || enemygroup.getEne() == 0) mode = STATE_GAME_OVER;
+            checkCollision(elapsed);
+//            player.update(elapsed);
+            test.update(elapsed);
+//            enemygroup.update(elapsed);
+//            if (player.getLives() == 0 || enemygroup.getEne() == 0) mode = STATE_GAME_OVER;
             break;
         case STATE_GAME_OVER:
             break;
@@ -109,11 +111,12 @@ void GameState::displayMainMenu(){
 
 void GameState::displayLevel(){
     player.render();
+    test.render();
 //    enemygroup.render();
 
     disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
-    disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
-    player.renderLives();
+//    disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
+//    player.renderLives();
 }
 
 void GameState::displayOver(){

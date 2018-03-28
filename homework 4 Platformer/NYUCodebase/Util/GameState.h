@@ -13,12 +13,13 @@
 class GameState{
 public:
     Player player;
-    EnemyGroup enemygroup;
+    Player test;
+//    EnemyGroup enemygroup;
 
     GameState();
     void init();
 
-    void checkCollision();
+    void checkCollision(float elapsed);
     void update(float elapsed);
     void fixedUpdate(float lastFrameTicks, float accumulator);
     void render();

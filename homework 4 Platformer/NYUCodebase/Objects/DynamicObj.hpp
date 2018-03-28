@@ -13,7 +13,9 @@ class DynamicObj: public Object{
 public:
 
     DynamicObj(): Object::Object(){}
-    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0)): Object(&textured, texture, pos), velo(velo), fric(glm::vec3(0.01, 0.01, 0.01)), grav(glm::vec3(0, -0.1, 0)){}
+    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0)):
+        Object(&textured, texture, pos), velo(velo), fric(glm::vec3(0.01, 0.01, 0.01)), grav(glm::vec3(0, -0.1, 0)), acce(glm::vec3(0, 0, 0))
+        {}
 
     // void setVelo(const glm::vec3& velo);
     // void setVelo(float x, float y, float z = 1.0);
@@ -23,28 +25,33 @@ public:
         lerp(velo, fric * elapsed);
         velo += acce * elapsed;
        // velo += grav * elapsed;
+
+       if (acce.x != 0) acce.x = 0;
     }
 
     bool collide(float elapsed, const Object& rhs) {
         bool result = false;
-        
+
         updateVelo(elapsed);
 
         // x axis:
         pos.x += velo.x * elapsed;
         result = Object::collide(rhs);
+        if (result) velo.x = 0;
 
         // y axis:
         pos.y += velo.y * elapsed;
         result = result || Object::collide(rhs);
+        if (result) velo.y = 0;
 
         Object::update();
-        
+
         return result;
     }
 
 
 protected:
+    // should set float or else it would set to garbage value
     glm::vec3 velo;
     glm::vec3 acce;
 

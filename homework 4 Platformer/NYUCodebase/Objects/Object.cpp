@@ -72,16 +72,18 @@ bool Object::collide(const Object& rhs) {
         if (objLeft <= enRight ) coll.left = true;
         if (objDown <= enUp) coll.bottom = true;
         if (objRight >= enLeft) coll.right = true;
+    } else {
+        coll.reset();
     }
 
     if (coll.left || coll.right){
-        float pen = fabs((pos.x - rhs.pos.x) - shape.x - rhs.shape.x);
+        float pen = fabs((pos.x - rhs.pos.x) - shape.x / 2 - rhs.shape.x / 2);
         if (coll.left) pos.x += pen + 0.0001;
-        else pos.x -= pen + 0.0001;
+        else pos.x -= pen - 0.0001;
     } else if (coll.top || coll.bottom){
-        float pen = fabs((pos.y - rhs.pos.y) - shape.y - rhs.shape.y);
+        float pen = fabs((pos.y - rhs.pos.y) - shape.y / 2 - rhs.shape.y / 2);
         if (coll.bottom) pos.y += pen + 0.0001;
-        else pos.y -= pen + 0.0001;
+        else pos.y -= pen - 0.0001;
     }
 
     return collide;
