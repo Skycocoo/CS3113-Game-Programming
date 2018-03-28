@@ -21,6 +21,7 @@
 		D03F0936206B2B0200D397E4 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F0934206B2B0200D397E4 /* Tile.cpp */; };
 		D03F0939206B2B1600D397E4 /* StaticObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F0937206B2B1600D397E4 /* StaticObj.cpp */; };
 		D03F093C206B2B2200D397E4 /* DynamicObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F093A206B2B2200D397E4 /* DynamicObj.cpp */; };
+		D03F094A206B700800D397E4 /* FlareMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F0948206B700700D397E4 /* FlareMap.cpp */; };
 		D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55C4203CE80300A06EA9 /* setUp.cpp */; };
 		D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55CA203CEBA600A06EA9 /* main.cpp */; };
 		D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282EC2044F46F00B873AE /* Matrix.cpp */; };
@@ -70,6 +71,8 @@
 		D03F0945206B5AD500D397E4 /* ShaderProgram.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderProgram.hpp; sourceTree = "<group>"; };
 		D03F0946206B5AD500D397E4 /* XMLLoad.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = XMLLoad.hpp; sourceTree = "<group>"; };
 		D03F0947206B5AE000D397E4 /* Matrix.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Matrix.hpp; sourceTree = "<group>"; };
+		D03F0948206B700700D397E4 /* FlareMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlareMap.cpp; sourceTree = "<group>"; };
+		D03F0949206B700800D397E4 /* FlareMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlareMap.h; sourceTree = "<group>"; };
 		D068FAB22044F00300E2801F /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55CA203CEBA600A06EA9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -228,6 +231,8 @@
 		D0D282F22044F4D700B873AE /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				D03F0949206B700800D397E4 /* FlareMap.h */,
+				D03F0948206B700700D397E4 /* FlareMap.cpp */,
 				D03F0944206B5AD500D397E4 /* GameState.hpp */,
 				D0D282F52044F4EE00B873AE /* GameState.cpp */,
 				D03F0945206B5AD500D397E4 /* ShaderProgram.hpp */,
@@ -314,6 +319,7 @@
 				D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */,
 				D0D282FE2044F4EE00B873AE /* ShaderProgram.cpp in Sources */,
 				D0D282FC2044F4EE00B873AE /* XMLLoad.cpp in Sources */,
+				D03F094A206B700800D397E4 /* FlareMap.cpp in Sources */,
 				D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */,
 				D0D282FD2044F4EE00B873AE /* GameState.cpp in Sources */,
 				D02A412D204B8B2C007CB2DD /* Player.cpp in Sources */,
