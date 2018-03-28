@@ -13,7 +13,7 @@ public:
     DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0));
 
     void update(float elapsed);
-    void render(const Matrix& view);
+    void render(const Matrix& view = Matrix());
 
     void updateVelo(float elapsed);
     bool collide(float elapsed, const Object& rhs);

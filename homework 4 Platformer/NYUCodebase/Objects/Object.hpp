@@ -21,7 +21,7 @@ public:
 
     virtual void update(float elapsed = 0);
     virtual void render(const Matrix& view = Matrix());
-    virtual bool collide (const Object& rhs);
+    virtual bool collide(const Object& rhs);
 
     void setScale(float size);
     void setShape(const glm::vec3& shape);

@@ -67,6 +67,9 @@ bool FlareMap::ReadLayerData(std::ifstream &stream) {
 					std::getline(lineStream, tile, ',');
 					int val = atoi(tile.c_str());
 
+                    // manage strange value
+                    if (val < 0) val = 0;
+
 					mapData[y][x] = val-1;
 					// -1: no tile rendering
 				}

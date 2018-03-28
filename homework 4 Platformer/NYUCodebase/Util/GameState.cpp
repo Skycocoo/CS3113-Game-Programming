@@ -12,7 +12,7 @@ extern GameMode mode;
 extern float fixedStep;
 extern int maxStep;
 
-GameState::GameState(): xml("Asset/sheet.xml"){
+GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     untextured = setUntextured();
 
     GLuint text;
@@ -37,7 +37,6 @@ void GameState::init(){
 
     player = Player(texture, xml.getData("alienBlue.png"), glm::vec3(2, 4, 0));
     test = Player(texture, xml.getData("alienBeige.png"), glm::vec3(-2, 4, 0));
-    tile = Tile(texture, "Asset/tilemap");
 }
 
 
@@ -117,6 +116,8 @@ void GameState::displayLevel(){
 
     player.render(viewMatrix);
     test.render(viewMatrix);
+    tile.render(viewMatrix);
+    
 //    enemygroup.render();
 
     disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
