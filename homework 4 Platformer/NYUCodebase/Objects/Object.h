@@ -20,7 +20,7 @@ public:
     Object(ShaderProgram* program, GLuint texture = 0, const glm::vec3& pos = glm::vec3(0, 0, 0));
 
     virtual void update(float elapsed = 0);
-    virtual void render();
+    virtual void render(const Matrix& view = Matrix());
     virtual bool collide (const Object& rhs);
 
     void setScale(float size);

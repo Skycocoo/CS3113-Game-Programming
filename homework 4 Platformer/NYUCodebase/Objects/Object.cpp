@@ -28,7 +28,10 @@ void Object::update(float elapsed){
 }
 
 
-void Object::render(){
+void Object::render(const Matrix& view){
+
+    viewMatrix = view;
+
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
     program->SetViewMatrix(viewMatrix);

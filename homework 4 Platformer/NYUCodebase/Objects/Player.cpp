@@ -5,12 +5,12 @@
 
 extern float screenWidth;
 
-Player::Live::Live(){}
-
-Player::Live::Live(GLuint texture, const XMLData& data): Object(&textured, texture){
-    Object::setData(data);
-    Object::setScale(0.5);
-}
+//Player::Live::Live(){}
+//
+//Player::Live::Live(GLuint texture, const XMLData& data): Object(&textured, texture){
+//    Object::setData(data);
+//    Object::setScale(0.5);
+//}
 
 
 
@@ -25,27 +25,7 @@ void Player::control(float disp){
     acce.x += disp;
 }
 
-void Player::update(float elapsed){
-   //  // apply friction
-   //  lerp(velo, fric * elapsed);
-   //  velo += acce * elapsed;
-   // // velo += grav * elapsed;
-   //
-   //  // check boundary
-   //  if ((pos.x + shape.x / 2 <= screenWidth) && (pos.x - shape.x / 2 >= -screenWidth))  pos += velo * elapsed;
-   //  else {
-   //      lerp(pos, glm::vec3(0.0001, 0, 0));
-   //      velo.x = 0;
-   //  }
-   //
-   //  if (acce.x != 0) acce.x = 0;
 
-    Object::update();
-}
-
-void Player::render(){
-    Object::render();
-}
 
 // void Player::renderLives(){
 //     for (int i = 0; i < lives; i++){

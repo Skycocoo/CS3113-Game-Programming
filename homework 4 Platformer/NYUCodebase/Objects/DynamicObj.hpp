@@ -19,7 +19,12 @@ public:
 
     // void setVelo(const glm::vec3& velo);
     // void setVelo(float x, float y, float z = 1.0);
-
+    void update(float elapsed){
+        Object::update(elapsed);
+    }
+    void render(const Matrix& view){
+        Object::render(view);
+    }
 
     void updateVelo(float elapsed){
         lerp(velo, fric * elapsed);

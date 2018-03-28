@@ -110,8 +110,12 @@ void GameState::displayMainMenu(){
 }
 
 void GameState::displayLevel(){
-    player.render();
-    test.render();
+    Matrix viewMatrix;
+    glm::vec3 playerPos = player.center();
+    viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
+    
+    player.render(viewMatrix);
+    test.render(viewMatrix);
 //    enemygroup.render();
 
     disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
