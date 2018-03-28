@@ -36,7 +36,6 @@ public:
 
 private:
     XMLLoad xml;
-    FlareMap map;
     Text disp;
 };
 

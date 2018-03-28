@@ -22,7 +22,7 @@ FlareMap::FlareMap(const std::string& fileName) {
 FlareMap::~FlareMap() {
     std::cout << "~Flare() " << mapWidth << " " << mapHeight << std::endl;
 	for(int i = 0; i < this->mapHeight; i++) {
-//        std::cout << i << std::boolalpha << " " << (i < this->mapHeight) << " " << this->mapHeight << std::endl;
+        std::cout << i << std::boolalpha << " " << (i < this->mapHeight) << " " << this->mapHeight << std::endl;
 		delete mapData[i];
 	}
 	delete [] mapData;
@@ -116,7 +116,7 @@ bool FlareMap::ReadEntityData(std::ifstream &stream) {
 }
 
 void FlareMap::Load(const std::string& fileName) {
-	std::ifstream infile(RESOURCE_FOLDER + fileName);
+	std::ifstream infile(RESOURCE_FOLDER + fileName + ".txt");
 
 	if(!infile){
 		std::cout << "Unable to load FlareMap in the path " << fileName << ". Make sure the path is correct\n";

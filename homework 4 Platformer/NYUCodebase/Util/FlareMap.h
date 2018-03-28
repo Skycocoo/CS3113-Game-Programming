@@ -14,12 +14,18 @@ class FlareMap {
 		FlareMap();
 		FlareMap(const std::string& filename);
 
-		// FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.mapHeight){
-		// 	mapData = new int*[mapHeight];
-		// 	for (int i = 0; i < mapHeight; i++){
-		// 		mapdata[i] = new int[mapWidth];
-		// 	}
-		// }
+		FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.mapHeight){
+			mapData = new int*[mapHeight];
+			for (int i = 0; i < mapHeight; i++){
+				mapData[i] = new int[mapWidth];
+			}
+
+			for(int y=0; y < mapHeight; y++) {
+			    for(int x=0; x < mapWidth; x++) {
+					mapData[y][x] = rhs.mapData[y][x];
+			    }
+			}
+		}
 
 		~FlareMap();
 

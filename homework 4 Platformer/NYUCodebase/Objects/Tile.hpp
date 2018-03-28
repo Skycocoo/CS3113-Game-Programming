@@ -6,6 +6,7 @@
 
 #include "Object.hpp"
 #include "../Util/FlareMap.h"
+#include "../setUp.hpp"
 
 #include <string>
 #include <iostream>
@@ -19,24 +20,22 @@ public:
         std::cout << "default Tile()\n";
     }
 
-    Tile(GLuint texture, const FlareMap& map): Object(&textured, texture), map(map){
+    Tile(GLuint texture, const std::string& name): Object(&textured, texture){
         std::cout << "actual Tile()\n";
+        textured = setTextured(name + ".png", texture);
     }
 
-    void setTexture(GLuint tex){
-        texture = tex;
+
+    // move semantics
+    Tile(Tile&& rhs): map(rhs.map){
+        rhs.map = FlareMap();
     }
 
-    // // move semantics
-    // Tile(Tile&& rhs): map(rhs.map){
-    //     rhs.map = FlareMap();
-    // }
-    //
-    // Tile& operator=(Tile&& rhs){
-    //     map = rhs.map;
-    //     rhs.map = FlareMap();
-    //     return *this;
-    // }
+    Tile& operator=(Tile&& rhs){
+        map = rhs.map;
+        rhs.map = FlareMap();
+        return *this;
+    }
 
     ~Tile(){
         std::cout << "~Tile()\n";
