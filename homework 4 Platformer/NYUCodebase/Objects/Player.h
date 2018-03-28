@@ -4,10 +4,10 @@
 #ifndef Player_h
 #define Player_h
 
-#include "Object.h"
+#include "DynamicObj.hpp"
 
 
-class Player: public Object{
+class Player: public DynamicObj{
 private:
     class Live: public Object{
     public:
@@ -17,7 +17,7 @@ private:
     
 public:
     Player();
-    Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos = glm::vec3(0, 4, 0));
+    Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos = glm::vec3(0, 4, 0));
     
     void control(float disp);
     void update(float elapsed);

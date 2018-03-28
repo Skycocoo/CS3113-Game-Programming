@@ -4,9 +4,9 @@
 #ifndef Enemy_h
 #define Enemy_h
 
-#include "Object.h"
+#include "DynamicObj.hpp"
 
-class Enemy: public Object{
+class Enemy: public DynamicObj{
 public:
     Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo);
     

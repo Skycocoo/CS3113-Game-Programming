@@ -4,6 +4,18 @@
 #ifndef StaticObj_hpp
 #define StaticObj_hpp
 
-#include <stdio.h>
+#include "Object.h"
+
+// no updates / gravity applied
+class StaticObj: public Object{
+public:
+    StaticObj();
+    StaticObj(GLuint texture, const glm::vec3& pos);
+
+    // void update(float elapsed);
+    // void render();
+};
+
+
 
 #endif /* StaticObj_hpp */

@@ -14,6 +14,8 @@
 #include "Objects/Text.h"
 #include "Objects/Player.h"
 #include "Objects/Enemy.h"
+#include "Objects/StaticObj.hpp"
+#include "Objects/Tile.hpp"
 
 
 

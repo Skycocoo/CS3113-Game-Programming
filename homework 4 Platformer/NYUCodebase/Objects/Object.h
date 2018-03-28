@@ -17,20 +17,18 @@
 class Object{
 public:
     Object();
-    Object(ShaderProgram* program, GLuint texture = 0, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0));
+    Object(ShaderProgram* program, GLuint texture = 0, const glm::vec3& pos = glm::vec3(0, 0, 0));
 
     virtual void update(float elapsed = 0);
     virtual void render();
 
     void setScale(float size);
     void setShape(const glm::vec3& shape);
-    void setVelo(const glm::vec3& velo);
-    void setVelo(float x, float y, float z = 1.0);
     void setRotate(float rot); // rotate: angle (in radian)
     void setPos(const glm::vec3& pos);
-    
+
     void setData(const XMLData& data);
-    
+
     bool collide (const Object& rhs);
 
 protected:
@@ -47,11 +45,7 @@ protected:
 
     // physics
     glm::vec3 pos;
-    glm::vec3 velo;
-    glm::vec3 acce;
-    
-    glm::vec3 fric;
-    glm::vec3 grav;
+
 
     float rotate = 0.0;
 
@@ -59,11 +53,6 @@ protected:
     glm::vec3 shape; // shape.x: width; shape.y: height; shape.z: 0 / 1
     std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-
-    // linear interpolation
-    void lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar = glm::vec3(0, 0, 0)){
-        orig = (glm::vec3(1, 1, 1) - prop) * orig + prop * tar;
-    }
 };
 
 

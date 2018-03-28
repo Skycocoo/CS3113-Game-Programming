@@ -7,6 +7,9 @@ Use gitmodules to include glm;
 
 Please clone with ```git clone --recursive https://github.com/Skycocoo/CS3113-Game-Programming.git```
 
+
+> This game engine assumes everything is textured
+
 ## Todo
 
 fix timestep
@@ -26,3 +29,7 @@ make PONG
 make Space Invaders
 
 > bugs: when the enemy is destroyed, its bullets also disappear
+
+## Assignment 4
+
+make simple Platformer

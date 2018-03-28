@@ -4,6 +4,8 @@
 #ifndef Tile_hpp
 #define Tile_hpp
 
-#include <stdio.h>
+#include "StaticObj.hpp"
+
+class Tile: public StaticObj{};
 
 #endif /* Tile_hpp */

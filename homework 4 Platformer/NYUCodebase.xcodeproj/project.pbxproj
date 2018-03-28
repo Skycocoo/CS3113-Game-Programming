@@ -200,18 +200,18 @@
 			children = (
 				D0D282F72044F4EE00B873AE /* Object.h */,
 				D0D282F32044F4EE00B873AE /* Object.cpp */,
+				D03F0938206B2B1600D397E4 /* StaticObj.hpp */,
+				D03F0937206B2B1600D397E4 /* StaticObj.cpp */,
+				D03F093B206B2B2200D397E4 /* DynamicObj.hpp */,
+				D03F093A206B2B2200D397E4 /* DynamicObj.cpp */,
 				D03D25082048A331000A9935 /* Text.h */,
 				D03D25062048A326000A9935 /* Text.cpp */,
 				D02A412E204B8B35007CB2DD /* Player.h */,
 				D02A412C204B8B2C007CB2DD /* Player.cpp */,
 				D02A412F204B8B3F007CB2DD /* Enemy.h */,
 				D02A4130204B8B50007CB2DD /* Enemy.cpp */,
-				D03F0937206B2B1600D397E4 /* StaticObj.cpp */,
-				D03F0938206B2B1600D397E4 /* StaticObj.hpp */,
-				D03F093A206B2B2200D397E4 /* DynamicObj.cpp */,
-				D03F093B206B2B2200D397E4 /* DynamicObj.hpp */,
-				D03F0934206B2B0200D397E4 /* Tile.cpp */,
 				D03F0935206B2B0200D397E4 /* Tile.hpp */,
+				D03F0934206B2B0200D397E4 /* Tile.cpp */,
 			);
 			path = Objects;
 			sourceTree = "<group>";

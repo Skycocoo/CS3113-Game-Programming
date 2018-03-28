@@ -17,9 +17,9 @@ Player::Live::Live(GLuint texture, const XMLData& data): Object(&textured, textu
 
 Player::Player(){}
 
-Player::Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos): Object(&textured, texture, pos), live(texture, data[data.size()-1]), data(data){
+Player::Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos): Object(&textured, texture, pos), live(texture, data[data.size()-1]), data(data){
     Object::setData(data[0]);
-    
+
 }
 
 void Player::control(float disp){
@@ -30,17 +30,17 @@ void Player::update(float elapsed){
     // apply friction
     Object::lerp(velo, fric * elapsed);
     velo += acce * elapsed;
-//    velo += grav * elapsed;
-    
+   // velo += grav * elapsed;
+
     // check boundary
     if ((pos.x + shape.x / 2 <= screenWidth) && (pos.x - shape.x / 2 >= -screenWidth))  pos += velo * elapsed;
     else {
         Object::lerp(pos, glm::vec3(0.0001, 0, 0));
         velo.x = 0;
     }
-    
+
     if (acce.x != 0) acce.x = 0;
-    
+
     Object::update();
 }
 
@@ -73,4 +73,3 @@ void Player::decLives(){
 void Player::incScore(int s){
     score += s;
 }
-
