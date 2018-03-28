@@ -5,55 +5,18 @@
 #define DynamicObj_hpp
 
 #include "Object.h"
-#include "StaticObj.hpp"
-
-extern ShaderProgram textured;
 
 class DynamicObj: public Object{
 public:
 
-    DynamicObj(): Object::Object(){}
-    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0)):
-        Object(&textured, texture, pos), velo(velo), fric(glm::vec3(0.01, 0.01, 0.01)), grav(glm::vec3(0, -0.1, 0)), acce(glm::vec3(0, 0, 0))
-        {}
+    DynamicObj();
+    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0));
 
-    // void setVelo(const glm::vec3& velo);
-    // void setVelo(float x, float y, float z = 1.0);
-    void update(float elapsed){
-        Object::update(elapsed);
-    }
-    void render(const Matrix& view){
-        Object::render(view);
-    }
+    void update(float elapsed);
+    void render(const Matrix& view);
 
-    void updateVelo(float elapsed){
-        lerp(velo, fric * elapsed);
-        velo += acce * elapsed;
-       // velo += grav * elapsed;
-
-       if (acce.x != 0) acce.x = 0;
-    }
-
-    bool collide(float elapsed, const Object& rhs) {
-        bool result = false;
-
-        updateVelo(elapsed);
-
-        // x axis:
-        pos.x += velo.x * elapsed;
-        result = Object::collide(rhs);
-        if (result) velo.x = 0;
-
-        // y axis:
-        pos.y += velo.y * elapsed;
-        result = result || Object::collide(rhs);
-        if (result) velo.y = 0;
-
-        Object::update();
-
-        return result;
-    }
-
+    void updateVelo(float elapsed);
+    bool collide(float elapsed, const Object& rhs);
 
 protected:
     // should set float or else it would set to garbage value
@@ -64,10 +27,7 @@ protected:
     glm::vec3 grav;
 
     // linear interpolation
-    void lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar = glm::vec3(0, 0, 0)){
-        orig = (glm::vec3(1, 1, 1) - prop) * orig + prop * tar;
-    }
-
+    void lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar = glm::vec3(0, 0, 0)) const;
 
 };
 

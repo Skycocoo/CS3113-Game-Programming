@@ -3,17 +3,6 @@
 
 #include "Player.h"
 
-extern float screenWidth;
-
-//Player::Live::Live(){}
-//
-//Player::Live::Live(GLuint texture, const XMLData& data): Object(&textured, texture){
-//    Object::setData(data);
-//    Object::setScale(0.5);
-//}
-
-
-
 Player::Player(){}
 
 Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos): DynamicObj(texture, pos){
@@ -25,7 +14,21 @@ void Player::control(float disp){
     acce.x += disp;
 }
 
+int Player::getScore() const {
+    return score;
+}
 
+void Player::incScore(int s){
+    score += s;
+}
+
+
+//Player::Live::Live(){}
+//
+//Player::Live::Live(GLuint texture, const XMLData& data): Object(&textured, texture){
+//    Object::setData(data);
+//    Object::setScale(0.5);
+//}
 
 // void Player::renderLives(){
 //     for (int i = 0; i < lives; i++){
@@ -40,15 +43,7 @@ void Player::control(float disp){
 //     return lives;
 // }
 
-int Player::getScore() const {
-    return score;
-}
-
 // void Player::decLives(){
 //     lives -= 1;
 //     Object::setData(data[3 - lives]);
 // }
-
-void Player::incScore(int s){
-    score += s;
-}

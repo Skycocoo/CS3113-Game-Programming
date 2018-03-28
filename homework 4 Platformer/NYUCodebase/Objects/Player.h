@@ -20,25 +20,26 @@ public:
     Player(GLuint texture, const XMLData& data, const glm::vec3& pos = glm::vec3(0, 4, 0));
 
     void control(float disp);
-    // void update(float elapsed);
-    // void render(const Matrix& view);
-    
-    // void renderLives();
 
-    // int getLives() const;
     int getScore() const;
 
-    // void decLives();
+
     void incScore(int s);
 
     const glm::vec3& center() const {
         return pos;
     }
 
+    // void renderLives();
+    // int getLives() const;
+    // void decLives();
+
 private:
+
+    int score = 0;
+
     // 3 2 1 0
     // int lives = 3;
-    int score = 0;
     // Live live;
     // std::vector<XMLData> data;// bullets: disappear when collide
 };
