@@ -2,6 +2,8 @@
 // CS3113 Game Programming
 
 #include "Object.h"
+#include <math.h>
+
 using namespace std;
 
 extern float screenWidth;
@@ -11,7 +13,7 @@ extern float splitScale;
 Object::Object(){}
 
 
-Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const glm::vec3& velo): program(program), texture(texture), pos(pos), shape(glm::vec3(1, 1, 1))){
+Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(glm::vec3(1, 1, 1)){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 
@@ -68,18 +70,18 @@ bool Object::collide(const Object& rhs) {
     if (collide){
         if (objUp >= enDown) coll.top = true;
         if (objLeft <= enRight ) coll.left = true;
-        if (objDown <= enUp) coll.down = true;
+        if (objDown <= enUp) coll.bottom = true;
         if (objRight >= enLeft) coll.right = true;
     }
 
     if (coll.left || coll.right){
-        float penetration = fbas((pos.x - rhs.pos.x) - shape.x - rhs.shape.x);
-        if (coll.left) pos.x += penetration + 0.0001;
-        else pos.x -= penetration + 0.0001;
-    } else if (coll.top || coll.down){
-        float penetration = fbas((pos.y - rhs.pos.y) - shape.y - rhs.shape.y);
-        if (coll.bottom) pos.y += peneration + 0.0001;
-        else pos.y -= peneration + 0.0001;
+        float pen = fabs((pos.x - rhs.pos.x) - shape.x - rhs.shape.x);
+        if (coll.left) pos.x += pen + 0.0001;
+        else pos.x -= pen + 0.0001;
+    } else if (coll.top || coll.bottom){
+        float pen = fabs((pos.y - rhs.pos.y) - shape.y - rhs.shape.y);
+        if (coll.bottom) pos.y += pen + 0.0001;
+        else pos.y -= pen + 0.0001;
     }
 
     return collide;
@@ -92,17 +94,6 @@ void Object::setScale(float size){
 
 void Object::setShape(const glm::vec3& shape){
     this->shape = shape;
-}
-
-
-void Object::setVelo(const glm::vec3& velo){
-    this->velo = velo;
-}
-
-void Object::setVelo(float x, float y, float z){
-    this->velo.x = x;
-    this->velo.y = y;
-    this->velo.z = z;
 }
 
 void Object::setRotate(float rot){

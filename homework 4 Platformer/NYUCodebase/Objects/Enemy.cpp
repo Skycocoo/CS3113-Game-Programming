@@ -8,7 +8,7 @@ extern ShaderProgram untextured;
 extern float screenWidth;
 extern float edge;
 
-Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo): DynamicObj(&textured, texture, pos, velo){
+Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo): DynamicObj(texture, pos, velo){
     Object::setData(data);
 }
 
@@ -58,13 +58,13 @@ void EnemyGroup::update(float elapsed){
         else if (ene[i].getX() > maxX) maxX = ene[i].getX();
     }
     
-    // update position for enemies
-    // if approach to the edge : reverse sign of every velocity x
-    if ((((minX - size / 2 - edge) < -screenWidth) && (velo.x < 0))||(((maxX + size / 2 + edge) > screenWidth) && (velo.x > 0))){
-        velo.x = -velo.x;
-        for (size_t i = 0; i < ene.size(); i++) ene[i].setVelo(velo);
-    }
-    
+//    // update position for enemies
+//    // if approach to the edge : reverse sign of every velocity x
+//    if ((((minX - size / 2 - edge) < -screenWidth) && (velo.x < 0))||(((maxX + size / 2 + edge) > screenWidth) && (velo.x > 0))){
+//        velo.x = -velo.x;
+//        for (size_t i = 0; i < ene.size(); i++) ene[i].setVelo(velo);
+//    }
+//
     for (size_t i = 0; i < ene.size(); i++) ene[i].update(elapsed);
 }
 
