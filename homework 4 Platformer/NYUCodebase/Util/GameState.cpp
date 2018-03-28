@@ -26,16 +26,8 @@ void GameState::init(){
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
 
-//    std::vector<XMLData> playerlife;
-//    playerlife.push_back(xml.getData("playerShip1_blue.png"));
-//    playerlife.push_back(xml.getData("playerShip1_damage1.png"));
-//    playerlife.push_back(xml.getData("playerShip1_damage2.png"));
-//    playerlife.push_back(xml.getData("playerShip1_damage3.png"));
-//    playerlife.push_back(xml.getData("playerLife1_blue.png"));
 
-//    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
-
-    player = Player(texture, xml.getData("alienBlue.png"), glm::vec3(2, 4, 0));
+    player = Player(texture, xml.getData("alienBlue.png"), tile.center());
     test = Player(texture, xml.getData("alienBeige.png"), glm::vec3(-2, 4, 0));
 }
 
@@ -51,10 +43,7 @@ void GameState::update(float elapsed){
             break;
         case STATE_GAME_LEVEL:
             checkCollision(elapsed);
-//            player.update(elapsed);
             test.update(elapsed);
-//            enemygroup.update(elapsed);
-//            if (player.getLives() == 0 || enemygroup.getEne() == 0) mode = STATE_GAME_OVER;
             break;
         case STATE_GAME_OVER:
             break;
@@ -117,19 +106,9 @@ void GameState::displayLevel(){
     player.render(viewMatrix);
     test.render(viewMatrix);
     tile.render(viewMatrix);
-    
-//    enemygroup.render();
 
-    disp.render("Score: " + std::to_string(player.getScore()), 0.4, 1, -4, 3.5);
-//    disp.render("Lives: ", 0.4, 1, 3.5, 3.5);
-//    player.renderLives();
 }
 
 void GameState::displayOver(){
     disp.render("Game Over", 1, 2, 0, 1.5);
-
-//    std::string winner = (player.getLives() == 0) ? "Enemy" : "Player";
-//    disp.render(winner + " wins", 1, 2, 0, 0);
-
-//    disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
 }

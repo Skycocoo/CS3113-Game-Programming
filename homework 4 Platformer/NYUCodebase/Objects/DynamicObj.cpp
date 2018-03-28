@@ -20,7 +20,7 @@ void DynamicObj::render(const Matrix& view){
 void DynamicObj::updateVelo(float elapsed){
     lerp(velo, fric * elapsed);
     velo += acce * elapsed;
-   // velo += grav * elapsed;
+//    velo += grav * elapsed;
 
    if (acce.x != 0) acce.x = 0;
 }

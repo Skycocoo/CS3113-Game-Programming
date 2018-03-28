@@ -38,7 +38,6 @@ public:
         texCoords.clear();
 
         int spritex = 30, spritey = 30;
-        float tilesize = 0.01;
 
         for (int y = 0; y < map.mapHeight; y++){
             for (int x = 0; x < map.mapWidth; x++){
@@ -65,8 +64,16 @@ public:
                         u+spriteWidth, v
                     });
                 }
+
             }
         }
+
+        // center of the tile map
+        pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
+        // shape of the tile map
+        shape = glm::vec3(map.mapWidth * tilesize, map.mapHeight * tilesize, 0);
+//        std::cout << pos.x << " " << pos.y << " " << shape.x << " " << shape.y << std::endl;
+
     }
 
 
@@ -80,14 +87,26 @@ public:
         glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
         glEnableVertexAttribArray(program->texCoordAttribute);
 
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size()/2);
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 2);
         glDisableVertexAttribArray(program->positionAttribute);
         glDisableVertexAttribArray(program->texCoordAttribute);
     }
 
 
+    bool collide(const Object& rhs){
+        return true;
+    }
+
+
+    const glm::vec3& center() const {
+        return pos;
+    }
+
+
 private:
     FlareMap map;
+    float tilesize = 0.1;
+
 };
 
 #endif /* Tile_hpp */
