@@ -4,13 +4,11 @@
 #ifndef setUp_h
 #define setUp_h
 
-#include "ShaderProgram.h"
+#include "Util/ShaderProgram.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <string>
-
-#include "Util/Objects/Object.h"
 
 // from lecture slide Jan 31, 2018
 GLuint LoadTexture(const char *filePath);

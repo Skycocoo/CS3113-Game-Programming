@@ -18,6 +18,9 @@
 		D02A4131204B8B50007CB2DD /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D02A4130204B8B50007CB2DD /* Enemy.cpp */; };
 		D03D20D420488781000A9935 /* glm in Resources */ = {isa = PBXBuildFile; fileRef = D03D20D320488781000A9935 /* glm */; };
 		D03D25072048A326000A9935 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03D25062048A326000A9935 /* Text.cpp */; };
+		D03F0936206B2B0200D397E4 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F0934206B2B0200D397E4 /* Tile.cpp */; };
+		D03F0939206B2B1600D397E4 /* StaticObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F0937206B2B1600D397E4 /* StaticObj.cpp */; };
+		D03F093C206B2B2200D397E4 /* DynamicObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03F093A206B2B2200D397E4 /* DynamicObj.cpp */; };
 		D08D55C6203CE80300A06EA9 /* setUp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55C4203CE80300A06EA9 /* setUp.cpp */; };
 		D08D55CB203CEBA600A06EA9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D08D55CA203CEBA600A06EA9 /* main.cpp */; };
 		D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D282EC2044F46F00B873AE /* Matrix.cpp */; };
@@ -54,7 +57,13 @@
 		D03D20D320488781000A9935 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = glm; path = ../../include/glm; sourceTree = "<group>"; };
 		D03D25062048A326000A9935 /* Text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		D03D25082048A331000A9935 /* Text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
-		D03D250D2048BB9A000A9935 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		D03F0934206B2B0200D397E4 /* Tile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
+		D03F0935206B2B0200D397E4 /* Tile.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tile.hpp; sourceTree = "<group>"; };
+		D03F0937206B2B1600D397E4 /* StaticObj.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StaticObj.cpp; sourceTree = "<group>"; };
+		D03F0938206B2B1600D397E4 /* StaticObj.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StaticObj.hpp; sourceTree = "<group>"; };
+		D03F093A206B2B2200D397E4 /* DynamicObj.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicObj.cpp; sourceTree = "<group>"; };
+		D03F093B206B2B2200D397E4 /* DynamicObj.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DynamicObj.hpp; sourceTree = "<group>"; };
+		D03F093D206B2B6300D397E4 /* includes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = includes.h; sourceTree = "<group>"; };
 		D068FAB22044F00300E2801F /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55CA203CEBA600A06EA9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -173,9 +182,11 @@
 			children = (
 				D03D20D320488781000A9935 /* glm */,
 				D08D55CA203CEBA600A06EA9 /* main.cpp */,
+				D03F093D206B2B6300D397E4 /* includes.h */,
 				D0D2830A2044F80300B873AE /* setUp.h */,
 				D08D55C4203CE80300A06EA9 /* setUp.cpp */,
 				D068FAB22044F00300E2801F /* stb_image.h */,
+				D0AAEEE7205376A6001FD048 /* Objects */,
 				D0D282F22044F4D700B873AE /* Util */,
 				D0D282EA2044F44100B873AE /* Math */,
 				D0D2830B2044FBD400B873AE /* Asset */,
@@ -195,6 +206,12 @@
 				D02A412C204B8B2C007CB2DD /* Player.cpp */,
 				D02A412F204B8B3F007CB2DD /* Enemy.h */,
 				D02A4130204B8B50007CB2DD /* Enemy.cpp */,
+				D03F0937206B2B1600D397E4 /* StaticObj.cpp */,
+				D03F0938206B2B1600D397E4 /* StaticObj.hpp */,
+				D03F093A206B2B2200D397E4 /* DynamicObj.cpp */,
+				D03F093B206B2B2200D397E4 /* DynamicObj.hpp */,
+				D03F0934206B2B0200D397E4 /* Tile.cpp */,
+				D03F0935206B2B0200D397E4 /* Tile.hpp */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -211,8 +228,6 @@
 		D0D282F22044F4D700B873AE /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				D0AAEEE7205376A6001FD048 /* Objects */,
-				D03D250D2048BB9A000A9935 /* Util.h */,
 				D0D282F62044F4EE00B873AE /* GameState.h */,
 				D0D282F52044F4EE00B873AE /* GameState.cpp */,
 				D0D282F92044F4EE00B873AE /* ShaderProgram.h */,
@@ -292,6 +307,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03F093C206B2B2200D397E4 /* DynamicObj.cpp in Sources */,
+				D03F0936206B2B0200D397E4 /* Tile.cpp in Sources */,
+				D03F0939206B2B1600D397E4 /* StaticObj.cpp in Sources */,
 				D02A4131204B8B50007CB2DD /* Enemy.cpp in Sources */,
 				D0D282ED2044F46F00B873AE /* Matrix.cpp in Sources */,
 				D0D282FE2044F4EE00B873AE /* ShaderProgram.cpp in Sources */,

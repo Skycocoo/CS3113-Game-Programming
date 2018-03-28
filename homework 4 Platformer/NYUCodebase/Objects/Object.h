@@ -7,9 +7,9 @@
 #include <vector>
 #include <string>
 
-#include "XMLLoad.h"
-#include "ShaderProgram.h"
-#include "../../Math/Matrix.h"
+#include "../Util/XMLLoad.h"
+#include "../Util/ShaderProgram.h"
+#include "../Math/Matrix.h"
 
 #include "glm/glm.hpp"
 

@@ -30,7 +30,7 @@ void Player::update(float elapsed){
     // apply friction
     Object::lerp(velo, fric * elapsed);
     velo += acce * elapsed;
-    velo += grav * elapsed;
+//    velo += grav * elapsed;
     
     // check boundary
     if ((pos.x + shape.x / 2 <= screenWidth) && (pos.x - shape.x / 2 >= -screenWidth))  pos += velo * elapsed;

@@ -4,10 +4,11 @@
 #ifndef GameState_h
 #define GameState_h
 
-#include "Player.h"
-#include "Enemy.h"
+#include "../Objects/Player.h"
+#include "../Objects/Enemy.h"
+#include "../Objects/Text.h"
 #include "XMLLoad.h"
-#include "Text.h"
+
 
 class GameState{
 public:

@@ -12,8 +12,7 @@
 #include <cstdlib>
 #include <vector>
 
-#include "Util/Util.h"
-#include "setUp.h"
+#include "includes.h"
 
 using namespace std;
 
