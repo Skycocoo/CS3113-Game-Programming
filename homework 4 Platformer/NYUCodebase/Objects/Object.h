@@ -44,14 +44,20 @@ protected:
 
     // physics
     glm::vec3 pos;
-
-
     float rotate = 0.0;
 
     // vertices
     glm::vec3 shape; // shape.x: width; shape.y: height; shape.z: 0 / 1
     std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+
+    // collision flags for four sides
+    struct Coll{
+        bool top = false, bottom = false, left = false, right = false;
+    };
+
+    Coll coll;
+
 };
 
 
