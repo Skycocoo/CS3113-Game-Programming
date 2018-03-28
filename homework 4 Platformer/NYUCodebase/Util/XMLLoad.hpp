@@ -23,7 +23,7 @@ public:
 };
 
 
-class XMLLoad{
+class XMLLoad {
 public:
     XMLLoad();
     XMLLoad(const std::string& filepath);

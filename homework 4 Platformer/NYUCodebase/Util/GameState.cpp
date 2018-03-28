@@ -13,6 +13,8 @@ extern float fixedStep;
 extern int maxStep;
 
 GameState::GameState(){
+    // std::cout << "Gamestate\n";
+
     xml = XMLLoad("Asset/sheet.xml");
     untextured = setUntextured();
 
@@ -38,6 +40,8 @@ void GameState::init(){
 
     player = Player(texture, xml.getData("alienBlue.png"), glm::vec3(2, 4, 0));
     test = Player(texture, xml.getData("alienBeige.png"), glm::vec3(-2, 4, 0));
+
+    tile = Tile(texture, "Asset/tilemap.txt");
 }
 
 

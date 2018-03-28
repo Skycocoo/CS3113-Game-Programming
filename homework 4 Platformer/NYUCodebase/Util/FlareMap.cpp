@@ -6,6 +6,8 @@
 #include <sstream>
 #include <cassert>
 
+#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
+
 FlareMap::FlareMap() {
 	mapData = nullptr;
 	mapWidth = -1;
@@ -13,10 +15,12 @@ FlareMap::FlareMap() {
 }
 
 FlareMap::~FlareMap() {
-	for(int i=0; i < mapHeight; i++) {
+    std::cout << "~Flare()\n";
+	for(int i = 0; i < this->mapHeight; i++) {
+//        std::cout << i << std::boolalpha << " " << (i < this->mapHeight) << " " << this->mapHeight << std::endl;
 		delete mapData[i];
 	}
-	delete mapData;
+	delete [] mapData;
 }
 
 bool FlareMap::ReadHeader(std::ifstream &stream) {
@@ -38,9 +42,9 @@ bool FlareMap::ReadHeader(std::ifstream &stream) {
 	if(mapWidth == -1 || mapHeight == -1) {
 		return false;
 	} else {
-		mapData = new unsigned int*[mapHeight];
+		mapData = new int*[mapHeight];
 		for(int i = 0; i < mapHeight; ++i) {
-			mapData[i] = new unsigned int[mapWidth];
+			mapData[i] = new int[mapWidth];
 		}
 		return true;
 	}
@@ -61,12 +65,16 @@ bool FlareMap::ReadLayerData(std::ifstream &stream) {
 				std::string tile;
 				for(int x=0; x < mapWidth; x++) {
 					std::getline(lineStream, tile, ',');
-					unsigned int val = atoi(tile.c_str());
-					if(val > 0) {
-						mapData[y][x] = val-1;
-					} else {
-						mapData[y][x] = 0;
-					}
+					int val = atoi(tile.c_str());
+
+					mapData[y][x] = val-1;
+					// -1: no tile rendering
+
+					// if(val > 0) {
+					// 	mapData[y][x] = val-1;
+					// } else {
+					// 	mapData[y][x] = 0;
+					// }
 				}
 			}
 		}
@@ -91,7 +99,7 @@ bool FlareMap::ReadEntityData(std::ifstream &stream) {
 			std::string xPosition, yPosition;
 			getline(lineStream, xPosition, ',');
 			getline(lineStream, yPosition, ',');
-			
+
 			FlareMapEntity newEntity;
 			newEntity.type = type;
 			newEntity.x = std::atoi(xPosition.c_str());
@@ -102,11 +110,14 @@ bool FlareMap::ReadEntityData(std::ifstream &stream) {
 	return true;
 }
 
-void FlareMap::Load(const std::string fileName) {
-	std::ifstream infile(fileName);
-	if(infile.fail()) {
-		assert(false); // unable to open file
+void FlareMap::Load(const std::string& fileName) {
+	std::ifstream infile(RESOURCE_FOLDER + fileName);
+
+	if(!infile){
+		std::cout << "Unable to load FlareMap in the path " << fileName << ". Make sure the path is correct\n";
+        exit(1);
 	}
+
 	std::string line;
 	while (std::getline(infile, line)) {
 		if(line == "[header]") {
