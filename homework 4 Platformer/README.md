@@ -13,3 +13,8 @@ Please clone with ```git clone --recursive https://github.com/Skycocoo/CS3113-Ga
 2. use modelview to center on player
 
 3. player interacts with enemies
+
+
+## TileMap~
+
+![alt text](https://raw.githubusercontent.com/Skycocoo/CS3113-Game-Programming/master/homework%204%20Platformer/tilemap.png) 
