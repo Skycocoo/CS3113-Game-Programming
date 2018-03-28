@@ -16,15 +16,11 @@ extern ShaderProgram textured;
 class Tile: public Object{
 public:
     // assume tiles start drawing at (0,0)
-    Tile(): Object(){
-        std::cout << "default Tile()\n";
-    }
+    Tile(): Object(){}
 
-    Tile(GLuint texture, const std::string& name): Object(&textured, texture){
-        std::cout << "actual Tile()\n";
+    Tile(GLuint texture, const std::string& name): Object(&textured, texture), map(name){
         textured = setTextured(name + ".png", texture);
     }
-
 
     // move semantics
     Tile(Tile&& rhs): map(rhs.map){
@@ -37,13 +33,8 @@ public:
         return *this;
     }
 
-    ~Tile(){
-        std::cout << "~Tile()\n";
-    }
-
 private:
     FlareMap map;
-
 };
 
 #endif /* Tile_hpp */

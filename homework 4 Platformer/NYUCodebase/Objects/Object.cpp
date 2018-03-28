@@ -10,9 +10,7 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
-Object::Object(){
-    std::cout << "default Object()\n";
-}
+Object::Object(){}
 
 
 Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(glm::vec3(1, 1, 1)){

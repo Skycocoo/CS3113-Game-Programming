@@ -30,10 +30,6 @@ public:
     void displayLevel();
     void displayOver();
 
-    ~GameState(){
-        std::cout << "~Gamestate\n";
-    }
-
 private:
     XMLLoad xml;
     Text disp;

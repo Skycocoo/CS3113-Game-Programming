@@ -12,16 +12,11 @@ extern GameMode mode;
 extern float fixedStep;
 extern int maxStep;
 
-GameState::GameState(): xml(XMLLoad("Asset/sheet.xml")){
-    // std::cout << "Gamestate\n";
-
-    // xml = XMLLoad("Asset/sheet.xml");
+GameState::GameState(): xml("Asset/sheet.xml"){
     untextured = setUntextured();
 
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
-
-    std::cout << "creating text\n";
     disp = Text(&textured, text);
 
     init();
@@ -40,16 +35,9 @@ void GameState::init(){
 
 //    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
 
-    std::cout << "creating player\n";
     player = Player(texture, xml.getData("alienBlue.png"), glm::vec3(2, 4, 0));
-
-    std::cout << "creating test\n";
     test = Player(texture, xml.getData("alienBeige.png"), glm::vec3(-2, 4, 0));
-
-    // tile.setTexture(texture);
-    // std::cout << "before creating tile\n";
     tile = Tile(texture, "Asset/tilemap");
-    // std::cout << "after creating tile\n";
 }
 
 

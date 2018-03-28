@@ -30,10 +30,6 @@ public:
 
     void setData(const XMLData& data);
 
-    ~Object(){
-        std::cout << "~Object()\n";
-    }
-
 protected:
     // shader
     ShaderProgram* program;

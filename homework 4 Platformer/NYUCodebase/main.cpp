@@ -56,15 +56,12 @@ int main(){
     // initial set up
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Homework 4 Platformer");
-
-    cout << "before gamestate" << endl;
+    
     GameState game;
 
     SDL_Event event;
     bool done = false;
     float lastFrameTicks = 0.0f, accumulator = 0.0f;
-
-    cout << "start of rendering" << endl;
     
     while (!done) {
         // keyboard event
@@ -82,8 +79,5 @@ int main(){
     }
 
     SDL_Quit();
-    
-    cout << "end of rendering" << endl;
-
     return 0;
 }
