@@ -17,9 +17,4 @@
 #include "Objects/StaticObj.hpp"
 #include "Objects/Tile.hpp"
 
-
-
-
-
-
 #endif /* includes_hpp */

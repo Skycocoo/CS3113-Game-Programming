@@ -35,8 +35,9 @@ void GameState::init(){
 //    playerlife.push_back(xml.getData("playerLife1_blue.png"));
 
 //    enemygroup = EnemyGroup(texture, xml.getData("enemyBlack1.png"), glm::vec3(0, 2, 0));
-    player = Player(texture, xml.getData("playerShip1_blue.png"), glm::vec3(2, 4, 0));
-    test = Player(texture, xml.getData("enemyBlack1.png"), glm::vec3(-2, 4, 0));
+
+    player = Player(texture, xml.getData("alienBlue.png"), glm::vec3(2, 4, 0));
+    test = Player(texture, xml.getData("alienBeige.png"), glm::vec3(-2, 4, 0));
 }
 
 

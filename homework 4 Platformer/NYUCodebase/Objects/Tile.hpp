@@ -7,7 +7,8 @@
 #include "Object.hpp"
 
 class Tile: public Object{
-    
+public:
+
 };
 
 #endif /* Tile_hpp */

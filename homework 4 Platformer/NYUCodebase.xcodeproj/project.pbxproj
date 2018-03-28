@@ -48,37 +48,37 @@
 		6D5AC2CF19AE6280004CB1BF /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		6D5AC2D119AE6A1E004CB1BF /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		D02A412C204B8B2C007CB2DD /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
-		D02A412E204B8B35007CB2DD /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		D02A412F204B8B3F007CB2DD /* Enemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Enemy.h; sourceTree = "<group>"; };
 		D02A4130204B8B50007CB2DD /* Enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
 		D0349960202DD68E00003B19 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../Source/libraries/XcodeFrameworks/SDL2.framework; sourceTree = "<group>"; };
 		D0349961202DD68E00003B19 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		D0349962202DD68E00003B19 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../Source/libraries/XcodeFrameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		D03D20D320488781000A9935 /* glm */ = {isa = PBXFileReference; lastKnownFileType = folder; name = glm; path = ../../include/glm; sourceTree = "<group>"; };
 		D03D25062048A326000A9935 /* Text.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
-		D03D25082048A331000A9935 /* Text.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		D03F0934206B2B0200D397E4 /* Tile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		D03F0935206B2B0200D397E4 /* Tile.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tile.hpp; sourceTree = "<group>"; };
 		D03F0937206B2B1600D397E4 /* StaticObj.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StaticObj.cpp; sourceTree = "<group>"; };
 		D03F0938206B2B1600D397E4 /* StaticObj.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StaticObj.hpp; sourceTree = "<group>"; };
 		D03F093A206B2B2200D397E4 /* DynamicObj.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicObj.cpp; sourceTree = "<group>"; };
 		D03F093B206B2B2200D397E4 /* DynamicObj.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DynamicObj.hpp; sourceTree = "<group>"; };
-		D03F093D206B2B6300D397E4 /* includes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = includes.h; sourceTree = "<group>"; };
+		D03F093E206B5AB400D397E4 /* includes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = includes.hpp; sourceTree = "<group>"; };
+		D03F093F206B5AB400D397E4 /* setUp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = setUp.hpp; sourceTree = "<group>"; };
+		D03F0940206B5AC000D397E4 /* Player.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Player.hpp; sourceTree = "<group>"; };
+		D03F0941206B5AC000D397E4 /* Enemy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Enemy.hpp; sourceTree = "<group>"; };
+		D03F0942206B5AC000D397E4 /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
+		D03F0943206B5AC000D397E4 /* Text.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Text.hpp; sourceTree = "<group>"; };
+		D03F0944206B5AD500D397E4 /* GameState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GameState.hpp; sourceTree = "<group>"; };
+		D03F0945206B5AD500D397E4 /* ShaderProgram.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ShaderProgram.hpp; sourceTree = "<group>"; };
+		D03F0946206B5AD500D397E4 /* XMLLoad.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = XMLLoad.hpp; sourceTree = "<group>"; };
+		D03F0947206B5AE000D397E4 /* Matrix.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Matrix.hpp; sourceTree = "<group>"; };
 		D068FAB22044F00300E2801F /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
 		D08D55C4203CE80300A06EA9 /* setUp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = setUp.cpp; sourceTree = "<group>"; };
 		D08D55CA203CEBA600A06EA9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D0D282EB2044F46A00B873AE /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
 		D0D282EC2044F46F00B873AE /* Matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Matrix.cpp; sourceTree = "<group>"; };
 		D0D282F32044F4EE00B873AE /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		D0D282F42044F4EE00B873AE /* XMLLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLLoad.cpp; sourceTree = "<group>"; };
 		D0D282F52044F4EE00B873AE /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
-		D0D282F62044F4EE00B873AE /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
-		D0D282F72044F4EE00B873AE /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object.h; sourceTree = "<group>"; };
 		D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShaderProgram.cpp; sourceTree = "<group>"; };
-		D0D282F92044F4EE00B873AE /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
-		D0D282FA2044F4EE00B873AE /* XMLLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLLoad.h; sourceTree = "<group>"; };
 		D0D283082044F7C200B873AE /* Shad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shad; sourceTree = "<group>"; };
-		D0D2830A2044F80300B873AE /* setUp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = setUp.h; sourceTree = "<group>"; };
 		D0D2830B2044FBD400B873AE /* Asset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Asset; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -182,8 +182,8 @@
 			children = (
 				D03D20D320488781000A9935 /* glm */,
 				D08D55CA203CEBA600A06EA9 /* main.cpp */,
-				D03F093D206B2B6300D397E4 /* includes.h */,
-				D0D2830A2044F80300B873AE /* setUp.h */,
+				D03F093E206B5AB400D397E4 /* includes.hpp */,
+				D03F093F206B5AB400D397E4 /* setUp.hpp */,
 				D08D55C4203CE80300A06EA9 /* setUp.cpp */,
 				D068FAB22044F00300E2801F /* stb_image.h */,
 				D0AAEEE7205376A6001FD048 /* Objects */,
@@ -198,17 +198,17 @@
 		D0AAEEE7205376A6001FD048 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				D0D282F72044F4EE00B873AE /* Object.h */,
+				D03F0942206B5AC000D397E4 /* Object.hpp */,
 				D0D282F32044F4EE00B873AE /* Object.cpp */,
 				D03F0938206B2B1600D397E4 /* StaticObj.hpp */,
 				D03F0937206B2B1600D397E4 /* StaticObj.cpp */,
 				D03F093B206B2B2200D397E4 /* DynamicObj.hpp */,
 				D03F093A206B2B2200D397E4 /* DynamicObj.cpp */,
-				D03D25082048A331000A9935 /* Text.h */,
+				D03F0943206B5AC000D397E4 /* Text.hpp */,
 				D03D25062048A326000A9935 /* Text.cpp */,
-				D02A412E204B8B35007CB2DD /* Player.h */,
+				D03F0940206B5AC000D397E4 /* Player.hpp */,
 				D02A412C204B8B2C007CB2DD /* Player.cpp */,
-				D02A412F204B8B3F007CB2DD /* Enemy.h */,
+				D03F0941206B5AC000D397E4 /* Enemy.hpp */,
 				D02A4130204B8B50007CB2DD /* Enemy.cpp */,
 				D03F0935206B2B0200D397E4 /* Tile.hpp */,
 				D03F0934206B2B0200D397E4 /* Tile.cpp */,
@@ -219,8 +219,8 @@
 		D0D282EA2044F44100B873AE /* Math */ = {
 			isa = PBXGroup;
 			children = (
+				D03F0947206B5AE000D397E4 /* Matrix.hpp */,
 				D0D282EC2044F46F00B873AE /* Matrix.cpp */,
-				D0D282EB2044F46A00B873AE /* Matrix.h */,
 			);
 			path = Math;
 			sourceTree = "<group>";
@@ -228,11 +228,11 @@
 		D0D282F22044F4D700B873AE /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				D0D282F62044F4EE00B873AE /* GameState.h */,
+				D03F0944206B5AD500D397E4 /* GameState.hpp */,
 				D0D282F52044F4EE00B873AE /* GameState.cpp */,
-				D0D282F92044F4EE00B873AE /* ShaderProgram.h */,
+				D03F0945206B5AD500D397E4 /* ShaderProgram.hpp */,
 				D0D282F82044F4EE00B873AE /* ShaderProgram.cpp */,
-				D0D282FA2044F4EE00B873AE /* XMLLoad.h */,
+				D03F0946206B5AD500D397E4 /* XMLLoad.hpp */,
 				D0D282F42044F4EE00B873AE /* XMLLoad.cpp */,
 			);
 			path = Util;

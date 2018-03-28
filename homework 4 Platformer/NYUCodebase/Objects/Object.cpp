@@ -22,7 +22,7 @@ void Object::update(float elapsed){
     modelMatrix.Identity();
 
     modelMatrix.Translate(pos.x, pos.y, pos.z);
-    modelMatrix.Scale(shape.x, shape.y, shape.z);
+    modelMatrix.Scale(scale, scale, scale);
 
     modelMatrix.Rotate(rotate);
 }
@@ -94,7 +94,7 @@ bool Object::collide(const Object& rhs) {
 
 
 void Object::setScale(float size){
-    this->shape *= size;
+    this->scale = size;
 }
 
 void Object::setShape(const glm::vec3& shape){
@@ -110,11 +110,15 @@ void Object::setPos(const glm::vec3& pos){
 }
 
 void Object::setData(const XMLData& data){
-    // assume the shape of sheetsprite is 1024 * 1024
-    float u = data.x / 1024.0, v = data.y / 1024.0, width = data.width / 1024.0, height = data.height / 1024.0;
+    // assume the shape of sheetsprite is 1024 * 512
+    float u = data.x / 1024.0,
+          v = data.y / 512.0,
+          width = data.width / 1024.0,
+          height = data.height / 512.0;
 
     // rescale the image so that the max edge length is 1
-    float w = (width / height < 1) ? width / height : 1.0, h = (width / height < 1) ? 1.0 : height / width;
+    float w = (data.width / data.height < 1) ? data.width / data.height : 1.0,
+          h = (data.width / data.height < 1) ? 1.0 : data.height / data.width;
 
     vertices = {
         -0.5f * w, -0.5f * h,

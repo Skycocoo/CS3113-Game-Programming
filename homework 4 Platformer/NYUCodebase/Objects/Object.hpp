@@ -45,6 +45,7 @@ protected:
     // physics
     glm::vec3 pos;
     float rotate = 0.0;
+    float scale = 1.0;
 
     // vertices
     glm::vec3 shape; // shape.x: width; shape.y: height; shape.z: 0 / 1
