@@ -45,6 +45,31 @@ void Object::render(){
     if (glIsTexture(texture)) glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
+// collision detection
+bool Object::collide(const Object& rhs) {
+    bool collide = false;
+
+    float objUp = pos.y + shape.y / 2,
+    objDown = pos.y - shape.y / 2,
+    objLeft = pos.x - shape.x / 2,
+    objRight = pos.x + shape.x / 2;
+
+
+    float enUp = rhs.pos.y + rhs.shape.y / 2,
+    enDown = rhs.pos.y - rhs.shape.y / 2,
+    enLeft = rhs.pos.x - rhs.shape.x / 2,
+    enRight = rhs.pos.x + rhs.shape.x / 2;
+
+
+    // intersecting
+    if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
+
+    // avoid stuck in the collision bar in collision handling function
+
+    return collide;
+}
+
+
 void Object::setScale(float size){
     this->shape *= size;
 }
@@ -100,45 +125,3 @@ void Object::setData(const XMLData& data){
     shape.x = w;
     shape.y = h;
 }
-
-
-// collision detection
-bool Object::collide(const Object& rhs){
-    bool collide = false;
-
-    float   objUp = pos.y + shape.y / 2,
-    objDown = pos.y - shape.y / 2,
-    objLeft = pos.x - shape.x / 2,
-    objRight = pos.x + shape.x / 2;
-
-
-    float enUp = rhs.pos.y + rhs.shape.y / 2,
-    enDown = rhs.pos.y - rhs.shape.y / 2,
-    enLeft = rhs.pos.x - rhs.shape.x / 2,
-    enRight = rhs.pos.x + rhs.shape.x / 2;
-
-
-    // intersecting
-    if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
-
-    // avoid stuck in the collision bar in collision handling function
-
-    return collide;
-}
-
-
-
-
-//Enemy::Enemy(ShaderProgram& program, bool is, GLuint tex, float x, float y, float width, float height, float velocity_x, float velocity_y, bool up): Object(program, is, tex, x, y, width, height, velocity_x, velocity_y), up(up){}
-//
-//void Enemy::update(float elapsed) {
-//    // update the slide bar to be automatically moved by time
-//    float distance = elapsed * velocity_y;
-//
-//    if (y > screenHeight - distance - height / 2 - splitScale / 2) up = false;
-//    else if (y < -screenHeight + distance + height / 2 + splitScale / 2) up = true;
-//    if (up) y += distance;
-//    else y -= distance;
-//
-//    Object::update();
-//}

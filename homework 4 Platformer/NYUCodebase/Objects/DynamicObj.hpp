@@ -16,9 +16,53 @@ public:
     // void setVelo(const glm::vec3& velo);
     // void setVelo(float x, float y, float z = 1.0);
 
-    void collideHandle(const StaticObj& rhs){
 
+    void updateVelo(float elapsed){
+        Object::lerp(velo, fric * elapsed);
+        velo += acce * elapsed;
+       // velo += grav * elapsed;
     }
+
+    bool collide(float elapsed, const Object& rhs) {
+        updateVelo(elapsed);
+
+        // x axis:
+        pos.x += velo.x * elapsed;
+
+        // need to call object::collide to test actual collision (comparing only x axis is not enough)
+        if (Object::collide(rhs)){
+            if (pos.x - shape.x / 2 <= rhs.pos.x + rhs.shape.x / 2){
+                collide.left = true;
+            } else if (pos.x + shape.x / 2 >= rhs.pos.x - rhs.shape.x / 2){
+                collide.right = true;
+            }
+
+            float penetration = fbas((pos.x - rhs.pos.x) - shape.x - rhs.shape.x);
+
+            if (collide.left) pos.x += peneration + 0.0001;
+            else pos.x -= peneration + 0.0001;
+        }
+
+        // y axis:
+        pos.y += velo.y * elapsed;
+
+        // need to call object::collide to test actual collision (comparing only x axis is not enough)
+        if (Object::collide(rhs)){
+            if (pos.y - shape.y / 2 <= rhs.pos.y + rhs.shape.y / 2){
+                collide.bottom = true;
+            } else if (pos.y + shape.y / 2 >= rhs.pos.y - rhs.shape.y / 2){
+                collide.top = true;
+            }
+
+            float penetration = fbas((pos.y - rhs.pos.y) - shape.y - rhs.shape.y);
+
+            if (collide.bottom) pos.y += peneration + 0.0001;
+            else pos.y -= peneration + 0.0001;
+        }
+
+        Object::update();
+    }
+
 
 protected:
     // collision flags for four sides

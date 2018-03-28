@@ -21,6 +21,7 @@ public:
 
     virtual void update(float elapsed = 0);
     virtual void render();
+    virtual bool collide (const Object& rhs);
 
     void setScale(float size);
     void setShape(const glm::vec3& shape);
@@ -28,8 +29,6 @@ public:
     void setPos(const glm::vec3& pos);
 
     void setData(const XMLData& data);
-
-    bool collide (const Object& rhs);
 
 protected:
     // shader
