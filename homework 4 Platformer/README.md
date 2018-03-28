@@ -17,4 +17,6 @@ Please clone with ```git clone --recursive https://github.com/Skycocoo/CS3113-Ga
 
 ## TileMap~
 
-![alt text](https://raw.githubusercontent.com/Skycocoo/CS3113-Game-Programming/master/homework%204%20Platformer/tilemap.png) 
+Utilized http://www.mapeditor.org/ to generate tilemap for this platformer game
+
+![alt text](https://raw.githubusercontent.com/Skycocoo/CS3113-Game-Programming/master/homework%204%20Platformer/tilemap.png)
