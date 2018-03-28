@@ -9,20 +9,15 @@
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
 
-FlareMap::FlareMap(){
-	// std::cout << "default FlareMap()\n";
-}
+FlareMap::FlareMap(){}
 
 FlareMap::FlareMap(const std::string& fileName) {
-	// std::cout << "actual FlareMap()\n";
-	Load(fileName);
+    Load(fileName);
 }
 
 
 FlareMap::~FlareMap() {
-    // std::cout << "~Flare() " << mapWidth << " " << mapHeight << std::endl;
 	for(int i = 0; i < this->mapHeight; i++) {
-        // std::cout << i << std::boolalpha << " " << (i < this->mapHeight) << " " << this->mapHeight << std::endl;
 		delete mapData[i];
 	}
 	delete [] mapData;

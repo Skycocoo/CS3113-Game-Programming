@@ -10,37 +10,37 @@ struct FlareMapEntity {
 };
 
 class FlareMap {
-	public:
-		FlareMap();
-		FlareMap(const std::string& filename);
+public:
+	int mapWidth = -1;
+	int mapHeight = -1;
 
-		FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.mapHeight){
-			mapData = new int*[mapHeight];
-			for (int i = 0; i < mapHeight; i++){
-				mapData[i] = new int[mapWidth];
-			}
+	int **mapData = nullptr;
+	std::vector<FlareMapEntity> entities;
 
-			for(int y=0; y < mapHeight; y++) {
-			    for(int x=0; x < mapWidth; x++) {
-					mapData[y][x] = rhs.mapData[y][x];
-			    }
-			}
+
+	FlareMap();
+	FlareMap(const std::string& filename);
+
+	FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.mapHeight){
+		mapData = new int*[mapHeight];
+		for (int i = 0; i < mapHeight; i++){
+			mapData[i] = new int[mapWidth];
 		}
 
-		~FlareMap();
+		for(int y=0; y < mapHeight; y++) {
+		    for(int x=0; x < mapWidth; x++) {
+				mapData[y][x] = rhs.mapData[y][x];
+		    }
+		}
+	}
 
-		void Load(const std::string& fileName);
+	~FlareMap();
 
-		int mapWidth = -1;
-		int mapHeight = -1;
+	void Load(const std::string& fileName);
 
-		int **mapData = nullptr;
-		std::vector<FlareMapEntity> entities;
-
-	private:
-
-		bool ReadHeader(std::ifstream &stream);
-		bool ReadLayerData(std::ifstream &stream);
-		bool ReadEntityData(std::ifstream &stream);
+private:
+	bool ReadHeader(std::ifstream &stream);
+	bool ReadLayerData(std::ifstream &stream);
+	bool ReadEntityData(std::ifstream &stream);
 
 };
