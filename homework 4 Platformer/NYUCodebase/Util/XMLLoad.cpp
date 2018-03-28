@@ -1,7 +1,7 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#include "XMLLoad.h"
+#include "XMLLoad.hpp"
 
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
@@ -24,12 +24,12 @@ XMLLoad::XMLLoad(const std::string& filepath): name(filepath){
         std::cout << "Unable to load XML sheet in the path " << filepath << ". Make sure the path is correct\n";
         exit(1);
     }
-    
+
     std::string first, subtext, name, x, y, width, height;
-    
+
     // skip the first line (not useful)
     getline(ifs, first);
-    
+
     // assume the pattern is name="aaaa.png" x="a" y="a" width="a" height="a"/>
     // substr: start position, length of the substring
     while (ifs >> subtext >> name >> x >> y >> width >> height){
@@ -38,7 +38,7 @@ XMLLoad::XMLLoad(const std::string& filepath): name(filepath){
         y = y.substr(3, y.size() - 3 - 1);
         width = width.substr(7, width.size() - 7 - 1);
         height = height.substr(8, height.size() - 8 - 3);
-        
+
         table[name] = XMLData(stoi(x), stoi(y), stoi(width), stoi(height));
     }
     ifs.close();

@@ -1,7 +1,7 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#include "Object.h"
+#include "Object.hpp"
 #include <math.h>
 
 using namespace std;

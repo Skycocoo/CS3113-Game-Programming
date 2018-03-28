@@ -1,10 +1,10 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#ifndef setUp_h
-#define setUp_h
+#ifndef setUp_hpp
+#define setUp_hpp
 
-#include "Util/ShaderProgram.h"
+#include "Util/ShaderProgram.hpp"
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
@@ -26,4 +26,4 @@ SDL_Window* setUp(const std::string& name);
 // check keyboard event
 void checkKeyboard(const SDL_Event& event, bool& done);
 
-#endif /* setUp_h */
+#endif /* setUp_hpp */

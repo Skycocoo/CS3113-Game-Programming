@@ -1,8 +1,8 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#ifndef XMLLoad_h
-#define XMLLoad_h
+#ifndef XMLLoad_hpp
+#define XMLLoad_hpp
 
 #include <iostream>
 #include <fstream>
@@ -12,10 +12,10 @@
 class XMLData {
 public:
     friend std::ostream& operator<<(std::ostream& os, const XMLData& data);
-    
+
     XMLData();
     XMLData(float x, float y, float width, float height);
-    
+
     float x;
     float y;
     float width;
@@ -27,7 +27,7 @@ class XMLLoad{
 public:
     XMLLoad();
     XMLLoad(const std::string& filepath);
-    
+
     void display(std::ostream& os = std::cout) const;
     void getKeys() const;
     XMLData getData(const std::string& name);
@@ -37,4 +37,4 @@ private:
     std::map<std::string, XMLData> table;
 };
 
-#endif /* XMLLoad_h */
+#endif /* XMLLoad_hpp */

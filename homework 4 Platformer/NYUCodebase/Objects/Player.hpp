@@ -1,8 +1,8 @@
 // Yuxi Luo (yl4217), March 3, 2018
 // CS3113 Game Programming
 
-#ifndef Player_h
-#define Player_h
+#ifndef Player_hpp
+#define Player_hpp
 
 #include "DynamicObj.hpp"
 
@@ -44,4 +44,4 @@ private:
     // std::vector<XMLData> data;// bullets: disappear when collide
 };
 
-#endif /* Player_h */
+#endif /* Player_hpp */

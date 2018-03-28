@@ -2,7 +2,7 @@
 // CS3113 Game Programming
 
 
-#include "setUp.h"
+#include "setUp.hpp"
 #include "stb_image.h"
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
@@ -89,4 +89,3 @@ void checkKeyboard(const SDL_Event& event, bool& done){
             break;
     }
 }
-

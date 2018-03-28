@@ -4,7 +4,7 @@
 #ifndef DynamicObj_hpp
 #define DynamicObj_hpp
 
-#include "Object.h"
+#include "Object.hpp"
 
 class DynamicObj: public Object{
 public:

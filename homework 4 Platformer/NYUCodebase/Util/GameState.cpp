@@ -1,8 +1,8 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#include "GameState.h"
-#include "../setUp.h"
+#include "GameState.hpp"
+#include "../setUp.hpp"
 
 extern ShaderProgram untextured;
 extern ShaderProgram textured;
@@ -113,7 +113,7 @@ void GameState::displayLevel(){
     Matrix viewMatrix;
     glm::vec3 playerPos = player.center();
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
-    
+
     player.render(viewMatrix);
     test.render(viewMatrix);
 //    enemygroup.render();

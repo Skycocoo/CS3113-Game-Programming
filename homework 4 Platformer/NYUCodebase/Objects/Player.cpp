@@ -1,7 +1,7 @@
 // Yuxi Luo (yl4217), March 3, 2018
 // CS3113 Game Programming
 
-#include "Player.h"
+#include "Player.hpp"
 
 Player::Player(){}
 

@@ -4,8 +4,10 @@
 #ifndef Tile_hpp
 #define Tile_hpp
 
-#include "StaticObj.hpp"
+#include "Object.hpp"
 
-class Tile: public StaticObj{};
+class Tile: public Object{
+    
+};
 
 #endif /* Tile_hpp */

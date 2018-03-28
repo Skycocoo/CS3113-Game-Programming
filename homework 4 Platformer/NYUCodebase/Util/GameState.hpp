@@ -1,13 +1,13 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#ifndef GameState_h
-#define GameState_h
+#ifndef GameState_hpp
+#define GameState_hpp
 
-#include "../Objects/Player.h"
-#include "../Objects/Enemy.h"
-#include "../Objects/Text.h"
-#include "XMLLoad.h"
+#include "../Objects/Player.hpp"
+#include "../Objects/Enemy.hpp"
+#include "../Objects/Text.hpp"
+#include "XMLLoad.hpp"
 
 
 class GameState{
@@ -33,5 +33,4 @@ private:
     Text disp;
 };
 
-
-#endif /* GameState_h */
+#endif /* GameState_hpp */

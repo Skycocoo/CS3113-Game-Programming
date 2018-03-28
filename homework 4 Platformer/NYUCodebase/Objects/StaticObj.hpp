@@ -4,7 +4,7 @@
 #ifndef StaticObj_hpp
 #define StaticObj_hpp
 
-#include "Object.h"
+#include "Object.hpp"
 
 // no updates / gravity applied
 class StaticObj: public Object{

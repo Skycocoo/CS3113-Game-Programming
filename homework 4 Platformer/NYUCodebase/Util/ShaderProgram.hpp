@@ -5,12 +5,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "../Math/Matrix.h"
+#include "../Math/Matrix.hpp"
 
 class ShaderProgram {
 public:
 	void Load(const char *vertexShaderFile, const char *fragmentShaderFile);
-	void Cleanup();   
+	void Cleanup();
 
     void SetModelMatrix(const Matrix &matrix);
     void SetProjectionMatrix(const Matrix &matrix);

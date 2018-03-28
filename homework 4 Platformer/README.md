@@ -11,3 +11,5 @@ Please clone with ```git clone --recursive https://github.com/Skycocoo/CS3113-Ga
 1. make Platformer game
 
 2. use modelview to center on player
+
+3. player interacts with enemies

@@ -1,15 +1,15 @@
 // Yuxi Luo (yl4217), February 26, 2018
 // CS3113 Game Programming
 
-#ifndef Object_h
-#define Object_h
+#ifndef Object_hpp
+#define Object_hpp
 
 #include <vector>
 #include <string>
 
-#include "../Util/XMLLoad.h"
-#include "../Util/ShaderProgram.h"
-#include "../Math/Matrix.h"
+#include "../Util/XMLLoad.hpp"
+#include "../Util/ShaderProgram.hpp"
+#include "../Math/Matrix.hpp"
 
 #include "glm/glm.hpp"
 
@@ -66,9 +66,4 @@ protected:
 
 };
 
-
-
-
-
-
-#endif /* Object_h */
+#endif /* Object_hpp */

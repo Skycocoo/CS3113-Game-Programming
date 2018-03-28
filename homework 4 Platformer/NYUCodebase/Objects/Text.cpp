@@ -1,7 +1,7 @@
 // Yuxi Luo (yl4217), March 1, 2018
 // CS3113 Game Programming
 
-#include "Text.h"
+#include "Text.hpp"
 using namespace std;
 
 extern float screenWidth;
@@ -21,10 +21,10 @@ void Text::render(const string& text, float size, float spacing, float x, float 
 
     float shrink = 5.0;
     float texture_size = 1.0/16.0;
-    
+
     // center the text
     x = x - float(text.size() - 1) / float(2) * (size + spacing) / shrink;
-    
+
     vector<float> vertexData;
     vector<float> texCoordData;
     for (int i = 0; i < text.size(); i++) {
@@ -47,15 +47,15 @@ void Text::render(const string& text, float size, float spacing, float x, float 
             texture_x + texture_size, texture_y,
             texture_x, texture_y + texture_size,
         }); }
-    
+
     glUseProgram(program->programID);
     glBindTexture(GL_TEXTURE_2D, texture);
-    
+
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertexData.data());
     glEnableVertexAttribArray(program->positionAttribute);
     glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoordData.data());
     glEnableVertexAttribArray(program->texCoordAttribute);
-    
+
     glDrawArrays(GL_TRIANGLES, 0, text.size() * 6);
     glDisableVertexAttribArray(program->positionAttribute);
     glDisableVertexAttribArray(program->texCoordAttribute);
