@@ -41,10 +41,10 @@ void updateGame(const SDL_Event& event, GameState& game){
                     mode = STATE_GAME_LEVEL;
                     break;
                 case SDL_SCANCODE_LEFT:
-                    if (mode == STATE_GAME_LEVEL) game.player.control(-0.5);
+                    if (mode == STATE_GAME_LEVEL) game.player.control(-5);
                     break;
                 case SDL_SCANCODE_RIGHT:
-                    if (mode == STATE_GAME_LEVEL) game.player.control(0.5);
+                    if (mode == STATE_GAME_LEVEL) game.player.control(5);
                     break;
             }
             break;

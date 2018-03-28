@@ -23,7 +23,7 @@ Player::Player(GLuint texture, const std::vector<XMLData>& data, glm::vec3 pos):
 }
 
 void Player::control(float disp){
-    velo.x += disp;
+    acce.x += disp;
 }
 
 void Player::update(float elapsed){
@@ -38,6 +38,8 @@ void Player::update(float elapsed){
         Object::lerp(pos, glm::vec3(0.0001, 0, 0));
         velo.x = 0;
     }
+    
+    if (acce.x != 0) acce.x = 0;
     
     Object::update();
 }
