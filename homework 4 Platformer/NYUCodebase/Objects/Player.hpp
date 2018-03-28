@@ -34,6 +34,10 @@ public:
     // int getLives() const;
     // void decLives();
 
+    // ~Player(){
+    //     std::cout << "~Player()\n";
+    // }
+
 private:
 
     int score = 0;

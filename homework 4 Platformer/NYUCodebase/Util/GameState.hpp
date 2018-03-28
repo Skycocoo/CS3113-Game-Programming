@@ -29,13 +29,14 @@ public:
     void displayMainMenu();
     void displayLevel();
     void displayOver();
-    
+
     ~GameState(){
         std::cout << "~Gamestate\n";
     }
 
 private:
     XMLLoad xml;
+    FlareMap map;
     Text disp;
 };
 

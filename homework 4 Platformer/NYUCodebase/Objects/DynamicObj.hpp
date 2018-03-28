@@ -18,6 +18,10 @@ public:
     void updateVelo(float elapsed);
     bool collide(float elapsed, const Object& rhs);
 
+    // ~DynamicObj(){
+    //     std::cout << "~DynamicObj()\n";
+    // }
+
 protected:
     // should set float or else it would set to garbage value
     glm::vec3 velo;

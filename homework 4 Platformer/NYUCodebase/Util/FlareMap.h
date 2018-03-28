@@ -12,14 +12,23 @@ struct FlareMapEntity {
 class FlareMap {
 	public:
 		FlareMap();
+		FlareMap(const std::string& filename);
+
+		// FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.mapHeight){
+		// 	mapData = new int*[mapHeight];
+		// 	for (int i = 0; i < mapHeight; i++){
+		// 		mapdata[i] = new int[mapWidth];
+		// 	}
+		// }
+
 		~FlareMap();
 
 		void Load(const std::string& fileName);
 
-		int mapWidth;
-		int mapHeight;
+		int mapWidth = -1;
+		int mapHeight = -1;
 
-		int **mapData;
+		int **mapData = nullptr;
 		std::vector<FlareMapEntity> entities;
 
 	private:

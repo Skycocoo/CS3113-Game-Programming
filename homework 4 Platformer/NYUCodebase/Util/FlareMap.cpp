@@ -8,14 +8,19 @@
 
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
-FlareMap::FlareMap() {
-	mapData = nullptr;
-	mapWidth = -1;
-	mapHeight = -1;
+
+FlareMap::FlareMap(){
+	std::cout << "default FlareMap()\n";
 }
 
+FlareMap::FlareMap(const std::string& fileName) {
+	std::cout << "actual FlareMap()\n";
+	Load(fileName);
+}
+
+
 FlareMap::~FlareMap() {
-    std::cout << "~Flare()\n";
+    std::cout << "~Flare() " << mapWidth << " " << mapHeight << std::endl;
 	for(int i = 0; i < this->mapHeight; i++) {
 //        std::cout << i << std::boolalpha << " " << (i < this->mapHeight) << " " << this->mapHeight << std::endl;
 		delete mapData[i];
@@ -117,6 +122,8 @@ void FlareMap::Load(const std::string& fileName) {
 		std::cout << "Unable to load FlareMap in the path " << fileName << ". Make sure the path is correct\n";
         exit(1);
 	}
+
+	std::cout << "Loading FlareMap\n";
 
 	std::string line;
 	while (std::getline(infile, line)) {
