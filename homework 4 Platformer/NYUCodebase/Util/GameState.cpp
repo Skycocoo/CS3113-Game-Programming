@@ -12,8 +12,11 @@ extern GameMode mode;
 extern float fixedStep;
 extern int maxStep;
 
+extern glm::vec3 center;
+
 GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     untextured = setUntextured();
+    center = tile.getCenter();
 
     GLuint text;
     textured = setTextured("Asset/font1.png", text);
@@ -27,10 +30,10 @@ void GameState::init(){
     textured = setTextured("Asset/sheet.png", texture);
 
 
-    player = Player(texture, xml.getData("alienBlue.png"), tile.getCenter());
+    player = Player(texture, xml.getData("alienBlue.png"), center);
     player.setScale(0.3);
     player.setTile(tile);
-    test = Player(texture, xml.getData("alienBeige.png"), tile.getCenter());
+    test = Player(texture, xml.getData("alienBeige.png"), center);
     test.setScale(0.3);
     test.setTile(tile);
 }

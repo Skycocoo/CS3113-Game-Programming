@@ -26,6 +26,6 @@ the enemy could be pushed away by player
 
 Utilized http://www.mapeditor.org/ to generate tilemap for this platformer game
 
-![alt text](https://raw.githubusercontent.com/Skycocoo/CS3113-Game-Programming/master/homework%204%20Platformer/icy.png)
+<!-- ![alt text](https://raw.githubusercontent.com/Skycocoo/CS3113-Game-Programming/master/homework%204%20Platformer/icy.png) -->
 
 ![alt text](https://raw.githubusercontent.com/Skycocoo/CS3113-Game-Programming/master/homework%204%20Platformer/dango.png)

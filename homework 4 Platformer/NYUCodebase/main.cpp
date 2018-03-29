@@ -27,6 +27,8 @@ int maxStep = 3;
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 GameMode mode = STATE_GAME_LEVEL;
 
+glm::vec3 center = glm::vec3(0, 0, 0);
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -51,7 +53,7 @@ void updateGame(const SDL_Event& event, GameState& game){
                 case SDL_SCANCODE_SPACE:
                     if (mode == STATE_GAME_LEVEL) game.player.jump(0.5);
                     break;
-                    
+
             }
             break;
     }
@@ -63,13 +65,13 @@ int main(){
     // initial set up
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Homework 4 Platformer");
-    
+
     GameState game;
 
     SDL_Event event;
     bool done = false;
     float lastFrameTicks = 0.0f, accumulator = 0.0f;
-    
+
     while (!done) {
         // keyboard event
         while (SDL_PollEvent(&event)) {
