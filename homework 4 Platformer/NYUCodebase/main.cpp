@@ -38,8 +38,7 @@ void updateGame(const SDL_Event& event, GameState& game){
         case SDL_KEYDOWN:
             switch (event.key.keysym.scancode){
                 case SDL_SCANCODE_B:
-                    if (mode == STATE_GAME_OVER) game.init();
-                    mode = STATE_GAME_LEVEL;
+                    game.init();
                     break;
                 case SDL_SCANCODE_LEFT:
                     if (mode == STATE_GAME_LEVEL) game.player.control(-5);

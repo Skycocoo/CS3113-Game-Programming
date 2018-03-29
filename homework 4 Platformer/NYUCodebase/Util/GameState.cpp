@@ -22,13 +22,8 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);
 
-    init();
-}
-
-void GameState::init(){
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
-
 
     player = Player(texture, xml.getData("alienBlue.png"), center);
     player.setScale(0.3);
@@ -36,6 +31,13 @@ void GameState::init(){
     test = Player(texture, xml.getData("alienBeige.png"), center);
     test.setScale(0.3);
     test.setTile(tile);
+
+    init();
+}
+
+void GameState::init(){
+    player.setPos(center);
+    test.setPos(center);
 }
 
 
