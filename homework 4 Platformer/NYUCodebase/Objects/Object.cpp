@@ -16,6 +16,11 @@ Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): pr
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
 
+void Object::setProject(float proj){
+    projectionMatrix.SetOrthoProjection(-screenWidth * proj, screenWidth * proj, -screenHeight * proj, screenHeight * proj, -1.0f, 1.0f);
+}
+
+
 void Object::update(float elapsed){
     modelMatrix.Identity();
 

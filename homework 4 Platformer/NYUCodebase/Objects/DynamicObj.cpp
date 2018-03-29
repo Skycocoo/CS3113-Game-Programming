@@ -8,8 +8,8 @@ extern ShaderProgram textured;
 
 DynamicObj::DynamicObj(): Object::Object(){}
 
-DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile& tile):
-    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.01, 0.01, 0.01), grav(0, -0.5, 0), acce(0, 0, 0), tile(&tile)
+DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
+    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.01, 0.01, 0.01), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
     {}
 
 void DynamicObj::update(float elapsed){
@@ -17,6 +17,15 @@ void DynamicObj::update(float elapsed){
 }
 void DynamicObj::render(const Matrix& view){
     Object::render(view);
+}
+
+const glm::vec3 DynamicObj::getVelo() const {
+    return velo;
+}
+
+void DynamicObj::setVelo(float x, float y){
+    velo.x = x;
+    velo.y = y;
 }
 
 void DynamicObj::updateVelo(float elapsed){

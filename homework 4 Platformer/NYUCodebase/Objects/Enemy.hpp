@@ -11,7 +11,7 @@ class EnemyGroup;
 class Enemy: public DynamicObj{
 public:
     Enemy();
-    Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
+    Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile);
 
     void update(float elapsed);
     void control(float disp);
@@ -25,13 +25,14 @@ public:
     std::vector<Enemy> ene;
 
     EnemyGroup();
-    EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
+    EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile);
 
     // void update(float elapsed);
     void render(const Matrix& view = Matrix());
     bool collide(float elapsed);
 
     void setPos(const glm::vec3& pos);
+    void setProject(float scale);
 
     void delEne(size_t index);
     int getEne() const;

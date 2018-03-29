@@ -12,7 +12,7 @@ class DynamicObj: public Object{
 public:
 
     DynamicObj();
-    DynamicObj(GLuint texture, const glm::vec3& pos, const Tile& tile);
+    DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile);
 
     void setTile(const Tile& t){
         tile = &t;
@@ -21,6 +21,8 @@ public:
     void update(float elapsed);
     void render(const Matrix& view = Matrix());
 
+    const glm::vec3 getVelo() const;
+    void setVelo(float x, float y);
     void updateVelo(float elapsed);
     bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);

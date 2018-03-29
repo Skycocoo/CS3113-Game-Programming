@@ -7,7 +7,7 @@
 
 Player::Player(){}
 
-Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile): DynamicObj(texture, pos, tile){
+Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile): DynamicObj(texture, pos, tile){
     Object::setData(data);
 }
 

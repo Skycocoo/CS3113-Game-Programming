@@ -44,6 +44,8 @@ public:
     void setPos(const glm::vec3& pos);
     void setPos(float x, float y);
 
+    void setProject(float proj);
+
     void setData(const XMLData& data);
 
     const glm::vec3& getCenter() const {

@@ -11,7 +11,7 @@ extern float edge;
 
 Enemy::Enemy(){}
 
-Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile): DynamicObj(texture, pos, tile){
+Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile): DynamicObj(texture, pos, tile){
     Object::setData(data);
 }
 
@@ -32,8 +32,8 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 
     // x axis:
     pos.x += velo.x * elapsed;
-    
-    for (int i = 0; i < enemygroup.ene.size(); i++){
+
+    for (size_t i = 0; i < enemygroup.ene.size(); i++){
         if (this != &enemygroup.ene[i]){
             bool result = Object::collide(enemygroup.ene[i]);
             if (result){
@@ -51,7 +51,7 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
     // y axis:
     pos.y += velo.y * elapsed;
 
-    for (int i = 0; i < enemygroup.ene.size(); i++){
+    for (size_t i = 0; i < enemygroup.ene.size(); i++){
         if (this != &enemygroup.ene[i]){
             y = y || Object::collide(enemygroup.ene[i]);
         }
@@ -71,7 +71,7 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 
 EnemyGroup::EnemyGroup(){}
 
-EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile):
+EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile):
     size(0.2), numEn(2), numCol(2), numRow(1){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;
@@ -82,7 +82,7 @@ EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos
 
         for (int j = 0; j < numCol; j++){
             float relativeX = j - float(numCol - 1) / float(2);
-            std::cout << posX + relativeX * step << " " << posY + relativeY * step << std::endl;
+            // std::cout << posX + relativeX * step << " " << posY + relativeY * step << std::endl;
             Enemy temp (texture, data, glm::vec3(posX + relativeX * step, posY + relativeY * step, 0), tile);
             temp.setScale(size);
             ene.push_back(temp);
@@ -94,19 +94,26 @@ void EnemyGroup::setPos(const glm::vec3& pos){
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;
 
-    for (int i = 0; i < numRow; i++){
+    for (size_t i = 0; i < ene.size(); i++){
         float relativeY = i - float(numRow - 1) / float(2);
 
         for (int j = 0; j < numCol; j++){
             float relativeX = j - float(numCol - 1) / float(2);
             ene[i].setPos(posX + relativeX * step, posY + relativeY * step);
+            ene[i].setVelo(0, 0);
         }
+    }
+}
+
+void EnemyGroup::setProject(float scale){
+    for (size_t i = 0; i < ene.size(); i++){
+        ene[i].setProject(scale);
     }
 }
 
 bool EnemyGroup::collide(float elapsed){
     bool result = false;
-    for (int i = 0; i < ene.size(); i++){
+    for (size_t i = 0; i < ene.size(); i++){
         result = result || ene[i].collide(elapsed, *this);
     }
     return result;
