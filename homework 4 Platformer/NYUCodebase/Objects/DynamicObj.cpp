@@ -2,6 +2,7 @@
 // CS3113 Game Programming
 
 #include "DynamicObj.hpp"
+#include "Tile.hpp"
 
 extern ShaderProgram textured;
 
@@ -20,7 +21,7 @@ void DynamicObj::render(const Matrix& view){
 void DynamicObj::updateVelo(float elapsed){
     lerp(velo, fric * elapsed);
     velo += acce * elapsed;
-//    velo += grav * elapsed;
+    velo += grav * elapsed;
 
    if (acce.x != 0) acce.x = 0;
 }
@@ -33,11 +34,15 @@ bool DynamicObj::collide(float elapsed, const Object& rhs) {
     // x axis:
     pos.x += velo.x * elapsed;
     result = Object::collide(rhs);
+    // should also check collide with tile map
+    if (tile) result = result || tile->collide(*this);
     if (result) velo.x = 0;
 
     // y axis:
     pos.y += velo.y * elapsed;
     result = result || Object::collide(rhs);
+    // should also check collide with tile map
+    if (tile) result = result || tile->collide(*this);
     if (result) velo.y = 0;
 
     Object::update();

@@ -22,13 +22,7 @@ public:
     void control(float disp);
 
     int getScore() const;
-
-
     void incScore(int s);
-
-    const glm::vec3& center() const {
-        return pos;
-    }
 
     // void renderLives();
     // int getLives() const;

@@ -13,8 +13,10 @@
 
 #include "glm/glm.hpp"
 
+
 // create an object class to handle parameters
 class Object{
+    friend class Tile;
 public:
     Object();
     Object(ShaderProgram* program, GLuint texture = 0, const glm::vec3& pos = glm::vec3(0, 0, 0));
@@ -29,6 +31,10 @@ public:
     void setPos(const glm::vec3& pos);
 
     void setData(const XMLData& data);
+
+    const glm::vec3& getCenter() const {
+        return pos;
+    }
 
 protected:
     // shader

@@ -6,12 +6,18 @@
 
 #include "Object.hpp"
 
+class Tile;
+
 class DynamicObj: public Object{
 public:
 
     DynamicObj();
     DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0));
 
+    void setTile(const Tile& t){
+        tile = &t;
+    }
+    
     void update(float elapsed);
     void render(const Matrix& view = Matrix());
 
@@ -29,6 +35,8 @@ protected:
 
     glm::vec3 fric;
     glm::vec3 grav;
+    
+    const Tile* tile = nullptr;
 
     // linear interpolation
     void lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar = glm::vec3(0, 0, 0)) const;

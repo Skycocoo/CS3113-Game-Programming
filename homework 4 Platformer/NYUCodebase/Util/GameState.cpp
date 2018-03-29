@@ -27,8 +27,11 @@ void GameState::init(){
     textured = setTextured("Asset/sheet.png", texture);
 
 
-    player = Player(texture, xml.getData("alienBlue.png"), tile.center());
-    test = Player(texture, xml.getData("alienBeige.png"), glm::vec3(-2, 4, 0));
+    player = Player(texture, xml.getData("alienBlue.png"), tile.getCenter());
+    player.setScale(0.5);
+    player.setTile(tile);
+    test = Player(texture, xml.getData("alienBeige.png"), tile.getCenter());
+    test.setScale(0.5);
 }
 
 
@@ -100,7 +103,9 @@ void GameState::displayMainMenu(){
 
 void GameState::displayLevel(){
     Matrix viewMatrix;
-    glm::vec3 playerPos = player.center();
+    glm::vec3 playerPos = player.getCenter();
+    
+    // the position between player & test is strange
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
     player.render(viewMatrix);

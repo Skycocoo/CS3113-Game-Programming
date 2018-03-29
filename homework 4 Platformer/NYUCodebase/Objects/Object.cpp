@@ -30,11 +30,11 @@ void Object::update(float elapsed){
 
 void Object::render(const Matrix& view){
 
-    viewMatrix = view;
+    // viewMatrix = view;
 
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);
-    program->SetViewMatrix(viewMatrix);
+    program->SetViewMatrix(view);
 
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
     glEnableVertexAttribArray(program->positionAttribute);
@@ -95,6 +95,7 @@ bool Object::collide(const Object& rhs) {
 
 void Object::setScale(float size){
     this->scale = size;
+    this->shape *= size;
 }
 
 void Object::setShape(const glm::vec3& shape){

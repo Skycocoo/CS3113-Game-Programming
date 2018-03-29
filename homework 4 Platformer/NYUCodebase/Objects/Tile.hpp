@@ -72,7 +72,7 @@ public:
         pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
         // shape of the tile map
         shape = glm::vec3(map.mapWidth * tilesize, map.mapHeight * tilesize, 0);
-//        std::cout << pos.x << " " << pos.y << " " << shape.x << " " << shape.y << std::endl;
+       // std::cout << pos.x << " " << pos.y << " " << shape.x << " " << shape.y << std::endl;
 
     }
 
@@ -80,6 +80,11 @@ public:
 
     void render(const Matrix& view = Matrix()){
         glUseProgram(program->programID);
+
+        program->SetModelMatrix(modelMatrix);
+        program->SetProjectionMatrix(projectionMatrix);
+        program->SetViewMatrix(view);
+
         glBindTexture(GL_TEXTURE_2D, texture);
 
         glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
@@ -90,16 +95,53 @@ public:
         glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 2);
         glDisableVertexAttribArray(program->positionAttribute);
         glDisableVertexAttribArray(program->texCoordAttribute);
+
     }
 
-
-    bool collide(const Object& rhs){
-        return true;
-    }
-
-
-    const glm::vec3& center() const {
-        return pos;
+    // more specifically dynamic object?
+    bool collide(Object& rhs) const {
+        bool collide = false;
+        
+        int tileX = int(rhs.pos.x / tilesize), tileY = int(-rhs.pos.y / tilesize);
+        
+        float enUp = rhs.pos.y + rhs.shape.y / 2,
+        enDown = rhs.pos.y - rhs.shape.y / 2,
+        enLeft = rhs.pos.x - rhs.shape.x / 2,
+        enRight = rhs.pos.x + rhs.shape.x / 2;
+        
+        int tileUp = int(-enUp / tilesize),
+        tileDown = int(-enDown / tilesize),
+        tileLeft = int(enLeft/ tilesize),
+        tileRight = int(enRight/ tilesize);
+  
+        if ((map.mapData[tileUp][tileX] != -1) || (map.mapData[tileDown][tileX] != -1) || (map.mapData[tileY][tileLeft] != -1) || (map.mapData[tileY][tileRight] != -1)){
+            collide = true;
+        }
+        
+        if (collide){
+            if (map.mapData[tileUp][tileX] != -1) {
+                rhs.coll.top = true;
+                rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) - 0.0001;
+            }
+            if (map.mapData[tileDown][tileX] != -1) {
+                rhs.coll.bottom = true;
+                rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
+            }
+            if (map.mapData[tileY][tileLeft] != -1) {
+                rhs.coll.left = true;
+                rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
+            }
+            if (map.mapData[tileY][tileRight] != -1) {
+                rhs.coll.right = true;
+                rhs.pos.x -= fabs((tilesize * tileRight) - enRight) - 0.0001;
+            }
+        } else {
+            rhs.coll.reset();
+        }
+        
+//        if (collide) std::cout << rhs.pos.x << " " << rhs.pos.y << std::endl;
+        
+        return collide;
     }
 
 
