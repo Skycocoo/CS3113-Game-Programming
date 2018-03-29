@@ -71,22 +71,30 @@ bool Object::collide(const Object& rhs) {
     if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
 
     if (collide){
-        if (objUp >= enDown) coll.top = true;
-        if (objLeft <= enRight ) coll.left = true;
-        if (objDown <= enUp) coll.bottom = true;
-        if (objRight >= enLeft) coll.right = true;
+        if (objUp >= enDown && pos.y < rhs.pos.y) coll.top = true;
+        if (objLeft <= enRight && pos.x > rhs.pos.x) coll.left = true;
+        if (objDown <= enUp && pos.y > rhs.pos.y) coll.bottom = true;
+        if (objRight >= enLeft && pos.x < rhs.pos.x) coll.right = true;
     } else {
         coll.reset();
     }
 
+    if (coll.right) {
+        std::cout << pos.x << " " << rhs.pos.x << " " << shape.x / 2  << " " << rhs.shape.x / 2 << " ";
+    }
+
     if (coll.left || coll.right){
-        float pen = fabs((pos.x - rhs.pos.x) - shape.x / 2 - rhs.shape.x / 2);
+        float pen = fabs(fabs(pos.x - rhs.pos.x) - shape.x / 2 - rhs.shape.x / 2);
         if (coll.left) pos.x += pen + 0.0001;
         else pos.x -= pen - 0.0001;
     } else if (coll.top || coll.bottom){
-        float pen = fabs((pos.y - rhs.pos.y) - shape.y / 2 - rhs.shape.y / 2);
+        float pen = fabs(fabs(pos.y - rhs.pos.y) - shape.y / 2 - rhs.shape.y / 2);
         if (coll.bottom) pos.y += pen + 0.0001;
         else pos.y -= pen - 0.0001;
+    }
+
+    if (coll.right) {
+        std::cout << pos.x << std::endl;
     }
 
     return collide;

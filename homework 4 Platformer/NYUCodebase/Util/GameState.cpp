@@ -28,16 +28,22 @@ void GameState::init(){
 
 
     player = Player(texture, xml.getData("alienBlue.png"), tile.getCenter());
-    player.setScale(0.5);
+    player.setScale(0.3);
     player.setTile(tile);
     test = Player(texture, xml.getData("alienBeige.png"), tile.getCenter());
-    test.setScale(0.5);
+    test.setScale(0.3);
+    test.setTile(tile);
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    player.collide(elapsed, test);
+    bool flag = player.collide(elapsed, test);
+    if (flag) {
+        if (player.coll.left) test.control(-5);
+        if (player.coll.right) test.control(5);
+    }
+    test.collide(elapsed);
 }
 
 void GameState::update(float elapsed){
@@ -46,7 +52,6 @@ void GameState::update(float elapsed){
             break;
         case STATE_GAME_LEVEL:
             checkCollision(elapsed);
-            test.update(elapsed);
             break;
         case STATE_GAME_OVER:
             break;
@@ -104,7 +109,7 @@ void GameState::displayMainMenu(){
 void GameState::displayLevel(){
     Matrix viewMatrix;
     glm::vec3 playerPos = player.getCenter();
-    
+
     // the position between player & test is strange
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 

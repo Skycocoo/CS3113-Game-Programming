@@ -12,6 +12,7 @@ Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos): Dynam
 
 void Player::control(float disp){
     acce.x += disp;
+    // std::cout << acce.x << std::endl;
 }
 
 void Player::jump(float disp){

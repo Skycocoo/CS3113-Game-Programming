@@ -22,6 +22,7 @@ public:
     void render(const Matrix& view = Matrix());
 
     void updateVelo(float elapsed);
+    bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);
 
     // ~DynamicObj(){

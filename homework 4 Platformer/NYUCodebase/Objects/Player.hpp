@@ -22,6 +22,7 @@ public:
     void control(float disp);
     void jump(float disp);
 
+    
     int getScore() const;
     void incScore(int s);
 
