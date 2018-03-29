@@ -30,7 +30,7 @@ class Object{
     friend class Tile;
 public:
     Coll coll;
-    
+
     Object();
     Object(ShaderProgram* program, GLuint texture = 0, const glm::vec3& pos = glm::vec3(0, 0, 0));
 
@@ -42,6 +42,7 @@ public:
     void setShape(const glm::vec3& shape);
     void setRotate(float rot); // rotate: angle (in radian)
     void setPos(const glm::vec3& pos);
+    void setPos(float x, float y);
 
     void setData(const XMLData& data);
 

@@ -103,6 +103,11 @@ void Object::setPos(const glm::vec3& pos){
     this->pos = pos;
 }
 
+void Object::setPos(float x, float y){
+    this->pos.x = x;
+    this->pos.y = y;
+}
+
 void Object::setData(const XMLData& data){
     // assume the shape of sheetsprite is 1024 * 512
     float u = data.x / 1024.0,

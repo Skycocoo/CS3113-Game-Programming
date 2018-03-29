@@ -17,7 +17,7 @@ private:
 
 public:
     Player();
-    Player(GLuint texture, const XMLData& data, const glm::vec3& pos = glm::vec3(0, 0, 0), const Tile& tile = Tile());
+    Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
 
     void control(float disp);
     void jump(float disp);

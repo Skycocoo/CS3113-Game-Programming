@@ -10,6 +10,9 @@ class Enemy: public DynamicObj{
 public:
     Enemy();
     Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
+
+    void update(float elapsed);
+    void control(float disp);
 };
 
 
@@ -21,18 +24,19 @@ public:
     EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
 
     void update(float elapsed);
-    void render();
+    void render(const Matrix& view = Matrix());
+
+    void setPos(const glm::vec3& pos);
 
     void delEne(size_t index);
     int getEne() const;
 
 private:
-    int numEn;
-    // int numCol;
-    // int numRow;
-
     float size;
-    glm::vec3 velo;
+
+    int numEn;
+    int numCol;
+    int numRow;
 };
 
 #endif /* Enemy_hpp */

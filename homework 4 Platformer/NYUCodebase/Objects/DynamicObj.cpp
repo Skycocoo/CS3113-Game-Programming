@@ -48,6 +48,26 @@ bool DynamicObj::collide(float elapsed, const Object& rhs) {
     return result;
 }
 
+bool DynamicObj::collide(float elapsed) {
+    bool result = false;
+    updateVelo(elapsed);
+
+    // x axis:
+    pos.x += velo.x * elapsed;
+    if (tile) result = result || tile->collide(*this);
+    if (result) velo.x = 0;
+
+    // y axis:
+    pos.y += velo.y * elapsed;
+    // should also check collide with tile map
+    if (tile) result = result || tile->collide(*this);
+    if (result) velo.y = 0;
+
+    Object::update();
+
+    return result;
+}
+
 
 // linear interpolation
 void DynamicObj::lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar) const {

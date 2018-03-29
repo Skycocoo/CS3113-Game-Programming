@@ -14,9 +14,10 @@
 class GameState{
 public:
     Player player;
-    Player test;
+    EnemyGroup enemygroup;
+    
     Tile tile;
-//    EnemyGroup enemygroup;
+
 
     GameState();
     void init();

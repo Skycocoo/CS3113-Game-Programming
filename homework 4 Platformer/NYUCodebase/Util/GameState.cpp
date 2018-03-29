@@ -25,30 +25,30 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
 
-    player = Player(texture, xml.getData("alienBlue.png"), center);
+    player = Player(texture, xml.getData("alienBlue.png"), center, tile);
     player.setScale(0.3);
-    player.setTile(tile);
-    test = Player(texture, xml.getData("alienBeige.png"), center);
-    test.setScale(0.3);
-    test.setTile(tile);
+
+    enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, tile);
 
     init();
 }
 
 void GameState::init(){
     player.setPos(center);
-    test.setPos(center);
+    enemygroup.setPos(center);
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    bool flag = player.collide(elapsed, test);
-    if (flag) {
-        if (player.coll.left) test.control(-5);
-        if (player.coll.right) test.control(5);
+    for (int i = 0; i < enemygroup.ene.size(); i++){
+        bool flag = player.collide(elapsed, enemygroup.ene[i]);
+        if (flag) {
+            if (player.coll.left) enemygroup.ene[i].control(-5);
+            if (player.coll.right) enemygroup.ene[i].control(5);
+        }
+        enemygroup.ene[i].collide(elapsed);
     }
-    test.collide(elapsed, player);
 }
 
 void GameState::update(float elapsed){
@@ -119,7 +119,7 @@ void GameState::displayLevel(){
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
     player.render(viewMatrix);
-    test.render(viewMatrix);
+    enemygroup.render(viewMatrix);
     tile.render(viewMatrix);
 
 }

@@ -12,7 +12,7 @@ class DynamicObj: public Object{
 public:
 
     DynamicObj();
-    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const Tile& tile = Tile());
+    DynamicObj(GLuint texture, const glm::vec3& pos, const Tile& tile);
 
     void setTile(const Tile& t){
         tile = &t;
