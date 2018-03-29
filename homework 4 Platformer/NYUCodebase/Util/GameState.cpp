@@ -41,14 +41,16 @@ void GameState::init(){
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    for (int i = 0; i < enemygroup.ene.size(); i++){
-        bool flag = player.collide(elapsed, enemygroup.ene[i]);
-        if (flag) {
-            if (player.coll.left) enemygroup.ene[i].control(-5);
-            if (player.coll.right) enemygroup.ene[i].control(5);
-        }
-        enemygroup.ene[i].collide(elapsed);
-    }
+    player.collide(elapsed, enemygroup);
+
+    // for (int i = 0; i < enemygroup.ene.size(); i++){
+    //     bool flag = player.collide(elapsed, enemygroup.ene[i]);
+    //     if (flag) {
+    //         if (player.coll.left) enemygroup.ene[i].control(-5);
+    //         if (player.coll.right) enemygroup.ene[i].control(5);
+    //     }
+    //     enemygroup.ene[i].collide(elapsed);
+    // }
 }
 
 void GameState::update(float elapsed){

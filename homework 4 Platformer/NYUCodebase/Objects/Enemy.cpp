@@ -24,6 +24,19 @@ void Enemy::control(float disp){
     acce.x += disp;
 }
 
+
+bool Enemy::collide(float elapsed, const EnemyGroup& enemygroup){
+    bool result = false;
+
+    for (int i = 0; i < enemygroup.ene.size(); i++){
+        if (this != &enemygroup.ene[i]){
+            result = result || this->DynamicObj::collide(elapsed, enemygroup.ene[i]);
+        }
+    }
+
+    return result;
+}
+
 // // render enemy & bullets
 // void Enemy::render(){
 //     Object::render();
@@ -62,6 +75,8 @@ void EnemyGroup::setPos(const glm::vec3& pos){
         }
     }
 }
+
+
 
 // void EnemyGroup::update(float elapsed){
 //     // beyound the range of the screenwidth

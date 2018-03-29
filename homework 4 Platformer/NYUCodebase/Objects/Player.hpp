@@ -6,15 +6,9 @@
 
 #include "DynamicObj.hpp"
 
+class EnemyGroup;
 
 class Player: public DynamicObj{
-private:
-    // class Live: public Object{
-    // public:
-    //     Live();
-    //     Live(GLuint texture, const XMLData& data);
-    // };
-
 public:
     Player();
     Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
@@ -22,24 +16,8 @@ public:
     void control(float disp);
     void jump(float disp);
 
-    // int getScore() const;
-    // void incScore(int s);
+    bool collide(float elapsed, EnemyGroup& enemygroup);
 
-    // void renderLives();
-    // int getLives() const;
-    // void decLives();
-
-    // ~Player(){
-    //     std::cout << "~Player()\n";
-    // }
-
-private:
-    // int score = 0;
-
-    // 3 2 1 0
-    // int lives = 3;
-    // Live live;
-    // std::vector<XMLData> data;// bullets: disappear when collide
 };
 
 #endif /* Player_hpp */

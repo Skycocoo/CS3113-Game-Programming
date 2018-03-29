@@ -6,6 +6,8 @@
 
 #include "DynamicObj.hpp"
 
+class EnemyGroup;
+
 class Enemy: public DynamicObj{
 public:
     Enemy();
@@ -13,6 +15,8 @@ public:
 
     void update(float elapsed);
     void control(float disp);
+
+    bool collide(float elapsed, const EnemyGroup& enemygroup);
 };
 
 
@@ -38,5 +42,6 @@ private:
     int numCol;
     int numRow;
 };
+
 
 #endif /* Enemy_hpp */
