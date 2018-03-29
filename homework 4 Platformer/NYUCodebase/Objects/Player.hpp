@@ -17,14 +17,13 @@ private:
 
 public:
     Player();
-    Player(GLuint texture, const XMLData& data, const glm::vec3& pos = glm::vec3(0, 4, 0));
+    Player(GLuint texture, const XMLData& data, const glm::vec3& pos = glm::vec3(0, 0, 0), const Tile& tile = Tile());
 
     void control(float disp);
     void jump(float disp);
 
-    
-    int getScore() const;
-    void incScore(int s);
+    // int getScore() const;
+    // void incScore(int s);
 
     // void renderLives();
     // int getLives() const;
@@ -35,8 +34,7 @@ public:
     // }
 
 private:
-
-    int score = 0;
+    // int score = 0;
 
     // 3 2 1 0
     // int lives = 3;

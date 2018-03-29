@@ -15,6 +15,18 @@ FlareMap::FlareMap(const std::string& fileName) {
     Load(fileName);
 }
 
+FlareMap::FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.mapHeight){
+    mapData = new int*[mapHeight];
+    for (int i = 0; i < mapHeight; i++){
+        mapData[i] = new int[mapWidth];
+    }
+
+    for(int y=0; y < mapHeight; y++) {
+        for(int x=0; x < mapWidth; x++) {
+            mapData[y][x] = rhs.mapData[y][x];
+        }
+    }
+}
 
 FlareMap::~FlareMap() {
 	for(int i = 0; i < this->mapHeight; i++) {
@@ -69,9 +81,9 @@ bool FlareMap::ReadLayerData(std::ifstream &stream) {
 
                     // manage strange value
                     if (val < 0) val = 0;
-
+                    
+                    // -1: no tile rendering
 					mapData[y][x] = val-1;
-					// -1: no tile rendering
 				}
 			}
 		}

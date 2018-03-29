@@ -13,13 +13,12 @@
 
 class Tile: public Object{
 public:
-
     // constructors, assume tiles start drawing at (0,0)
     Tile();
     Tile(const std::string& name);
     // move copy constructor
     Tile(Tile&& rhs);
-    
+
     // move assignment operator
     Tile& operator=(Tile&& rhs);
 

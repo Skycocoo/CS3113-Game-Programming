@@ -10,7 +10,6 @@ class Text: public Object{
 public:
     Text();
     Text(ShaderProgram* program, GLuint texture);
-
     void render(const std::string& text, float size, float spacing, float x, float y);
 };
 

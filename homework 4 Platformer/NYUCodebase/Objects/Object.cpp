@@ -12,11 +12,9 @@ extern float splitScale;
 
 Object::Object(){}
 
-
-Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(glm::vec3(1, 1, 1)){
+Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(1, 1, 1){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
 }
-
 
 void Object::update(float elapsed){
     modelMatrix.Identity();
@@ -29,7 +27,6 @@ void Object::update(float elapsed){
 
 
 void Object::render(const Matrix& view){
-
     // viewMatrix = view;
 
     program->SetModelMatrix(modelMatrix);
@@ -60,12 +57,10 @@ bool Object::collide(const Object& rhs) {
     objLeft = pos.x - shape.x / 2,
     objRight = pos.x + shape.x / 2;
 
-
     float enUp = rhs.pos.y + rhs.shape.y / 2,
     enDown = rhs.pos.y - rhs.shape.y / 2,
     enLeft = rhs.pos.x - rhs.shape.x / 2,
     enRight = rhs.pos.x + rhs.shape.x / 2;
-
 
     // intersecting
     if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
@@ -75,13 +70,7 @@ bool Object::collide(const Object& rhs) {
         if (objLeft <= enRight && pos.x > rhs.pos.x) coll.left = true;
         if (objDown <= enUp && pos.y > rhs.pos.y) coll.bottom = true;
         if (objRight >= enLeft && pos.x < rhs.pos.x) coll.right = true;
-    } else {
-        coll.reset();
-    }
-
-    if (coll.right) {
-        std::cout << pos.x << " " << rhs.pos.x << " " << shape.x / 2  << " " << rhs.shape.x / 2 << " ";
-    }
+    } else coll.reset();
 
     if (coll.left || coll.right){
         float pen = fabs(fabs(pos.x - rhs.pos.x) - shape.x / 2 - rhs.shape.x / 2);
@@ -91,10 +80,6 @@ bool Object::collide(const Object& rhs) {
         float pen = fabs(fabs(pos.y - rhs.pos.y) - shape.y / 2 - rhs.shape.y / 2);
         if (coll.bottom) pos.y += pen + 0.0001;
         else pos.y -= pen - 0.0001;
-    }
-
-    if (coll.right) {
-        std::cout << pos.x << std::endl;
     }
 
     return collide;

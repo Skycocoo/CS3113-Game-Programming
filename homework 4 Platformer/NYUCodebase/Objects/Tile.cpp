@@ -8,7 +8,6 @@ extern ShaderProgram textured;
 
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
-
 // assume tiles start drawing at (0,0)
 Tile::Tile(): Object(){}
 

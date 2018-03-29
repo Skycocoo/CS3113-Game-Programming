@@ -14,7 +14,7 @@
 #include "Objects/Text.hpp"
 #include "Objects/Player.hpp"
 #include "Objects/Enemy.hpp"
-#include "Objects/StaticObj.hpp"
+#include "Objects/DynamicObj.hpp"
 #include "Objects/Tile.hpp"
 
 #endif /* includes_hpp */

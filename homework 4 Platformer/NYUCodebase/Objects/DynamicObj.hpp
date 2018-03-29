@@ -12,22 +12,18 @@ class DynamicObj: public Object{
 public:
 
     DynamicObj();
-    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const glm::vec3& velo = glm::vec3(0, 0, 0));
+    DynamicObj(GLuint texture, const glm::vec3& pos = glm::vec3(0, 0, 0), const Tile& tile = Tile());
 
     void setTile(const Tile& t){
         tile = &t;
     }
-    
+
     void update(float elapsed);
     void render(const Matrix& view = Matrix());
 
     void updateVelo(float elapsed);
     bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);
-
-    // ~DynamicObj(){
-    //     std::cout << "~DynamicObj()\n";
-    // }
 
 protected:
     // should set float or else it would set to garbage value
@@ -36,7 +32,7 @@ protected:
 
     glm::vec3 fric;
     glm::vec3 grav;
-    
+
     const Tile* tile = nullptr;
 
     // linear interpolation

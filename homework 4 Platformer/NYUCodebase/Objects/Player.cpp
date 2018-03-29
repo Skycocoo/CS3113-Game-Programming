@@ -5,14 +5,12 @@
 
 Player::Player(){}
 
-Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos): DynamicObj(texture, pos){
+Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile): DynamicObj(texture, pos, tile){
     Object::setData(data);
-
 }
 
 void Player::control(float disp){
     acce.x += disp;
-    // std::cout << acce.x << std::endl;
 }
 
 void Player::jump(float disp){
@@ -20,14 +18,13 @@ void Player::jump(float disp){
         velo.y += disp;
 }
 
-int Player::getScore() const {
-    return score;
-}
-
-void Player::incScore(int s){
-    score += s;
-}
-
+// int Player::getScore() const {
+//     return score;
+// }
+//
+// void Player::incScore(int s){
+//     score += s;
+// }
 
 //Player::Live::Live(){}
 //

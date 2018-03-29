@@ -8,7 +8,9 @@ extern ShaderProgram untextured;
 extern float screenWidth;
 extern float edge;
 
-Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const glm::vec3& velo): DynamicObj(texture, pos, velo){
+Enemy::Enemy(){}
+
+Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile): DynamicObj(texture, pos, tile){
     Object::setData(data);
 }
 

@@ -48,7 +48,7 @@ void GameState::checkCollision(float elapsed){
         if (player.coll.left) test.control(-5);
         if (player.coll.right) test.control(5);
     }
-    test.collide(elapsed);
+    test.collide(elapsed, player);
 }
 
 void GameState::update(float elapsed){

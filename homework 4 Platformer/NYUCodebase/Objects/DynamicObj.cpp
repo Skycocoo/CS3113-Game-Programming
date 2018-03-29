@@ -7,8 +7,9 @@
 extern ShaderProgram textured;
 
 DynamicObj::DynamicObj(): Object::Object(){}
-DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const glm::vec3& velo):
-    Object(&textured, texture, pos), velo(velo), fric(glm::vec3(0.01, 0.01, 0.01)), grav(glm::vec3(0, -0.5, 0)), acce(glm::vec3(0, 0, 0))
+
+DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile& tile):
+    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.01, 0.01, 0.01), grav(0, -0.5, 0), acce(0, 0, 0), tile(&tile)
     {}
 
 void DynamicObj::update(float elapsed){
@@ -24,7 +25,7 @@ void DynamicObj::updateVelo(float elapsed){
     velo += grav * elapsed;
 
     if (acce.x != 0) acce.x = 0;
-//    if (acce.y != 0) acce.y = 0;
+   // if (acce.y != 0) acce.y = 0;
 }
 
 bool DynamicObj::collide(float elapsed, const Object& rhs) {
@@ -34,46 +35,18 @@ bool DynamicObj::collide(float elapsed, const Object& rhs) {
     // x axis:
     pos.x += velo.x * elapsed;
     result = Object::collide(rhs);
-    // should also check collide with tile map
     if (tile) result = result || tile->collide(*this);
     if (result) velo.x = 0;
 
     // y axis:
     pos.y += velo.y * elapsed;
     result = result || Object::collide(rhs);
-    // should also check collide with tile map
     if (tile) result = result || tile->collide(*this);
     if (result) velo.y = 0;
 
     Object::update();
-
     return result;
 }
-
-bool DynamicObj::collide(float elapsed) {
-    bool result = false;
-
-//    std::cout << acce.x << " ";
-    updateVelo(elapsed);
-
-//    std::cout << velo.x << " " << velo.y << std::endl;
-
-    // x axis:
-    pos.x += velo.x * elapsed;
-    if (tile) result = result || tile->collide(*this);
-    if (result) velo.x = 0;
-
-    // y axis:
-    pos.y += velo.y * elapsed;
-    // should also check collide with tile map
-    if (tile) result = result || tile->collide(*this);
-    if (result) velo.y = 0;
-
-    Object::update();
-
-    return result;
-}
-
 
 
 // linear interpolation
