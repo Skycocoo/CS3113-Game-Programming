@@ -20,6 +20,7 @@ public:
     Player(GLuint texture, const XMLData& data, const glm::vec3& pos = glm::vec3(0, 4, 0));
 
     void control(float disp);
+    void jump(float disp);
 
     int getScore() const;
     void incScore(int s);

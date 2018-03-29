@@ -14,6 +14,11 @@ void Player::control(float disp){
     acce.x += disp;
 }
 
+void Player::jump(float disp){
+//    if (coll.bottom)
+        velo.y += disp;
+}
+
 int Player::getScore() const {
     return score;
 }

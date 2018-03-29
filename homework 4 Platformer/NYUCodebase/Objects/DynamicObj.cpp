@@ -8,7 +8,7 @@ extern ShaderProgram textured;
 
 DynamicObj::DynamicObj(): Object::Object(){}
 DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const glm::vec3& velo):
-    Object(&textured, texture, pos), velo(velo), fric(glm::vec3(0.01, 0.01, 0.01)), grav(glm::vec3(0, -0.1, 0)), acce(glm::vec3(0, 0, 0))
+    Object(&textured, texture, pos), velo(velo), fric(glm::vec3(0.01, 0.01, 0.01)), grav(glm::vec3(0, -0.5, 0)), acce(glm::vec3(0, 0, 0))
     {}
 
 void DynamicObj::update(float elapsed){
@@ -23,7 +23,8 @@ void DynamicObj::updateVelo(float elapsed){
     velo += acce * elapsed;
     velo += grav * elapsed;
 
-   if (acce.x != 0) acce.x = 0;
+    if (acce.x != 0) acce.x = 0;
+//    if (acce.y != 0) acce.y = 0;
 }
 
 bool DynamicObj::collide(float elapsed, const Object& rhs) {
