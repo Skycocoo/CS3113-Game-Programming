@@ -42,7 +42,7 @@ void GameState::init(){
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
     player.collide(elapsed, enemygroup);
-
+    enemygroup.collide(elapsed);
     // for (int i = 0; i < enemygroup.ene.size(); i++){
     //     bool flag = player.collide(elapsed, enemygroup.ene[i]);
     //     if (flag) {

@@ -2,6 +2,7 @@
 // CS3113 Game Programming
 
 #include "Enemy.hpp"
+#include "Tile.hpp"
 
 extern ShaderProgram textured;
 extern ShaderProgram untextured;
@@ -25,16 +26,41 @@ void Enemy::control(float disp){
 }
 
 
-bool Enemy::collide(float elapsed, const EnemyGroup& enemygroup){
-    bool result = false;
+bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
+    bool x = false, y = false;
+    updateVelo(elapsed);
+
+    // x axis:
+    pos.x += velo.x * elapsed;
+    
+    for (int i = 0; i < enemygroup.ene.size(); i++){
+        if (this != &enemygroup.ene[i]){
+            bool result = Object::collide(enemygroup.ene[i]);
+            if (result){
+                if (coll.left) enemygroup.ene[i].control(-5);
+                if (coll.right) enemygroup.ene[i].control(5);
+                x = true;
+            }
+        }
+    }
+    if (tile) x = tile->collide(*this);
+    if (x) velo.x = 0;
+
+    // std::cout << pos.x << " " << velo.x << std::endl;;
+
+    // y axis:
+    pos.y += velo.y * elapsed;
 
     for (int i = 0; i < enemygroup.ene.size(); i++){
         if (this != &enemygroup.ene[i]){
-            result = result || this->DynamicObj::collide(elapsed, enemygroup.ene[i]);
+            y = y || Object::collide(enemygroup.ene[i]);
         }
     }
+    if (tile) y = tile->collide(*this);
+    if (y) velo.y = 0;
 
-    return result;
+    Object::update();
+    return (x || y);
 }
 
 // // render enemy & bullets
@@ -45,7 +71,8 @@ bool Enemy::collide(float elapsed, const EnemyGroup& enemygroup){
 
 EnemyGroup::EnemyGroup(){}
 
-EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile): size(0.3), numEn(10), numCol(10), numRow(1){
+EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile):
+    size(0.2), numEn(2), numCol(2), numRow(1){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;
@@ -55,6 +82,7 @@ EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos
 
         for (int j = 0; j < numCol; j++){
             float relativeX = j - float(numCol - 1) / float(2);
+            std::cout << posX + relativeX * step << " " << posY + relativeY * step << std::endl;
             Enemy temp (texture, data, glm::vec3(posX + relativeX * step, posY + relativeY * step, 0), tile);
             temp.setScale(size);
             ene.push_back(temp);
@@ -76,7 +104,13 @@ void EnemyGroup::setPos(const glm::vec3& pos){
     }
 }
 
-
+bool EnemyGroup::collide(float elapsed){
+    bool result = false;
+    for (int i = 0; i < ene.size(); i++){
+        result = result || ene[i].collide(elapsed, *this);
+    }
+    return result;
+}
 
 // void EnemyGroup::update(float elapsed){
 //     // beyound the range of the screenwidth
@@ -96,9 +130,10 @@ void EnemyGroup::setPos(const glm::vec3& pos){
 //     for (size_t i = 0; i < ene.size(); i++) ene[i].update(elapsed);
 // }
 
+
 // render enemies
 void EnemyGroup::render(const Matrix& view){
-    for (size_t i = 0; i < ene.size(); i++) ene[i].render(view);
+    for (int i = 0; i < ene.size(); i++) ene[i].render(view);
 }
 
 void EnemyGroup::delEne(size_t index){

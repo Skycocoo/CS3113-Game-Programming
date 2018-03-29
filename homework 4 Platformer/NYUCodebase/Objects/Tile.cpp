@@ -113,6 +113,7 @@ bool Tile::collide(Object& rhs) const {
             }
             if (map.mapData[tileDown][tileX] != -1) {
                 rhs.coll.bottom = true;
+                // std::cout << rhs.pos.y << " " << tileDown << " " << tileX << std::endl;
                 rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.001;
             }
             if (map.mapData[tileY][tileLeft] != -1) {
@@ -125,6 +126,7 @@ bool Tile::collide(Object& rhs) const {
             }
         } else rhs.coll.reset();
     } else {
+        // boundary check
         if (tileLeft < -10 || tileRight > map.mapWidth + 10) rhs.pos = center;
         else {
             rhs.coll.top = true;

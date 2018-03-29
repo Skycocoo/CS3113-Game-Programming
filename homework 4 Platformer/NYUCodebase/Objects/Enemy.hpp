@@ -16,7 +16,7 @@ public:
     void update(float elapsed);
     void control(float disp);
 
-    bool collide(float elapsed, const EnemyGroup& enemygroup);
+    bool collide(float elapsed, EnemyGroup& enemygroup);
 };
 
 
@@ -27,8 +27,9 @@ public:
     EnemyGroup();
     EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile& tile);
 
-    void update(float elapsed);
+    // void update(float elapsed);
     void render(const Matrix& view = Matrix());
+    bool collide(float elapsed);
 
     void setPos(const glm::vec3& pos);
 
