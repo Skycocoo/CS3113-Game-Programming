@@ -26,7 +26,7 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     textured = setTextured("Asset/sheet.png", texture);
 
     player = Player(texture, xml.getData("alienBlue.png"), center, &tile);
-    player.setScale(0.3);
+    player.setScale(0.64);
 
     enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
 
@@ -41,16 +41,21 @@ void GameState::init(){
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    float scale = 1.0;
-    glm::vec3 p = player.getVelo();
-    if (p.y > 0){
-        scale = (p.y < 2) ? 2 : p.y;
-        // scale = (playerv.y < 2) ? playerv.y : 2;
-    }
-    
-    player.setProject(scale);
-    enemygroup.setProject(scale);
-    tile.setProject(scale);
+   //  float scale = 1.0;
+   //
+   // glm::vec3 p = player.getVelo();
+   // float scale = (p.y == 0) ? 1.0 : fabs(p.y);
+   // if (!player.coll.bottom){
+   //     if (scale > 3) scale = 1;
+   //     else if (scale < 1) scale = 3;
+   //     else scale = 3 / scale;
+   //
+   //     std::cout << p.y << " " << scale << std::endl;
+   // }
+   //
+   //  player.setProject(scale);
+   //  enemygroup.setProject(scale);
+   //  tile.setProject(scale);
 
     player.collide(elapsed, enemygroup);
     enemygroup.collide(elapsed);

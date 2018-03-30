@@ -72,7 +72,7 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 EnemyGroup::EnemyGroup(){}
 
 EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile):
-    size(0.2), numEn(2), numCol(2), numRow(1){
+    size(0.64), numEn(2), numCol(2), numRow(1){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;
