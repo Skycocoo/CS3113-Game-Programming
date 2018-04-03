@@ -42,6 +42,30 @@ void DynamicObj::updateVelo(float elapsed){
 }
 
 bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
+
+    // // std::cot << pos.x << " " << pos.y;
+    //
+    // bool x = false, y = false;
+    // updateVelo(elapsed);
+    //
+    // // x axis:
+    // pos.x += velo.x * elapsed;
+    // Object::update();
+    // x = Object::satCollide(rhs);
+    // if (tile) x = x || tile->collide(*this);
+    // if (x) velo.x = 0;
+    // Object::update();
+    //
+    // // y axis:
+    // pos.y += velo.y * elapsed;
+    // Object::update();
+    // y = Object::satCollide(rhs);
+    // if (tile) y = y || tile->collide(*this);
+    // if (y) velo.y = 0;
+    //
+    // Object::update();
+    // return (x || y);
+
     updateVelo(elapsed);
     pos.x += velo.x * elapsed;
     pos.y += velo.y * elapsed;
@@ -51,6 +75,7 @@ bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
 
     Object::update();
     bool result = Object::satCollide(rhs);
+    Object::update();
     if (tile) result = result || tile->collide(*this);
 
     if (result){

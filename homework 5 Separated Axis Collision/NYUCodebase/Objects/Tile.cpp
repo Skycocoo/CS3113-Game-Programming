@@ -90,15 +90,33 @@ bool Tile::collide(Object& rhs) const {
 
     int tileX = int(rhs.pos.x / tilesize), tileY = int(-rhs.pos.y / tilesize);
 
-    float enUp = rhs.pos.y + rhs.shape.y / 2,
-    enDown = rhs.pos.y - rhs.shape.y / 2,
-    enLeft = rhs.pos.x - rhs.shape.x / 2,
-    enRight = rhs.pos.x + rhs.shape.x / 2;
+    float enUp = -FLT_MAX, enDown = FLT_MAX, enLeft = FLT_MAX, enRight = -FLT_MAX;
+    for (size_t i = 0; i < points.size(); i++){
+        glm::vec3 point = rhs.modelMatrix * rhs.points[i];
+        // std::cout << point.x << " " << point.y << std::endl;
+        // e1Points.push_back(std::make_pair(point.x, point.y));
+        if (point.x < enLeft) enLeft = point.x;
+        if (point.x > enRight) enRight = point.x;
+        if (point.y > enUp) enUp = point.y;
+        if (point.y < enDown) enDown = point.y;
+    }
+
+
+    // float enUp = rhs.pos.y + rhs.shape.y / 2,
+    // enDown = rhs.pos.y - rhs.shape.y / 2,
+    // enLeft = rhs.pos.x - rhs.shape.x / 2,
+    // enRight = rhs.pos.x + rhs.shape.x / 2;
+
 
     int tileUp = int(-enUp / tilesize),
     tileDown = int(-enDown / tilesize),
     tileLeft = int(enLeft/ tilesize),
     tileRight = int(enRight/ tilesize);
+
+    // std::cout << rhs.modelMatrix;
+    // std::cout << rhs.pos.y << " " << rhs.pos.y + rhs.shape.y / 2 << " " << (rhs.modelMatrix * glm::vec3(0.5, 0.5, 0)).y << " " << enUp << " " << enDown << " " << enLeft << " " << enRight << std::endl;
+    // std::cout << "tile: " << enDown << " " << tileDown << " " << tileX << std::endl;
+
 
     if ((tileUp > 0) && (tileDown < map.mapHeight) && (tileLeft > 0) && (tileRight < map.mapWidth)){
 
@@ -113,7 +131,7 @@ bool Tile::collide(Object& rhs) const {
             }
             if (map.mapData[tileDown][tileX] != -1) {
                 rhs.coll.bottom = true;
-                // std::cout << "tile: " << rhs.pos.y << " " << tileDown << " " << tileX << std::endl;
+                // std::cout << "tile: " << enDown << " " << tileDown << " " << tileX << std::endl;
                 // std::cout << "tile: " << fabs(enDown - (-tilesize * tileDown)) + 0.001 << std::endl;
                 rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.001;
             }

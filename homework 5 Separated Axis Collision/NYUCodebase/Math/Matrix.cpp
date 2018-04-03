@@ -219,6 +219,15 @@ void Matrix::SetPerspectiveProjection(float fov, float aspect, float zNear, floa
     m[3][3] = 0.0f;
 }
 
+
+glm::vec3 Matrix::operator*(const glm::vec3& vec) const{
+    glm::vec3 result;
+    result.x = m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z + m[3][0];
+    result.y = m[0][1] * vec.x + m[1][1] * vec.y + m[2][1] * vec.z + m[3][1];
+    result.z = m[0][2] * vec.x + m[1][2] * vec.y + m[2][2] * vec.z + m[3][2];
+    return result;
+}
+
 std::ostream& operator<<(std::ostream& os, const Matrix& m){
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++){

@@ -27,7 +27,7 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
 
     player = DynamicObj(0, center, &tile);
     player.setScale(0.64);
-    player.setRotate(1);
+    player.setRotate(45 * M_PI / 180);
 
     ene = DynamicObj(0, glm::vec3(center.x, center.y, 0), &tile);
     // ene.setRotate(2);

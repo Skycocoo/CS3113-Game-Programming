@@ -4,6 +4,7 @@
 #include "Object.hpp"
 #include <math.h>
 #include <utility>
+// #include <algorithm>
 
 using namespace std;
 
@@ -27,9 +28,8 @@ void Object::update(float elapsed){
     modelMatrix.Identity();
 
     modelMatrix.Translate(pos.x, pos.y, pos.z);
-    modelMatrix.Scale(scale, scale, scale);
-
     modelMatrix.Rotate(rotate);
+    modelMatrix.Scale(scale, scale, scale);
 
     // std::cout << "update: \n" << modelMatrix;
     // std::cout << "update: "<< pos.x << " " << pos.y << std::endl;
@@ -98,11 +98,15 @@ bool Object::collide(const Object& rhs) {
 void Object::initPoints(){
     points.clear();
 
-    float a = shape.x / 2, b = shape.y / 2;
-    points.push_back(glm::vec3(-a, b, 0));
-    points.push_back(glm::vec3(a, b, 0));
-    points.push_back(glm::vec3(-a, -b, 0));
-    points.push_back(glm::vec3(a, -b, 0));
+    // float a = shape.x / 2, b = shape.y / 2;
+    points.push_back(glm::vec3(-0.5, 0.5, 0));
+    points.push_back(glm::vec3(0.5, 0.5, 0));
+    points.push_back(glm::vec3(-0.5, -0.5, 0));
+    points.push_back(glm::vec3(0.5, -0.5, 0));
+
+    // for (size_t i = 0; i < points.size(); i++){
+    //     std::cout << points[i].x << " " << points[i].y << std::endl;
+    // }
 }
 
 
@@ -112,18 +116,20 @@ bool Object::satCollide(const Object& rhs){
     std::vector<std::pair<float,float>> e1Points;
     std::vector<std::pair<float,float>> e2Points;
 
-    float a = shape.x / 2, b = shape.y / 2,
-          c = rhs.shape.x / 2, d = rhs.shape.y / 2;
-
     // std::cout << modelMatrix << rhs.modelMatrix << endl;
+    // std::cout << "sat" << std::endl;
 
     for (size_t i = 0; i < points.size(); i++){
         glm::vec3 point = modelMatrix * points[i];
+        // std::cout << point.x << " " << point.y << std::endl;
         e1Points.push_back(std::make_pair(point.x, point.y));
     }
 
+    // std::cout << std::endl;
+
     for (size_t i = 0; i < rhs.points.size(); i++){
         glm::vec3 point = rhs.modelMatrix * rhs.points[i];
+        // std::cout << point.x << " " << point.y << std::endl;
         e2Points.push_back(std::make_pair(point.x, point.y));
     }
 
@@ -149,12 +155,13 @@ bool Object::satCollide(const Object& rhs){
 void Object::setScale(float size){
     this->scale = size;
     this->shape *= size;
-    initPoints();
+    // std::cout << this->shape.x << " " << this->shape.y << std::endl;
+    // initPoints();
 }
 
 void Object::setShape(const glm::vec3& shape){
     this->shape = shape;
-    initPoints();
+    // initPoints();
 }
 
 void Object::setRotate(float rot){
