@@ -1,5 +1,6 @@
 
 #include "Matrix.hpp"
+
 #include <math.h>
 
 Matrix::Matrix() {
@@ -216,4 +217,14 @@ void Matrix::SetPerspectiveProjection(float fov, float aspect, float zNear, floa
     m[3][2] = (2.0f*zFar*zNear)/(zNear-zFar);
     m[2][3] = -1.0f;
     m[3][3] = 0.0f;
+}
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m){
+    for (int i = 0; i < 4; i++){
+        for (int j = 0; j < 4; j++){
+            os << m.m[i][j] << " ";
+        }
+        os << std::endl;
+    }
+    return os;
 }

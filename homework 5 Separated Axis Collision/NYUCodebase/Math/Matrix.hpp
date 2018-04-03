@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include "glm/glm.hpp"
+#include <iostream>
+
 class Matrix {
 public:
     Matrix();
@@ -9,6 +12,22 @@ public:
         float m[4][4];
         float ml[16];
     };
+
+    // column major
+    glm::vec3 operator*(const glm::vec3& vec) const{
+        glm::vec3 result;
+        result.x = m[0][0] * vec.x + m[1][0] * vec.y + m[3][0];
+        result.y = m[0][1] * vec.x + m[1][1] * vec.y + m[3][1];
+        result.z = 0;
+        // result.z = m[0][2] * vec.x + m[1][2] * vec.y + m[3][2];
+        // float w = m[3][0] * vec.x + m[3][1] * vec.y + m[3][2] * vec.z;
+
+        // std::cout << "w: " << w << std::endl;
+        // result.x /= w;
+        // result.y /= w;
+
+        return result;
+    }
 
     void Identity();
     Matrix operator * (const Matrix &m2) const;
@@ -31,3 +50,5 @@ public:
     void SetOrthoProjection(float left, float right, float bottom, float top, float zNear, float zFar);
     void SetPerspectiveProjection(float fov, float aspect, float zNear, float zFar);
 };
+
+std::ostream& operator<<(std::ostream& os, const Matrix& m);

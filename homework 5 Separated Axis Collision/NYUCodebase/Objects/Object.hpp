@@ -38,6 +38,8 @@ public:
     virtual void render(const Matrix& view = Matrix());
     virtual bool collide(const Object& rhs);
 
+    bool satCollide(const Object& rhs);
+
     void setScale(float size);
     void setShape(const glm::vec3& shape);
     void setRotate(float rot); // rotate: angle (in radian)
@@ -75,5 +77,10 @@ protected:
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
 
 };
+
+bool TestSATSeparationForEdge(float edgeX, float edgeY, const std::vector<std::pair<float,float>> &points1, const std::vector<std::pair<float,float>> &points2, std::pair<float,float> &penetration);
+bool PenetrationSort(const std::pair<float,float> &p1, const std::pair<float,float> &p2);
+bool CheckSATCollision(const std::vector<std::pair<float,float>> &e1Points, const std::vector<std::pair<float,float>> &e2Points, std::pair<float,float> &penetration);
+
 
 #endif /* Object_hpp */
