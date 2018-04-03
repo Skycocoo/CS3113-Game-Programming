@@ -104,7 +104,7 @@ bool Object::satCollide(const Object& rhs){
     float a = shape.x / 2, b = shape.y / 2,
           c = rhs.shape.x / 2, d = rhs.shape.y / 2;
 
-    std::cout << modelMatrix << rhs.modelMatrix << endl;
+    // std::cout << modelMatrix << rhs.modelMatrix << endl;
 
     glm::vec3 point1 = modelMatrix * glm::vec3(-a, b, 0);
     glm::vec3 point2 = modelMatrix * glm::vec3(a, b, 0);
@@ -115,7 +115,7 @@ bool Object::satCollide(const Object& rhs){
     e1Points.push_back(std::make_pair(point3.x, point3.y));
     e1Points.push_back(std::make_pair(point4.x, point4.y));
 
-    std::cout << "pointx and point y:" << point1.x << " " << point1.y << " ";
+    // std::cout << "pointx and point y:" << point1.x << " " << point1.y << " ";
 
     point1 = rhs.modelMatrix * glm::vec3(-c, d, 0);
     point2 = rhs.modelMatrix * glm::vec3(c, d, 0);
@@ -126,7 +126,7 @@ bool Object::satCollide(const Object& rhs){
     e2Points.push_back(std::make_pair(point3.x, point3.y));
     e2Points.push_back(std::make_pair(point4.x, point4.y));
 
-    std::cout << point1.x << " " << point1.y << " ";
+    // std::cout << point1.x << " " << point1.y << " ";
 
     bool collide = CheckSATCollision(e1Points, e2Points, penetration);
 
@@ -137,7 +137,7 @@ bool Object::satCollide(const Object& rhs){
 
     }
 
-    std::cout << pos.x << " " << pos.y << std::endl;
+    // std::cout << pos.x << " " << pos.y << std::endl;
 
     // rhs.pos.x += (penetration.first / 2);
     // rhs.pos.y += (penetration.second / 2);

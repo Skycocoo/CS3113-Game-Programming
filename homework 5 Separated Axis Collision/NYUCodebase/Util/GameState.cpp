@@ -27,9 +27,10 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
 
     player = DynamicObj(0, center, &tile);
     player.setScale(0.64);
-    // player.setRotate(1);
+    player.setRotate(1);
 
     ene = DynamicObj(0, glm::vec3(center.x, center.y, 0), &tile);
+    // ene.setRotate(2);
     // enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
 
     init();
@@ -61,13 +62,13 @@ void GameState::checkCollision(float elapsed){
    //  tile.setProject(scale);
 
 
-    std::cout << "\nenemy satcollide" << std::endl;
+    // std::cout << "\nenemy satcollide" << std::endl;
     ene.satCollide(elapsed, player);
-//    ene.collide(elapsed);
-    
-    std::cout << "\nplayer satcollide" << std::endl;
+    // ene.collide(elapsed);
+
+    // std::cout << "\nplayer satcollide" << std::endl;
     player.satCollide(elapsed, ene);
-    
+
 
 
 
