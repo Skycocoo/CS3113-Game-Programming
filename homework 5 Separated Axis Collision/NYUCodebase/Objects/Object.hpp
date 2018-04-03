@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <utility>
 
 #include "../Util/XMLLoad.hpp"
 #include "../Util/ShaderProgram.hpp"
@@ -50,6 +51,8 @@ public:
 
     void setData(const XMLData& data);
 
+    void initPoints();
+
     const glm::vec3& getCenter() const {
         return pos;
     }
@@ -70,6 +73,8 @@ protected:
     glm::vec3 pos;
     float rotate = 0.0;
     float scale = 1.0;
+
+    std::vector<glm::vec3> points;
 
     // vertices
     glm::vec3 shape; // shape.x: width; shape.y: height; shape.z: 0 / 1

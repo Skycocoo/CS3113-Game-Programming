@@ -16,8 +16,8 @@ public:
     // column major
     glm::vec3 operator*(const glm::vec3& vec) const{
         glm::vec3 result;
-        result.x = m[0][0] * vec.x + m[1][0] * vec.y + m[3][0];
-        result.y = m[0][1] * vec.x + m[1][1] * vec.y + m[3][1];
+        result.x = m[0][0] * vec.x + m[1][0] * vec.y + m[2][0] * vec.z + m[3][0] * 1;
+        result.y = m[0][1] * vec.x + m[1][1] * vec.y + + m[2][1] * vec.z + m[3][1] * 1;
         result.z = 0;
         return result;
     }

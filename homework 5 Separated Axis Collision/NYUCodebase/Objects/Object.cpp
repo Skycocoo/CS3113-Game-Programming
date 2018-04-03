@@ -15,6 +15,7 @@ Object::Object(){}
 
 Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(1, 1, 1){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
+    initPoints();
 }
 
 void Object::setProject(float proj){
@@ -94,6 +95,16 @@ bool Object::collide(const Object& rhs) {
     return collide;
 }
 
+void Object::initPoints(){
+    points.clear();
+
+    float a = shape.x / 2, b = shape.y / 2;
+    points.push_back(glm::vec3(-a, b, 0));
+    points.push_back(glm::vec3(a, b, 0));
+    points.push_back(glm::vec3(-a, -b, 0));
+    points.push_back(glm::vec3(a, -b, 0));
+}
+
 
 bool Object::satCollide(const Object& rhs){
     std::pair<float,float> penetration;
@@ -106,27 +117,15 @@ bool Object::satCollide(const Object& rhs){
 
     // std::cout << modelMatrix << rhs.modelMatrix << endl;
 
-    glm::vec3 point1 = modelMatrix * glm::vec3(-a, b, 0);
-    glm::vec3 point2 = modelMatrix * glm::vec3(a, b, 0);
-    glm::vec3 point3 = modelMatrix * glm::vec3(-a, -b, 0);
-    glm::vec3 point4 = modelMatrix * glm::vec3(a, -b, 0);
-    e1Points.push_back(std::make_pair(point1.x, point1.y));
-    e1Points.push_back(std::make_pair(point2.x, point2.y));
-    e1Points.push_back(std::make_pair(point3.x, point3.y));
-    e1Points.push_back(std::make_pair(point4.x, point4.y));
+    for (size_t i = 0; i < points.size(); i++){
+        glm::vec3 point = modelMatrix * points[i];
+        e1Points.push_back(std::make_pair(point.x, point.y));
+    }
 
-    // std::cout << "pointx and point y:" << point1.x << " " << point1.y << " ";
-
-    point1 = rhs.modelMatrix * glm::vec3(-c, d, 0);
-    point2 = rhs.modelMatrix * glm::vec3(c, d, 0);
-    point3 = rhs.modelMatrix * glm::vec3(-c, -d, 0);
-    point4 = rhs.modelMatrix * glm::vec3(c, -d, 0);
-    e2Points.push_back(std::make_pair(point1.x, point1.y));
-    e2Points.push_back(std::make_pair(point2.x, point2.y));
-    e2Points.push_back(std::make_pair(point3.x, point3.y));
-    e2Points.push_back(std::make_pair(point4.x, point4.y));
-
-    // std::cout << point1.x << " " << point1.y << " ";
+    for (size_t i = 0; i < rhs.points.size(); i++){
+        glm::vec3 point = rhs.modelMatrix * rhs.points[i];
+        e2Points.push_back(std::make_pair(point.x, point.y));
+    }
 
     bool collide = CheckSATCollision(e1Points, e2Points, penetration);
 
@@ -150,10 +149,12 @@ bool Object::satCollide(const Object& rhs){
 void Object::setScale(float size){
     this->scale = size;
     this->shape *= size;
+    initPoints();
 }
 
 void Object::setShape(const glm::vec3& shape){
     this->shape = shape;
+    initPoints();
 }
 
 void Object::setRotate(float rot){
