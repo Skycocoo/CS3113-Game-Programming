@@ -15,6 +15,7 @@ class GameState{
 public:
     DynamicObj player;
     DynamicObj ene;
+    DynamicObj ene2;
     // std::vector<DynamicObj> ene;
 
     Tile tile;

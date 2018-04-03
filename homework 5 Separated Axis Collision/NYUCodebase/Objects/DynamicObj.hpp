@@ -24,9 +24,11 @@ public:
     const glm::vec3 getVelo() const;
     void setVelo(float x, float y);
     void updateVelo(float elapsed);
+
     bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);
     bool satCollide(float elapsed, const Object& rhs);
+    bool satTwoCollide(float elapsed, const Object& rhs1, const Object& rhs2);
 
 protected:
     // should set float or else it would set to garbage value

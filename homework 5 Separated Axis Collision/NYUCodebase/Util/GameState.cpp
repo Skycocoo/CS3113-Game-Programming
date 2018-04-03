@@ -29,7 +29,11 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     player.setScale(0.64);
     player.setRotate(45 * M_PI / 180);
 
-    ene = DynamicObj(0, glm::vec3(center.x, center.y, 0), &tile);
+    ene = DynamicObj(0, glm::vec3(center.x+0.5, center.y+0.5, 0), &tile);
+
+    ene2 = DynamicObj(0, glm::vec3(center.x-0.5, center.y-0.5, 0), &tile);
+    ene2.setScale(1.2);
+    ene2.setRotate(30 * M_PI / 180);
     // ene.setRotate(2);
     // enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
 
@@ -62,15 +66,16 @@ void GameState::checkCollision(float elapsed){
    //  tile.setProject(scale);
 
 
-    // std::cout << "\nenemy satcollide" << std::endl;
-    ene.satCollide(elapsed, player);
-    // ene.collide(elapsed);
+    // // std::cout << "\nenemy satcollide" << std::endl;
+    // ene.satCollide(elapsed, player);
+    // // ene.collide(elapsed);
+    //
+    // // std::cout << "\nplayer satcollide" << std::endl;
+    // player.satCollide(elapsed, ene);
 
-    // std::cout << "\nplayer satcollide" << std::endl;
-    player.satCollide(elapsed, ene);
-
-
-
+    player.satTwoCollide(elapsed, ene, ene2);
+    ene.satTwoCollide(elapsed, player, ene2);
+    ene2.satTwoCollide(elapsed, player, ene);
 
 //    for (size_t i = 0; i < ene.size(); i++){
 //        player.collide(elapsed, ene[i]);
@@ -149,6 +154,7 @@ void GameState::displayLevel(){
     player.render(viewMatrix);
     // for (size_t i = 0; i < ene.size(); i++){
     ene.render(viewMatrix);
+    ene2.render(viewMatrix);
     // }
 
     tile.render(viewMatrix);

@@ -16,9 +16,7 @@ DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
 
     }
 
-void DynamicObj::update(float elapsed){
-    Object::update(elapsed);
-}
+
 void DynamicObj::render(const Matrix& view){
     Object::render(view);
 }
@@ -40,6 +38,42 @@ void DynamicObj::updateVelo(float elapsed){
     if (acce.x != 0) acce.x = 0;
    // if (acce.y != 0) acce.y = 0;
 }
+
+
+void DynamicObj::update(float elapsed){
+    updateVelo(elapsed);
+    pos.x += velo.x * elapsed;
+    pos.y += velo.y * elapsed;
+    Object::update();
+}
+
+bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& rhs2){
+    updateVelo(elapsed);
+    pos.x += velo.x * elapsed;
+    pos.y += velo.y * elapsed;
+
+    float prevX = pos.x, prevY = pos.y;
+    bool x = false, y = false;
+
+    Object::update();
+    bool result = Object::satCollide(rhs1);
+    Object::update();
+    result = result || Object::satCollide(rhs2);
+    Object::update();
+    if (tile) result = result || tile->collide(*this);
+
+    if (result){
+        if (prevY - pos.y != 0) y = true;
+        if (prevX - pos.x != 0) x = true;
+    }
+
+    if (x) velo.x = 0;
+    if (y) velo.y = 0;
+
+    Object::update();
+    return (x || y);
+}
+
 
 bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
 
