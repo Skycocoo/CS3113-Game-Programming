@@ -30,8 +30,8 @@ void Object::update(float elapsed){
 
     modelMatrix.Rotate(rotate);
 
-    std::cout << "update: \n" << modelMatrix;
-    std::cout << "update: "<< pos.x << " " << pos.y << std::endl;
+    // std::cout << "update: \n" << modelMatrix;
+    // std::cout << "update: "<< pos.x << " " << pos.y << std::endl;
 }
 
 
@@ -95,8 +95,7 @@ bool Object::collide(const Object& rhs) {
 }
 
 
-bool Object::satCollide(const Object& rhs){
-    // std::cout << "sat\n";
+bool Object::satCollide(Object& rhs){
     std::pair<float,float> penetration;
 
     std::vector<std::pair<float,float>> e1Points;
@@ -131,8 +130,13 @@ bool Object::satCollide(const Object& rhs){
 
     bool collide = CheckSATCollision(e1Points, e2Points, penetration);
 
-    pos.x += (penetration.first + 0.0001);
-    pos.y += (penetration.second + 0.0001);
+    pos.x += (penetration.first / 2);
+    pos.y += (penetration.second / 2);
+
+    rhs.pos.x += (penetration.first / 2);
+    rhs.pos.y += (penetration.second / 2);
+
+    std:cout << "penetration: " << penetration.first << " " << penetration.second << std::endl;
 
     return collide;
 }

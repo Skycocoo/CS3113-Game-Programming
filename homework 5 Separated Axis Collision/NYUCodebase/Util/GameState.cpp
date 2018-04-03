@@ -22,20 +22,22 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     textured = setTextured("Asset/font1.png", text);
     disp = Text(&textured, text);
 
-    GLuint texture;
-    textured = setTextured("Asset/sheet.png", texture);
+    // GLuint texture;
+    // textured = setTextured("Asset/sheet.png", texture);
 
-    player = Player(texture, xml.getData("alienBlue.png"), center, &tile);
+    player = DynamicObj(0, center, &tile);
     player.setScale(0.64);
 
-    enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
+    ene = DynamicObj(0, glm::vec3(center.x, center.y, 0), &tile);
+    // enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
 
     init();
 }
 
 void GameState::init(){
     player.setPos(center);
-    enemygroup.setPos(center);
+    // for (size_t i = 0; i < ene.size(); i++) ene[i].setPos(center);
+//    enemygroup.setPos(center);
 }
 
 
@@ -57,8 +59,14 @@ void GameState::checkCollision(float elapsed){
    //  enemygroup.setProject(scale);
    //  tile.setProject(scale);
 
-    player.collide(elapsed, enemygroup);
-    enemygroup.collide(elapsed);
+
+    player.collide(elapsed, ene);
+    ene.collide(elapsed, player);
+//    for (size_t i = 0; i < ene.size(); i++){
+//        player.collide(elapsed, ene[i]);
+//    }
+
+//    ene.collide(elapsed);
 
 }
 
@@ -129,7 +137,10 @@ void GameState::displayLevel(){
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
     player.render(viewMatrix);
-    enemygroup.render(viewMatrix);
+    // for (size_t i = 0; i < ene.size(); i++){
+    ene.render(viewMatrix);
+    // }
+
     tile.render(viewMatrix);
 
 }

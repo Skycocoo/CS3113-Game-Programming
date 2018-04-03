@@ -5,12 +5,16 @@
 #include "Tile.hpp"
 
 extern ShaderProgram textured;
+extern ShaderProgram untextured;
 
 DynamicObj::DynamicObj(): Object::Object(){}
 
 DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
     Object(&textured, texture, pos), velo(0, 0, 0), fric(0.01, 0.01, 0.01), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
-    {}
+    {
+        if (texture == 0) program = &untextured;
+
+    }
 
 void DynamicObj::update(float elapsed){
     Object::update(elapsed);
@@ -37,24 +41,45 @@ void DynamicObj::updateVelo(float elapsed){
    // if (acce.y != 0) acce.y = 0;
 }
 
-bool DynamicObj::collide(float elapsed, const Object& rhs) {
-    bool result = false;
+bool DynamicObj::satCollide(float elapsed, Object& rhs) {
+    bool x = false, y = false;
     updateVelo(elapsed);
 
     // x axis:
     pos.x += velo.x * elapsed;
-    result = Object::collide(rhs);
-    if (tile) result = result || tile->collide(*this);
-    if (result) velo.x = 0;
+    x = Object::satCollide(rhs);
+    if (tile) x = x || tile->collide(*this);
+    if (x) velo.x = 0;
 
     // y axis:
     pos.y += velo.y * elapsed;
-    result = result || Object::collide(rhs);
-    if (tile) result = result || tile->collide(*this);
-    if (result) velo.y = 0;
+    y = Object::satCollide(rhs);
+    if (tile) y = y || tile->collide(*this);
+    if (y) velo.y = 0;
 
     Object::update();
-    return result;
+    return (x || y);
+}
+
+
+bool DynamicObj::collide(float elapsed, const Object& rhs) {
+    bool x = false, y = false;
+    updateVelo(elapsed);
+
+    // x axis:
+    pos.x += velo.x * elapsed;
+    x = Object::collide(rhs);
+    if (tile) x = x || tile->collide(*this);
+    if (x) velo.x = 0;
+
+    // y axis:
+    pos.y += velo.y * elapsed;
+    y = Object::collide(rhs);
+    if (tile) y = y || tile->collide(*this);
+    if (y) velo.y = 0;
+
+    Object::update();
+    return (x || y);
 }
 
 bool DynamicObj::collide(float elapsed) {

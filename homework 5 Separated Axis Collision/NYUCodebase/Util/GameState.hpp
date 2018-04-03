@@ -13,11 +13,11 @@
 
 class GameState{
 public:
-    Player player;
-    EnemyGroup enemygroup;
-    
-    Tile tile;
+    DynamicObj player;
+    DynamicObj ene;
+    // std::vector<DynamicObj> ene;
 
+    Tile tile;
 
     GameState();
     void init();

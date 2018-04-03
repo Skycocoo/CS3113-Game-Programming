@@ -21,14 +21,13 @@ void Player::jump(float disp){
 }
 
 bool Player::collide(float elapsed, EnemyGroup& enemygroup){
-    // need to fix boolean
     bool x = false, y = false;
     updateVelo(elapsed);
 
     // x axis:
     pos.x += velo.x * elapsed;
     for (int i = 0; i < enemygroup.ene.size(); i++){
-        bool result = Object::satCollide(enemygroup.ene[i]);
+        bool result = Object::collide(enemygroup.ene[i]);
         if (result){
             if (coll.left) enemygroup.ene[i].control(-5);
             if (coll.right) enemygroup.ene[i].control(5);
@@ -44,7 +43,7 @@ bool Player::collide(float elapsed, EnemyGroup& enemygroup){
     pos.y += velo.y * elapsed;
     // should only push in x direction
     for (int i = 0; i < enemygroup.ene.size(); i++){
-        y = y || Object::satCollide(enemygroup.ene[i]);
+        y = y || Object::collide(enemygroup.ene[i]);
         // shouldnt update velocity for size() many times
         // enemygroup.ene[i].collide(elapsed, enemygroup);
     }

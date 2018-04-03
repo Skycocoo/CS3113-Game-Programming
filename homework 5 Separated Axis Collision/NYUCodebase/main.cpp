@@ -40,19 +40,6 @@ void updateGame(const SDL_Event& event, GameState& game){
                 case SDL_SCANCODE_B:
                     game.init();
                     break;
-                case SDL_SCANCODE_LEFT:
-                    if (mode == STATE_GAME_LEVEL) game.player.control(-5);
-                    break;
-                case SDL_SCANCODE_RIGHT:
-                    if (mode == STATE_GAME_LEVEL) game.player.control(5);
-                    break;
-                case SDL_SCANCODE_UP:
-                    if (mode == STATE_GAME_LEVEL) game.player.jump(3);
-                    break;
-                case SDL_SCANCODE_SPACE:
-                    if (mode == STATE_GAME_LEVEL) game.player.jump(3);
-                    break;
-
             }
             break;
     }
