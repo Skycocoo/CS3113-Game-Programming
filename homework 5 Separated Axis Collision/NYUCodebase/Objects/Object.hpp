@@ -38,7 +38,7 @@ public:
     virtual void render(const Matrix& view = Matrix());
     virtual bool collide(const Object& rhs);
 
-    bool satCollide(Object& rhs);
+    bool satCollide(const Object& rhs);
 
     void setScale(float size);
     void setShape(const glm::vec3& shape);

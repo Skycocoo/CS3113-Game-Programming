@@ -26,7 +26,7 @@ public:
     void updateVelo(float elapsed);
     bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);
-    bool satCollide(float elapsed, Object& rhs);
+    bool satCollide(float elapsed, const Object& rhs);
 
 protected:
     // should set float or else it would set to garbage value

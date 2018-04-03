@@ -41,23 +41,33 @@ void DynamicObj::updateVelo(float elapsed){
    // if (acce.y != 0) acce.y = 0;
 }
 
-bool DynamicObj::satCollide(float elapsed, Object& rhs) {
+bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
+
     bool x = false, y = false;
     updateVelo(elapsed);
 
+    std::cout << "x axis" << std::endl;
     // x axis:
     pos.x += velo.x * elapsed;
+    Object::update();
+
     x = Object::satCollide(rhs);
     if (tile) x = x || tile->collide(*this);
     if (x) velo.x = 0;
+    // update twice?
+    Object::update();
 
+    std::cout << "\ny axis" << std::endl;
     // y axis:
     pos.y += velo.y * elapsed;
+    Object::update();
     y = Object::satCollide(rhs);
     if (tile) y = y || tile->collide(*this);
     if (y) velo.y = 0;
 
     Object::update();
+    std::cout << modelMatrix;
+    // std::cout << "after collision: " << pos.x << " " << pos.y << std::endl;
     return (x || y);
 }
 

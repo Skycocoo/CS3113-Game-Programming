@@ -113,7 +113,8 @@ bool Tile::collide(Object& rhs) const {
             }
             if (map.mapData[tileDown][tileX] != -1) {
                 rhs.coll.bottom = true;
-                // std::cout << rhs.pos.y << " " << tileDown << " " << tileX << std::endl;
+                // std::cout << "tile: " << rhs.pos.y << " " << tileDown << " " << tileX << std::endl;
+                std::cout << "tile: " << fabs(enDown - (-tilesize * tileDown)) + 0.001 << std::endl;
                 rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.001;
             }
             if (map.mapData[tileY][tileLeft] != -1) {
