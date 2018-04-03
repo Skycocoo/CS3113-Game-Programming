@@ -63,7 +63,7 @@ void updateGame(const SDL_Event& event, GameState& game){
 int main(){
     // initial set up
     srand(time(NULL));
-    SDL_Window* displayWindow = setUp("Homework 4 Platformer");
+    SDL_Window* displayWindow = setUp("Homework 5 Collision demo");
 
     GameState game;
 
