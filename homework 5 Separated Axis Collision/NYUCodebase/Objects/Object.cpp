@@ -132,7 +132,7 @@ bool Object::satCollide(const Object& rhs){
     if (collide){
         pos.x += (penetration.first);
         pos.y += (penetration.second);
-        std:cout << "\npenetration: " << penetration.first << " " << penetration.second << std::endl;
+        // std:cout << "\npenetration: " << penetration.first << " " << penetration.second << std::endl;
 
     }
 
