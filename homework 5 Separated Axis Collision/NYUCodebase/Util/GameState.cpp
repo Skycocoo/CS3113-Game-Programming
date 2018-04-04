@@ -29,60 +29,27 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     player.setScale(0.64);
     player.setRotate(45 * M_PI / 180);
 
-    ene = DynamicObj(0, glm::vec3(center.x+0.5, center.y+0.5, 0), &tile);
+    // ene = DynamicObj(0, glm::vec3(center.x+0.5, center.y+0.5, 0), &tile);
+    ene = DynamicObj(0, center, &tile);
 
-    ene2 = DynamicObj(0, glm::vec3(center.x-0.5, center.y-0.5, 0), &tile);
+    // ene2 = DynamicObj(0, glm::vec3(center.x-0.5, center.y-0.5, 0), &tile);
+    ene2 = DynamicObj(0, center, &tile);
     ene2.setScale(1.2);
     ene2.setRotate(30 * M_PI / 180);
-    // ene.setRotate(2);
-    // enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
-
-    init();
 }
 
 void GameState::init(){
     player.setPos(center);
-    // for (size_t i = 0; i < ene.size(); i++) ene[i].setPos(center);
-//    enemygroup.setPos(center);
+    ene.setPos(center);
+    ene2.setPos(center);
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-   //  float scale = 1.0;
-   //
-   // glm::vec3 p = player.getVelo();
-   // float scale = (p.y == 0) ? 1.0 : fabs(p.y);
-   // if (!player.coll.bottom){
-   //     if (scale > 3) scale = 1;
-   //     else if (scale < 1) scale = 3;
-   //     else scale = 3 / scale;
-   //
-   //     std::cout << p.y << " " << scale << std::endl;
-   // }
-   //
-   //  player.setProject(scale);
-   //  enemygroup.setProject(scale);
-   //  tile.setProject(scale);
-
-
-    // // std::cout << "\nenemy satcollide" << std::endl;
-    // ene.satCollide(elapsed, player);
-    // // ene.collide(elapsed);
-    //
-    // // std::cout << "\nplayer satcollide" << std::endl;
-    // player.satCollide(elapsed, ene);
-
     player.satTwoCollide(elapsed, ene, ene2);
     ene.satTwoCollide(elapsed, player, ene2);
     ene2.satTwoCollide(elapsed, player, ene);
-
-//    for (size_t i = 0; i < ene.size(); i++){
-//        player.collide(elapsed, ene[i]);
-//    }
-
-//    ene.collide(elapsed);
-
 }
 
 void GameState::update(float elapsed){
@@ -152,13 +119,9 @@ void GameState::displayLevel(){
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
     player.render(viewMatrix);
-    // for (size_t i = 0; i < ene.size(); i++){
     ene.render(viewMatrix);
     ene2.render(viewMatrix);
-    // }
-
     tile.render(viewMatrix);
-
 }
 
 void GameState::displayOver(){

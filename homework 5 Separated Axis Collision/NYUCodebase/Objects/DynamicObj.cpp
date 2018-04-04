@@ -48,30 +48,29 @@ void DynamicObj::update(float elapsed){
 }
 
 bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& rhs2){
-    updateVelo(elapsed);
-    pos.x += velo.x * elapsed;
-    pos.y += velo.y * elapsed;
+    DynamicObj::update(elapsed);
 
     float prevX = pos.x, prevY = pos.y;
-    bool x = false, y = false;
+    // bool x = false, y = false;
+    bool result = false;
 
-    Object::update();
-    bool result = Object::satCollide(rhs1);
+    result = result || Object::satCollide(rhs1);
     Object::update();
     result = result || Object::satCollide(rhs2);
     Object::update();
     if (tile) result = result || tile->collide(*this);
 
-    if (result){
-        if (prevY - pos.y != 0) y = true;
-        if (prevX - pos.x != 0) x = true;
-    }
+    // std::cout << "\nsat\n";
+    // std::cout << pos.x  << " " << pos.y << std::endl << modelMatrix;
 
-    if (x) velo.x = 0;
-    if (y) velo.y = 0;
+    // if (prevY - pos.y != 0) y = true;
+    // if (prevX - pos.x != 0) x = true;
+
+    if (prevX - pos.x != 0) velo.x = 0;
+    if (prevY - pos.y != 0) velo.y = 0;
 
     Object::update();
-    return (x || y);
+    return result;
 }
 
 
