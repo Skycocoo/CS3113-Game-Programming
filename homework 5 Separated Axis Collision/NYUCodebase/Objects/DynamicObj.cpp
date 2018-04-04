@@ -39,7 +39,6 @@ void DynamicObj::updateVelo(float elapsed){
    // if (acce.y != 0) acce.y = 0;
 }
 
-
 void DynamicObj::update(float elapsed){
     updateVelo(elapsed);
     pos.x += velo.x * elapsed;
@@ -51,7 +50,6 @@ bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& 
     DynamicObj::update(elapsed);
 
     float prevX = pos.x, prevY = pos.y;
-    // bool x = false, y = false;
     bool result = false;
 
     result = result || Object::satCollide(rhs1);
@@ -59,12 +57,6 @@ bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& 
     result = result || Object::satCollide(rhs2);
     Object::update();
     if (tile) result = result || tile->collide(*this);
-
-    // std::cout << "\nsat\n";
-    // std::cout << pos.x  << " " << pos.y << std::endl << modelMatrix;
-
-    // if (prevY - pos.y != 0) y = true;
-    // if (prevX - pos.x != 0) x = true;
 
     if (prevX - pos.x != 0) velo.x = 0;
     if (prevY - pos.y != 0) velo.y = 0;
@@ -75,33 +67,7 @@ bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& 
 
 
 bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
-
-    // // std::cot << pos.x << " " << pos.y;
-    //
-    // bool x = false, y = false;
-    // updateVelo(elapsed);
-    //
-    // // x axis:
-    // pos.x += velo.x * elapsed;
-    // Object::update();
-    // x = Object::satCollide(rhs);
-    // if (tile) x = x || tile->collide(*this);
-    // if (x) velo.x = 0;
-    // Object::update();
-    //
-    // // y axis:
-    // pos.y += velo.y * elapsed;
-    // Object::update();
-    // y = Object::satCollide(rhs);
-    // if (tile) y = y || tile->collide(*this);
-    // if (y) velo.y = 0;
-    //
-    // Object::update();
-    // return (x || y);
-
-    updateVelo(elapsed);
-    pos.x += velo.x * elapsed;
-    pos.y += velo.y * elapsed;
+    DynamicObj::update(elapsed);
 
     float prevX = pos.x, prevY = pos.y;
     bool x = false, y = false;

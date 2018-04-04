@@ -4,7 +4,6 @@
 #include "Object.hpp"
 #include <math.h>
 #include <utility>
-// #include <algorithm>
 
 using namespace std;
 
@@ -30,9 +29,6 @@ void Object::update(float elapsed){
     modelMatrix.Translate(pos.x, pos.y, pos.z);
     modelMatrix.Rotate(rotate);
     modelMatrix.Scale(scale, scale, scale);
-
-    // std::cout << "update: \n" << modelMatrix;
-    // std::cout << "update: "<< pos.x << " " << pos.y << std::endl;
 }
 
 
@@ -98,65 +94,42 @@ bool Object::collide(const Object& rhs) {
 void Object::initPoints(){
     points.clear();
 
-    // float a = shape.x / 2, b = shape.y / 2;
+    // shape is taken care of in modelMatrix (?)
     points.push_back(glm::vec3(-0.5, 0.5, 0));
     points.push_back(glm::vec3(0.5, 0.5, 0));
     points.push_back(glm::vec3(-0.5, -0.5, 0));
     points.push_back(glm::vec3(0.5, -0.5, 0));
-
-    // for (size_t i = 0; i < points.size(); i++){
-    //     std::cout << points[i].x << " " << points[i].y << std::endl;
-    // }
 }
 
 
 bool Object::satCollide(const Object& rhs){
     std::pair<float,float> penetration;
-
     std::vector<std::pair<float,float>> e1Points;
     std::vector<std::pair<float,float>> e2Points;
 
-    // std::cout << modelMatrix << rhs.modelMatrix << endl;
-    // std::cout << "sat" << std::endl;
-
     for (size_t i = 0; i < points.size(); i++){
         glm::vec3 point = modelMatrix * points[i];
-        // std::cout << point.x << " " << point.y << std::endl;
         e1Points.push_back(std::make_pair(point.x, point.y));
     }
 
-    // std::cout << std::endl;
-
     for (size_t i = 0; i < rhs.points.size(); i++){
         glm::vec3 point = rhs.modelMatrix * rhs.points[i];
-        // std::cout << point.x << " " << point.y << std::endl;
         e2Points.push_back(std::make_pair(point.x, point.y));
     }
 
-    bool collide = CheckSATCollision(e1Points, e2Points, penetration);
-
-    if (collide){
-        pos.x += (penetration.first);
-        pos.y += (penetration.second);
-        // std:cout << "\npenetration: " << penetration.first << " " << penetration.second << std::endl;
-
+    if (CheckSATCollision(e1Points, e2Points, penetration)){
+        pos.x += penetration.first;
+        pos.y += penetration.second;
+        return true;
     }
 
-    // std::cout << pos.x << " " << pos.y << std::endl;
-
-    // rhs.pos.x += (penetration.first / 2);
-    // rhs.pos.y += (penetration.second / 2);
-
-
-    return collide;
+    return false;
 }
 
 
 void Object::setScale(float size){
     this->scale = size;
     this->shape *= size;
-    // std::cout << this->shape.x << " " << this->shape.y << std::endl;
-    // initPoints();
 }
 
 void Object::setShape(const glm::vec3& shape){
