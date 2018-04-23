@@ -52,7 +52,7 @@ bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& 
     float prevX = pos.x, prevY = pos.y;
     bool result = false;
     
-    std::cout << modelMatrix << std::endl;
+//    std::cout << modelMatrix << std::endl;
     
     
     result = result || Object::satCollide(rhs1);
