@@ -34,13 +34,14 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
 
 void GameState::init(){
     player.setPos(center);
-    enemygroup.ene[0].setPos(center);
-    enemygroup.ene[1].setPos(center);
+    enemygroup.setPos(center);
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
+    // player.collide(elapsed, enemygroup);
+    // enemygroup.collide(elapsed);
     player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
     enemygroup.ene[0].satTwoCollide(elapsed, player, enemygroup.ene[1]);
     enemygroup.ene[1].satTwoCollide(elapsed, player, enemygroup.ene[0]);
@@ -113,8 +114,7 @@ void GameState::displayLevel(){
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
     player.render(viewMatrix);
-    enemygroup.ene[0].render(viewMatrix);
-    enemygroup.ene[1].render(viewMatrix);
+    enemygroup.render(viewMatrix);
     tile.render(viewMatrix);
 }
 

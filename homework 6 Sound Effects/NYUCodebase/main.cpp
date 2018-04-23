@@ -27,6 +27,9 @@ int maxStep = 3;
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 GameMode mode = STATE_GAME_LEVEL;
 
+Mix_Chunk* jump;
+Mix_Chunk* walk;
+
 glm::vec3 center = glm::vec3(0, 0, 0);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,9 +50,11 @@ void updateGame(const SDL_Event& event, GameState& game){
                     if (mode == STATE_GAME_LEVEL) game.player.control(5);
                     break;
                 case SDL_SCANCODE_UP:
+                    Mix_PlayChannel(-1, jump, 0);
                     if (mode == STATE_GAME_LEVEL) game.player.jump(3);
                     break;
                 case SDL_SCANCODE_SPACE:
+                    Mix_PlayChannel(-1, jump, 0);
                     if (mode == STATE_GAME_LEVEL) game.player.jump(3);
                     break;
 
@@ -64,6 +69,20 @@ int main(){
     // initial set up
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Homework 6 Sound effect");
+
+    // music
+    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
+    Mix_Music* music = Mix_LoadMUS("Asset/my_music.mp3");
+    jump = Mix_LoadWAV("Asset/jump.wav");
+    walk = Mix_LoadWAV("Asset/walk.wav");
+    if(!music || !jump || !walk) {
+       cout << "Mix_Load: ";
+       Mix_GetError();
+       cout << endl;
+       exit(1);
+    }
+    Mix_PlayMusic(music, -1);
+
 
     GameState game;
 

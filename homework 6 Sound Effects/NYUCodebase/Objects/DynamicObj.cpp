@@ -6,6 +6,7 @@
 
 extern ShaderProgram textured;
 extern ShaderProgram untextured;
+extern Mix_Chunk* walk;
 
 DynamicObj::DynamicObj(): Object::Object(){}
 
@@ -44,25 +45,33 @@ void DynamicObj::update(float elapsed){
     pos.x += velo.x * elapsed;
     pos.y += velo.y * elapsed;
     Object::update();
+
+    if (velo.x != 0 && coll.bottom == true) Mix_PlayChannel(1, walk, 0);
 }
 
-bool DynamicObj::satTwoCollide(float elapsed, const Object& rhs1, const Object& rhs2){
+void DynamicObj::control(float disp){
+    acce.x += disp;
+}
+
+bool DynamicObj::satTwoCollide(float elapsed, DynamicObj& rhs1, DynamicObj& rhs2){
     DynamicObj::update(elapsed);
 
     float prevX = pos.x, prevY = pos.y;
     bool result = false;
-    
-//    std::cout << modelMatrix << std::endl;
-    
-    
+
+    // std::cout << modelMatrix << std::endl;
+
+
     result = result || Object::satCollide(rhs1);
     Object::update();
     result = result || Object::satCollide(rhs2);
     Object::update();
+
     if (tile) result = result || tile->collide(*this);
 
     if (prevX - pos.x != 0) velo.x = 0;
     if (prevY - pos.y != 0) velo.y = 0;
+
 
     Object::update();
     return result;

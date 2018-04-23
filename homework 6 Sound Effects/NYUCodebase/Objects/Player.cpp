@@ -11,9 +11,7 @@ Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const 
     Object::setData(data);
 }
 
-void Player::control(float disp){
-    acce.x += disp;
-}
+
 
 void Player::jump(float disp){
 //    if (coll.bottom)
@@ -23,7 +21,7 @@ void Player::jump(float disp){
 bool Player::collide(float elapsed, EnemyGroup& enemygroup){
     bool x = false, y = false;
     updateVelo(elapsed);
-
+    std::cout << "player" << std::endl;
     // x axis:
     pos.x += velo.x * elapsed;
     for (int i = 0; i < enemygroup.ene.size(); i++){
@@ -50,7 +48,8 @@ bool Player::collide(float elapsed, EnemyGroup& enemygroup){
     if (tile) y = y || tile->collide(*this);
     if (y) velo.y = 0;
 
-    std::cout << pos.x << " " << pos.y << std::endl;
+    std::cout << std::boolalpha << x << " " << y << std::endl;
+
     Object::update();
     return (x || y);
 }

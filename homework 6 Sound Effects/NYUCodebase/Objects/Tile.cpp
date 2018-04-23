@@ -5,6 +5,8 @@
 
 extern glm::vec3 center;
 extern ShaderProgram textured;
+// extern Mix_Chunk* hit;
+
 
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
@@ -143,6 +145,10 @@ bool Tile::collide(Object& rhs) const {
             rhs.coll.bottom = true;
         }
     }
+
+    // if (rhs.coll.left || rhs.coll.right) Mix_PlayChannel(-1, hit, 0);
+
+    // std::cout << "?" << std::boolalpha << rhs.coll.left << " " << rhs.coll.right << " " << rhs.coll.top << " " << rhs.coll.bottom << std::endl;
 
     return collide;
 }

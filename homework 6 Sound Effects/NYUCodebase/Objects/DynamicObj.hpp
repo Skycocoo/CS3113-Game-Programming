@@ -17,6 +17,7 @@ public:
     void setTile(const Tile& t){
         tile = &t;
     }
+    void control(float disp);
 
     void update(float elapsed);
     void render(const Matrix& view = Matrix());
@@ -28,7 +29,7 @@ public:
     bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);
     bool satCollide(float elapsed, const Object& rhs);
-    bool satTwoCollide(float elapsed, const Object& rhs1, const Object& rhs2);
+    bool satTwoCollide(float elapsed, DynamicObj& rhs1, DynamicObj& rhs2);
 
 protected:
     // should set float or else it would set to garbage value
