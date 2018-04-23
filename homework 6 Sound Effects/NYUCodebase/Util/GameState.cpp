@@ -23,33 +23,27 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     disp = Text(&textured, text);
 
     // GLuint texture;
-    // textured = setTextured("Asset/sheet.png", texture);
+    GLuint texture;
+    textured = setTextured("Asset/sheet.png", texture);
 
-    player = DynamicObj(0, center, &tile);
-    player.setScale(0.64);
-    player.setRotate(45 * M_PI / 180);
+    player = Player(texture, xml.getData("alienBlue.png"), center, &tile);
+    player.setScale(0.5);
 
-    // ene = DynamicObj(0, glm::vec3(center.x+0.5, center.y+0.5, 0), &tile);
-    ene = DynamicObj(0, center, &tile);
-
-    // ene2 = DynamicObj(0, glm::vec3(center.x-0.5, center.y-0.5, 0), &tile);
-    ene2 = DynamicObj(0, center, &tile);
-    ene2.setScale(1.2);
-    ene2.setRotate(30 * M_PI / 180);
+    enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
 }
 
 void GameState::init(){
     player.setPos(center);
-    ene.setPos(center);
-    ene2.setPos(center);
+    enemygroup.ene[0].setPos(center);
+    enemygroup.ene[1].setPos(center);
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    player.satTwoCollide(elapsed, ene, ene2);
-    ene.satTwoCollide(elapsed, player, ene2);
-    ene2.satTwoCollide(elapsed, player, ene);
+    player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
+    enemygroup.ene[0].satTwoCollide(elapsed, player, enemygroup.ene[1]);
+    enemygroup.ene[1].satTwoCollide(elapsed, player, enemygroup.ene[0]);
 }
 
 void GameState::update(float elapsed){
@@ -119,8 +113,8 @@ void GameState::displayLevel(){
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
     player.render(viewMatrix);
-    ene.render(viewMatrix);
-    ene2.render(viewMatrix);
+    enemygroup.ene[0].render(viewMatrix);
+    enemygroup.ene[1].render(viewMatrix);
     tile.render(viewMatrix);
 }
 

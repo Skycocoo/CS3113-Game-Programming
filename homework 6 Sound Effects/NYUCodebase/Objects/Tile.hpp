@@ -27,7 +27,7 @@ public:
 
 private:
     FlareMap map;
-    float tilesize = 0.1;
+    float tilesize = 0.5;
 
 };
 

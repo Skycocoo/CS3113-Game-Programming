@@ -95,10 +95,10 @@ void Object::initPoints(){
     points.clear();
 
     // shape is taken care of in modelMatrix (?)
-    points.push_back(glm::vec3(-0.5, 0.5, 0));
-    points.push_back(glm::vec3(0.5, 0.5, 0));
     points.push_back(glm::vec3(-0.5, -0.5, 0));
     points.push_back(glm::vec3(0.5, -0.5, 0));
+    points.push_back(glm::vec3(0.5, 0.5, 0));
+    points.push_back(glm::vec3(-0.5, 0.5, 0));
 }
 
 
