@@ -72,17 +72,17 @@ SDL_Window* setUp(const string& name){
     screenHeight = 5.0;
     screenWidth = screenHeight * screenRatio;
     
-    // music
-    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
-    Mix_Music* music = Mix_LoadMUS("Asset/my_music.mp3");
-    if(!music) {
-        cout << "Mix_LoadMUS(\"music.mp3\"): ";
-        Mix_GetError();
-        cout << endl;
-        exit(1);
-    }
-    
-    Mix_PlayMusic(music, -1);
+//    // music
+//    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
+//    Mix_Music* music = Mix_LoadMUS("Asset/my_music.mp3");
+//    if(!music) {
+//        cout << "Mix_LoadMUS(\"music.mp3\"): ";
+//        Mix_GetError();
+//        cout << endl;
+//        exit(1);
+//    }
+//
+//    Mix_PlayMusic(music, -1);
 
     return displayWindow;
 }
