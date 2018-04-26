@@ -133,8 +133,20 @@ void Object::setScale(float size){
 }
 
 void Object::setShape(const glm::vec3& shape){
-    this->shape = shape;
-    // initPoints();
+    this->scale = 1.0;
+
+    float w = shape.x / shape.y;
+    float h = 1.0;
+    vertices = {
+        -0.5f * w, -0.5f * h,
+        0.5f * w, -0.5f * h,
+        0.5f * w, 0.5f * h,
+        -0.5f * w, -0.5f * h,
+        0.5f * w, 0.5f * h,
+        -0.5f * w, 0.5f * h ,
+    };
+    this->shape.x = w;
+    this->shape.y = h;
 }
 
 void Object::setRotate(float rot){
@@ -162,21 +174,22 @@ void Object::setData(const XMLData& data){
           h = (data.width / data.height < 1) ? 1.0 : data.height / data.width;
 
     vertices = {
-        -0.5f * w, -0.5f * h,
-        0.5f * w, 0.5f * h,
-        -0.5f * w, 0.5f * h,
-        0.5f * w, 0.5f * h,
-        -0.5f * w, -0.5f * h ,
-        0.5f * w, -0.5f * h
+      -0.5f * w, -0.5f * h,
+      0.5f * w, -0.5f * h,
+      0.5f * w, 0.5f * h,
+      -0.5f * w, -0.5f * h,
+      0.5f * w, 0.5f * h,
+      -0.5f * w, 0.5f * h ,
     };
+
 
     texCoords = {
         u, v+height,
-        u+width, v,
-        u, v,
+        u+width, v+height,
         u+width, v,
         u, v+height,
-        u+width, v+height
+        u+width, v,
+        u, v
     };
 
     shape.x = w;
