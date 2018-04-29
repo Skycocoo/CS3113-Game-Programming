@@ -26,6 +26,8 @@ struct Coll{
     }
 };
 
+std::ostream& operator<<(std::ostream& os, const Coll& c);
+
 // create an object class to handle parameters
 class Object{
     friend class Tile;

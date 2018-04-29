@@ -21,35 +21,67 @@ void Player::jump(float disp){
 bool Player::collide(float elapsed, EnemyGroup& enemygroup){
     bool x = false, y = false;
     updateVelo(elapsed);
-    std::cout << "player" << std::endl;
+    // std::cout << "player" << std::endl;
     // x axis:
     pos.x += velo.x * elapsed;
-    for (int i = 0; i < enemygroup.ene.size(); i++){
+    for (size_t i = 0; i < enemygroup.ene.size(); i++){
         bool result = Object::collide(enemygroup.ene[i]);
         if (result){
-            if (coll.left) enemygroup.ene[i].control(-5);
-            if (coll.right) enemygroup.ene[i].control(5);
+            if (coll.left) enemygroup.ene[i].setAcce(-5);
+            if (coll.right) enemygroup.ene[i].setAcce(5);
             x = true;
         }
         // shouldnt update velocity for size() many times
         // enemygroup.ene[i].collide(elapsed, enemygroup);
     }
-    if (tile) x = x || tile->collide(*this);
+    if (tile) x = tile->collide(*this) || x;
     if (x) velo.x = 0;
 
     // y axis:
     pos.y += velo.y * elapsed;
     // should only push in x direction
     for (int i = 0; i < enemygroup.ene.size(); i++){
-        y = y || Object::collide(enemygroup.ene[i]);
+        y = Object::collide(enemygroup.ene[i]) || y;
         // shouldnt update velocity for size() many times
         // enemygroup.ene[i].collide(elapsed, enemygroup);
     }
-    if (tile) y = y || tile->collide(*this);
+    if (tile) y = tile->collide(*this) || y;
     if (y) velo.y = 0;
 
-    std::cout << std::boolalpha << x << " " << y << std::endl;
+    // std::cout << std::boolalpha << x << " " << y << std::endl;
 
     Object::update();
     return (x || y);
+}
+
+bool Player::satCollide(float elapsed, EnemyGroup& enemygroup){
+    // update x & y positions
+    DynamicObj::update(elapsed);
+
+    // store updated positions
+    float prevX = pos.x, prevY = pos.y;
+    bool result = false;
+
+    // std::cout << "player" << std::endl;
+
+    for (size_t i = 0; i < enemygroup.ene.size(); i++){
+        // std::cout << "calling satCollide " << i << std::endl;
+        result = Object::satCollide(enemygroup.ene[i]) || result;
+
+        // if (result) std::cout << "collide? " << coll;
+
+        if (coll.left) enemygroup.ene[i].setAcce(-5);
+        else if (coll.right) enemygroup.ene[i].setAcce(5);
+    }
+
+    if (tile) result = tile->collide(*this) || result;
+
+    // if (coll.left) enemygroup.ene[i].setAcce(-5);
+    // if (coll.right) enemygroup.ene[i].setAcce(5);
+
+    if (prevX - pos.x != 0) velo.x = 0;
+    if (prevY - pos.y != 0) velo.y = 0;
+
+    Object::update();
+    return result;
 }

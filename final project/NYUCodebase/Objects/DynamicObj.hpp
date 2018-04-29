@@ -17,7 +17,7 @@ public:
     void setTile(const Tile& t){
         tile = &t;
     }
-    void control(float disp);
+    void setAcce(float disp);
 
     void update(float elapsed);
     void render(const Matrix& view = Matrix());

@@ -88,23 +88,24 @@ void Tile::render(const Matrix& view){
 
 
 bool Tile::collide(Object& rhs) const {
+    rhs.coll.reset();
     bool collide = false;
 
     int tileX = int(rhs.pos.x / tilesize), tileY = int(-rhs.pos.y / tilesize);
 
-    float enUp = -FLT_MAX, enDown = FLT_MAX, enLeft = FLT_MAX, enRight = -FLT_MAX;
-    for (size_t i = 0; i < points.size(); i++){
-        glm::vec3 point = rhs.modelMatrix * rhs.points[i];
-        if (point.x < enLeft) enLeft = point.x;
-        if (point.x > enRight) enRight = point.x;
-        if (point.y > enUp) enUp = point.y;
-        if (point.y < enDown) enDown = point.y;
-    }
+    // float enUp = -FLT_MAX, enDown = FLT_MAX, enLeft = FLT_MAX, enRight = -FLT_MAX;
+    // for (size_t i = 0; i < points.size(); i++){
+    //     glm::vec3 point = rhs.modelMatrix * rhs.points[i];
+    //     if (point.x < enLeft) enLeft = point.x;
+    //     if (point.x > enRight) enRight = point.x;
+    //     if (point.y > enUp) enUp = point.y;
+    //     if (point.y < enDown) enDown = point.y;
+    // }
 
-    // float enUp = rhs.pos.y + rhs.shape.y / 2,
-    // enDown = rhs.pos.y - rhs.shape.y / 2,
-    // enLeft = rhs.pos.x - rhs.shape.x / 2,
-    // enRight = rhs.pos.x + rhs.shape.x / 2;
+    float enUp = rhs.pos.y + rhs.shape.y / 2,
+    enDown = rhs.pos.y - rhs.shape.y / 2,
+    enLeft = rhs.pos.x - rhs.shape.x / 2,
+    enRight = rhs.pos.x + rhs.shape.x / 2;
 
     int tileUp = int(-enUp / tilesize),
     tileDown = int(-enDown / tilesize),
@@ -148,7 +149,7 @@ bool Tile::collide(Object& rhs) const {
 
     // if (rhs.coll.left || rhs.coll.right) Mix_PlayChannel(-1, hit, 0);
 
-    // std::cout << "?" << std::boolalpha << rhs.coll.left << " " << rhs.coll.right << " " << rhs.coll.top << " " << rhs.coll.bottom << std::endl;
+    // std::cout << "original: " << enLeft << " " << enRight << " " << enUp << " " << enDown << std::endl;
 
     return collide;
 }

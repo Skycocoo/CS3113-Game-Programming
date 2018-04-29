@@ -47,25 +47,24 @@ void DynamicObj::update(float elapsed){
 
 }
 
-void DynamicObj::control(float disp){
+void DynamicObj::setAcce(float disp){
     acce.x += disp;
 }
 
 bool DynamicObj::satTwoCollide(float elapsed, DynamicObj& rhs1, DynamicObj& rhs2){
+    // update x & y positions
     DynamicObj::update(elapsed);
 
+    // store updated positions
     float prevX = pos.x, prevY = pos.y;
     bool result = false;
 
-    // std::cout << modelMatrix << std::endl;
+    result = Object::satCollide(rhs1) || result;
+    // Object::update();
+    result = Object::satCollide(rhs2) || result;
+    // Object::update();
 
-
-    result = result || Object::satCollide(rhs1);
-    Object::update();
-    result = result || Object::satCollide(rhs2);
-    Object::update();
-
-    if (tile) result = result || tile->collide(*this);
+    if (tile) result = tile->collide(*this) || result;
 
     if (prevX - pos.x != 0) velo.x = 0;
     if (prevY - pos.y != 0) velo.y = 0;
@@ -85,7 +84,7 @@ bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
     Object::update();
     bool result = Object::satCollide(rhs);
     Object::update();
-    if (tile) result = result || tile->collide(*this);
+    if (tile) result = tile->collide(*this) || result;
 
     if (result){
         if (prevY - pos.y != 0) y = true;
@@ -107,13 +106,13 @@ bool DynamicObj::collide(float elapsed, const Object& rhs) {
     // x axis:
     pos.x += velo.x * elapsed;
     x = Object::collide(rhs);
-    if (tile) x = x || tile->collide(*this);
+    if (tile) x = tile->collide(*this) || x;
     if (x) velo.x = 0;
 
     // y axis:
     pos.y += velo.y * elapsed;
     y = Object::collide(rhs);
-    if (tile) y = y || tile->collide(*this);
+    if (tile) y = tile->collide(*this) || y;
     if (y) velo.y = 0;
 
     Object::update();
@@ -126,13 +125,13 @@ bool DynamicObj::collide(float elapsed) {
 
     // x axis:
     pos.x += velo.x * elapsed;
-    if (tile) result = result || tile->collide(*this);
+    if (tile) result = tile->collide(*this) || result;
     if (result) velo.x = 0;
 
     // y axis:
     pos.y += velo.y * elapsed;
     // should also check collide with tile map
-    if (tile) result = result || tile->collide(*this);
+    if (tile) result = tile->collide(*this) || result;
     if (result) velo.y = 0;
 
     Object::update();

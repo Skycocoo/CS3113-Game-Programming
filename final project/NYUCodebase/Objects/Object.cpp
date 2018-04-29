@@ -11,6 +11,12 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
+std::ostream& operator<<(std::ostream& os, const Coll& c){
+    os << std::boolalpha << "top: " << c.top << " bottom: " << c.bottom << " left: " << c.left << " right: " << c.right << "\n";
+    return os;
+}
+
+
 Object::Object(){}
 
 Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(1, 1, 1){
@@ -52,6 +58,7 @@ void Object::render(const Matrix& view){
 // collision detection
 // separate axis for collision handling
 bool Object::collide(const Object& rhs) {
+    coll.reset();
     bool collide = false;
 
     float objUp = pos.y + shape.y / 2,
@@ -99,6 +106,8 @@ void Object::satPoints(){
 
 
 bool Object::satCollide(const Object& rhs){
+    coll.reset();
+
     std::pair<float,float> penetration;
     std::vector<std::pair<float,float>> e1Points;
     std::vector<std::pair<float,float>> e2Points;
@@ -113,9 +122,24 @@ bool Object::satCollide(const Object& rhs){
         e2Points.push_back(std::make_pair(point.x, point.y));
     }
 
+    // std::cout << coll;
+
     if (CheckSATCollision(e1Points, e2Points, penetration)){
+        // std::cout << penetration.first << " " << penetration.second << std::endl;
+        if (penetration.first == 0 && penetration.second == 0) {
+            return false;
+        }
+
+        if (penetration.first > 0) coll.left = true;
+        if (penetration.first < 0) coll.right = true;
+        if (penetration.second > 0) coll.bottom = true;
+        if (penetration.second < 0) coll.top = true;
+
+        // std::cout << coll;
+
         pos.x += penetration.first;
         pos.y += penetration.second;
+
         return true;
     }
 

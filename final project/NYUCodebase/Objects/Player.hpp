@@ -16,6 +16,7 @@ public:
     void jump(float disp);
 
     bool collide(float elapsed, EnemyGroup& enemygroup);
+    bool satCollide(float elapsed, EnemyGroup& enemygroup);
 
 };
 

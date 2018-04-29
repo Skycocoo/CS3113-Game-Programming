@@ -41,11 +41,12 @@ void GameState::init(){
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    // player.collide(elapsed, enemygroup);
-    // enemygroup.collide(elapsed);
-    player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
-    enemygroup.ene[0].satTwoCollide(elapsed, player, enemygroup.ene[1]);
-    enemygroup.ene[1].satTwoCollide(elapsed, player, enemygroup.ene[0]);
+    player.satCollide(elapsed, enemygroup);
+    enemygroup.collide(elapsed);
+
+    // player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
+    // enemygroup.ene[0].satTwoCollide(elapsed, player, enemygroup.ene[1]);
+    // enemygroup.ene[1].satTwoCollide(elapsed, player, enemygroup.ene[0]);
 }
 
 void GameState::update(float elapsed){

@@ -60,6 +60,8 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
     if (y) velo.y = 0;
 
     Object::update();
+    // std::cout << velo.x << " " << velo.y << std::endl;
+
     return (x || y);
 }
 
