@@ -44,18 +44,28 @@ void updateGame(const SDL_Event& event, GameState& game){
                     game.init();
                     break;
                 case SDL_SCANCODE_LEFT:
-                    if (mode == STATE_GAME_LEVEL) game.player.control(-5);
+                    if (mode == STATE_GAME_LEVEL) {
+                        Mix_PlayChannel(1, walk, 0);
+                        game.player.control(-5);
+                    }
                     break;
                 case SDL_SCANCODE_RIGHT:
-                    if (mode == STATE_GAME_LEVEL) game.player.control(5);
+                    if (mode == STATE_GAME_LEVEL) {
+                        Mix_PlayChannel(1, walk, 0);
+                        game.player.control(5);
+                    }
                     break;
                 case SDL_SCANCODE_UP:
-                    Mix_PlayChannel(-1, jump, 0);
-                    if (mode == STATE_GAME_LEVEL) game.player.jump(3);
+                    if (mode == STATE_GAME_LEVEL) {
+                        Mix_PlayChannel(-1, jump, 0);
+                        game.player.jump(3);
+                    }
                     break;
                 case SDL_SCANCODE_SPACE:
-                    Mix_PlayChannel(-1, jump, 0);
-                    if (mode == STATE_GAME_LEVEL) game.player.jump(3);
+                    if (mode == STATE_GAME_LEVEL) {
+                        Mix_PlayChannel(-1, jump, 0);
+                        game.player.jump(3);
+                    }
                     break;
 
             }
@@ -68,20 +78,20 @@ void updateGame(const SDL_Event& event, GameState& game){
 int main(){
     // initial set up
     srand(time(NULL));
-    SDL_Window* displayWindow = setUp("Homework 6 Sound effect");
+    SDL_Window* displayWindow = setUp("Finan project");
 
     // music
-    Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
-    Mix_Music* music = Mix_LoadMUS("Asset/my_music.mp3");
-    jump = Mix_LoadWAV("Asset/jump.wav");
-    walk = Mix_LoadWAV("Asset/walk.wav");
-    if(!music || !jump || !walk) {
-       cout << "Mix_Load: ";
-       Mix_GetError();
-       cout << endl;
-       exit(1);
-    }
-    Mix_PlayMusic(music, -1);
+    // Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
+    // Mix_Music* music = Mix_LoadMUS("Asset/my_music.mp3");
+    // jump = Mix_LoadWAV("Asset/jump.wav");
+    // walk = Mix_LoadWAV("Asset/walk.wav");
+    // if(!music || !jump || !walk) {
+    //    cout << "Mix_Load: ";
+    //    Mix_GetError();
+    //    cout << endl;
+    //    exit(1);
+    // }
+    // Mix_PlayMusic(music, -1);
 
 
     GameState game;

@@ -15,11 +15,7 @@ Object::Object(){}
 
 Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(1, 1, 1){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
-    initPoints();
-}
-
-void Object::setProject(float proj){
-    projectionMatrix.SetOrthoProjection(-screenWidth * proj, screenWidth * proj, -screenHeight * proj, screenHeight * proj, -1.0f, 1.0f);
+    satPoints();
 }
 
 
@@ -91,14 +87,14 @@ bool Object::collide(const Object& rhs) {
     return collide;
 }
 
-void Object::initPoints(){
+void Object::satPoints(){
     points.clear();
 
     // shape is taken care of in modelMatrix (?)
-    points.push_back(glm::vec3(-0.5, -0.5, 0));
-    points.push_back(glm::vec3(0.5, -0.5, 0));
-    points.push_back(glm::vec3(0.5, 0.5, 0));
-    points.push_back(glm::vec3(-0.5, 0.5, 0));
+    points.push_back(glm::vec3(-0.5 * shape.x, -0.5 * shape.y, 0));
+    points.push_back(glm::vec3(0.5 * shape.x, -0.5 * shape.y, 0));
+    points.push_back(glm::vec3(0.5 * shape.x, 0.5 * shape.y, 0));
+    points.push_back(glm::vec3(-0.5 * shape.x, 0.5 * shape.y, 0));
 }
 
 
@@ -162,6 +158,12 @@ void Object::setPos(float x, float y){
     this->pos.y = y;
 }
 
+void Object::setProject(float proj){
+    projectionMatrix.SetOrthoProjection(-screenWidth * proj, screenWidth * proj, -screenHeight * proj, screenHeight * proj, -1.0f, 1.0f);
+}
+
+
+
 void Object::setData(const XMLData& data){
     // assume the shape of sheetsprite is 1024 * 512
     float u = data.x / 1024.0,
@@ -194,7 +196,18 @@ void Object::setData(const XMLData& data){
 
     shape.x = w;
     shape.y = h;
+
+    satPoints();
 }
+
+const glm::vec3& Object::getCenter() const {
+    return pos;
+}
+
+
+
+
+
 
 
 bool TestSATSeparationForEdge(float edgeX, float edgeY, const std::vector<std::pair<float,float>> &points1, const std::vector<std::pair<float,float>> &points2, std::pair<float,float> &penetration) {

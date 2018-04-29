@@ -18,7 +18,7 @@ Tile::Tile(Tile&& rhs): map(rhs.map){
     rhs.map = FlareMap();
 }
 
-Tile::Tile(const std::string& name): Object(&textured, 0), map(name){
+Tile::Tile(const std::string& name, float tilesize): Object(&textured, 0), map(name), tilesize(tilesize){
     texture = LoadTexture((RESOURCE_FOLDER + name + ".png").c_str());
 
     vertices.clear();

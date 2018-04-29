@@ -39,6 +39,7 @@ public:
     virtual void render(const Matrix& view = Matrix());
     virtual bool collide(const Object& rhs);
 
+    void satPoints();
     bool satCollide(const Object& rhs);
 
     void setScale(float size);
@@ -46,16 +47,10 @@ public:
     void setRotate(float rot); // rotate: angle (in radian)
     void setPos(const glm::vec3& pos);
     void setPos(float x, float y);
-
     void setProject(float proj);
-
     void setData(const XMLData& data);
 
-    void initPoints();
-
-    const glm::vec3& getCenter() const {
-        return pos;
-    }
+    const glm::vec3& getCenter() const;
 
 protected:
     // shader

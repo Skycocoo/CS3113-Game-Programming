@@ -15,7 +15,7 @@ class Tile: public Object{
 public:
     // constructors, assume tiles start drawing at (0,0)
     Tile();
-    Tile(const std::string& name);
+    Tile(const std::string& name, float tilesize = 0.5);
     // move copy constructor
     Tile(Tile&& rhs);
 
@@ -27,7 +27,7 @@ public:
 
 private:
     FlareMap map;
-    float tilesize = 0.5;
+    float tilesize;
 
 };
 

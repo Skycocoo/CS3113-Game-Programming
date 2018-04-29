@@ -105,9 +105,15 @@ void EnemyGroup::setPos(const glm::vec3& pos){
     }
 }
 
-void EnemyGroup::setProject(float scale){
+void EnemyGroup::setProject(float proj){
     for (size_t i = 0; i < ene.size(); i++){
-        ene[i].setProject(scale);
+        ene[i].setProject(proj);
+    }
+}
+
+void EnemyGroup::setScale(float scale){
+    for (size_t i = 0; i < ene.size(); i++){
+        ene[i].setScale(scale);
     }
 }
 

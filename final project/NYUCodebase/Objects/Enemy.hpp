@@ -31,8 +31,9 @@ public:
     void render(const Matrix& view = Matrix());
     bool collide(float elapsed);
 
+    void setScale(float scale);
     void setPos(const glm::vec3& pos);
-    void setProject(float scale);
+    void setProject(float proj);
 
     void delEne(size_t index);
     int getEne() const;

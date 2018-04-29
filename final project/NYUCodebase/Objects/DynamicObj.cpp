@@ -6,12 +6,11 @@
 
 extern ShaderProgram textured;
 extern ShaderProgram untextured;
-extern Mix_Chunk* walk;
 
 DynamicObj::DynamicObj(): Object::Object(){}
 
 DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
-    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.01, 0.01, 0.01), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
+    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.1, 0.1, 0.1), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
     {
         if (texture == 0) program = &untextured;
 
@@ -46,7 +45,6 @@ void DynamicObj::update(float elapsed){
     pos.y += velo.y * elapsed;
     Object::update();
 
-    if (velo.x != 0 && coll.bottom == true) Mix_PlayChannel(1, walk, 0);
 }
 
 void DynamicObj::control(float disp){

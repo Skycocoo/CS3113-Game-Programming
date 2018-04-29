@@ -14,7 +14,7 @@ extern int maxStep;
 
 extern glm::vec3 center;
 
-GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
+GameState::GameState(): tile("Asset/tilemap", 0.5), xml("Asset/sheet.xml"){
     untextured = setUntextured();
     center = tile.getCenter();
 
@@ -30,6 +30,7 @@ GameState::GameState(): tile("Asset/tilemap"), xml("Asset/sheet.xml"){
     player.setScale(0.5);
 
     enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
+    // enemygroup.setScale(0.5);
 }
 
 void GameState::init(){
