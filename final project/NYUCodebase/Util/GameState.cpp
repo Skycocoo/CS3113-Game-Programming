@@ -30,19 +30,21 @@ GameState::GameState(): tile("Asset/tilemap", 0.5), xml("Asset/sheet.xml"){
     player.setScale(0.5);
 
     enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
-    // enemygroup.setScale(0.5);
+    enemygroup.setScale(0.5);
 }
 
 void GameState::init(){
     player.setPos(center);
+    player.setVelo(0, 0);
     enemygroup.setPos(center);
+    enemygroup.setVelo(0, 0);
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
     player.satCollide(elapsed, enemygroup);
-    enemygroup.collide(elapsed);
+    enemygroup.satCollide(elapsed);
 
     // player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
     // enemygroup.ene[0].satTwoCollide(elapsed, player, enemygroup.ene[1]);

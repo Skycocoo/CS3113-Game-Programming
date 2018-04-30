@@ -71,8 +71,12 @@ bool Object::collide(const Object& rhs) {
     enLeft = rhs.pos.x - rhs.shape.x / 2,
     enRight = rhs.pos.x + rhs.shape.x / 2;
 
+
     // intersecting
     if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
+
+
+    // if (collide) std::cout << objUp << " " << enDown << " " << (objUp > enDown)<< std::endl;
 
     if (collide){
         if (objUp >= enDown && pos.y < rhs.pos.y) coll.top = true;

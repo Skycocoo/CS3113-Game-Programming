@@ -17,6 +17,7 @@ public:
     void control(float disp);
 
     bool collide(float elapsed, EnemyGroup& enemygroup);
+    bool satCollide(float elapsed, EnemyGroup& enemygroup);
 };
 
 
@@ -30,9 +31,11 @@ public:
     // void update(float elapsed);
     void render(const Matrix& view = Matrix());
     bool collide(float elapsed);
+    bool satCollide(float elapsed);
 
     void setScale(float scale);
     void setPos(const glm::vec3& pos);
+    void setVelo(float x, float y);
     void setProject(float proj);
 
     void delEne(size_t index);

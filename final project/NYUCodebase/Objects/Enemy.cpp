@@ -53,16 +53,44 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 
     for (size_t i = 0; i < enemygroup.ene.size(); i++){
         if (this != &enemygroup.ene[i]){
-            y = y || Object::collide(enemygroup.ene[i]);
+            y = Object::collide(enemygroup.ene[i]) || y;
         }
     }
-    if (tile) y = tile->collide(*this);
+    if (tile) y = tile->collide(*this) || y;
     if (y) velo.y = 0;
 
     Object::update();
     // std::cout << velo.x << " " << velo.y << std::endl;
 
     return (x || y);
+}
+
+bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
+    // update x & y positions
+    DynamicObj::update(elapsed);
+
+    // store updated positions
+    float prevX = pos.x, prevY = pos.y;
+    bool result = false;
+
+    // std::cout << "player" << std::endl;
+
+    for (size_t i = 0; i < enemygroup.ene.size(); i++){
+        // std::cout << "calling satCollide " << i << std::endl;
+        if (this != &enemygroup.ene[i]){
+            result = Object::satCollide(enemygroup.ene[i]) || result;
+            if (coll.left) enemygroup.ene[i].setAcce(-5);
+            else if (coll.right) enemygroup.ene[i].setAcce(5);
+        }
+    }
+
+    if (tile) result = tile->collide(*this) || result;
+
+    if (prevX - pos.x != 0) velo.x = 0;
+    if (prevY - pos.y != 0) velo.y = 0;
+
+    Object::update();
+    return result;
 }
 
 // // render enemy & bullets
@@ -74,7 +102,7 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 EnemyGroup::EnemyGroup(){}
 
 EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile):
-    size(0.64), numEn(2), numCol(2), numRow(1){
+    size(1), numEn(3), numCol(3), numRow(1){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;
@@ -107,6 +135,13 @@ void EnemyGroup::setPos(const glm::vec3& pos){
     }
 }
 
+void EnemyGroup::setVelo(float x, float y){
+    for (size_t i = 0; i < ene.size(); i++){
+        ene[i].setVelo(x, y);
+    }
+}
+
+
 void EnemyGroup::setProject(float proj){
     for (size_t i = 0; i < ene.size(); i++){
         ene[i].setProject(proj);
@@ -122,10 +157,19 @@ void EnemyGroup::setScale(float scale){
 bool EnemyGroup::collide(float elapsed){
     bool result = false;
     for (size_t i = 0; i < ene.size(); i++){
-        result = result || ene[i].collide(elapsed, *this);
+        result = ene[i].collide(elapsed, *this) || result;
     }
     return result;
 }
+
+bool EnemyGroup::satCollide(float elapsed){
+    bool result = false;
+    for (size_t i = 0; i < ene.size(); i++){
+        result = ene[i].satCollide(elapsed, *this) || result;
+    }
+    return result;
+}
+
 
 // void EnemyGroup::update(float elapsed){
 //     // beyound the range of the screenwidth

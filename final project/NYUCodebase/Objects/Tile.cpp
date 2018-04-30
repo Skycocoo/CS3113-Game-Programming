@@ -94,7 +94,7 @@ bool Tile::collide(Object& rhs) const {
     int tileX = int(rhs.pos.x / tilesize), tileY = int(-rhs.pos.y / tilesize);
 
     // float enUp = -FLT_MAX, enDown = FLT_MAX, enLeft = FLT_MAX, enRight = -FLT_MAX;
-    // for (size_t i = 0; i < points.size(); i++){
+    // for (size_t i = 0; i < rhs.points.size(); i++){
     //     glm::vec3 point = rhs.modelMatrix * rhs.points[i];
     //     if (point.x < enLeft) enLeft = point.x;
     //     if (point.x > enRight) enRight = point.x;

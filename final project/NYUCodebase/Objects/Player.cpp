@@ -76,9 +76,6 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup){
 
     if (tile) result = tile->collide(*this) || result;
 
-    // if (coll.left) enemygroup.ene[i].setAcce(-5);
-    // if (coll.right) enemygroup.ene[i].setAcce(5);
-
     if (prevX - pos.x != 0) velo.x = 0;
     if (prevY - pos.y != 0) velo.y = 0;
 

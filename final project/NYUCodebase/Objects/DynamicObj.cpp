@@ -16,6 +16,9 @@ DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
 
     }
 
+void DynamicObj::setTile(const Tile& t){
+    tile = &t;
+}
 
 void DynamicObj::render(const Matrix& view){
     Object::render(view);
