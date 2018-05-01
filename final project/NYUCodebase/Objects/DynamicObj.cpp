@@ -141,9 +141,3 @@ bool DynamicObj::collide(float elapsed) {
 
     return result;
 }
-
-
-// linear interpolation
-void DynamicObj::lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar) const {
-    orig = (glm::vec3(1, 1, 1) - prop) * orig + prop * tar;
-}

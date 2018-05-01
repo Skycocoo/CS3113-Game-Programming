@@ -11,8 +11,11 @@ extern float edge;
 
 Enemy::Enemy(){}
 
-Enemy::Enemy(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile): DynamicObj(texture, pos, tile){
-    Object::setData(data);
+
+// 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
+Enemy::Enemy(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
+DynamicObj(texture, pos, tile), textures(data){
+    Object::setData(data[0]);
 }
 
 // update positiin
@@ -101,7 +104,7 @@ bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
 
 EnemyGroup::EnemyGroup(){}
 
-EnemyGroup::EnemyGroup(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile):
+EnemyGroup::EnemyGroup(GLuint texture, const std::vector<XMLData>&data, const glm::vec3& pos, const Tile* tile):
     size(1), numEn(3), numCol(3), numRow(1){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;

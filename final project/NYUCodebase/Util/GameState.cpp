@@ -26,10 +26,24 @@ GameState::GameState(): tile("Asset/tilemap", 0.5), xml("Asset/sheet.xml"){
     GLuint texture;
     textured = setTextured("Asset/sheet.png", texture);
 
-    player = Player(texture, xml.getData("alienBlue.png"), center, &tile);
+
+    std::vector<XMLData> p;
+    // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
+    p.push_back(xml.getData("alienBlue.png"));
+    p.push_back(xml.getData("alienBlue_jump.png"));
+    p.push_back(xml.getData("alienBlue_stand.png"));
+    p.push_back(xml.getData("alienBlue_walk1.png"));
+    p.push_back(xml.getData("alienBlue_walk2.png"));
+    player = Player(texture, p, center, &tile);
     player.setScale(0.5);
 
-    enemygroup = EnemyGroup(texture, xml.getData("alienBeige.png"), center, &tile);
+    p.clear();
+    p.push_back(xml.getData("alienBeige.png"));
+    p.push_back(xml.getData("alienBeige_jump.png"));
+    p.push_back(xml.getData("alienBeige_stand.png"));
+    p.push_back(xml.getData("alienBeige_walk1.png"));
+    p.push_back(xml.getData("alienBeige_walk2.png"));
+    enemygroup = EnemyGroup(texture, p, center, &tile);
     enemygroup.setScale(0.5);
 }
 

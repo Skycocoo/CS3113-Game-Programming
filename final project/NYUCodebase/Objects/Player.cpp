@@ -7,10 +7,42 @@
 
 Player::Player(){}
 
-Player::Player(GLuint texture, const XMLData& data, const glm::vec3& pos, const Tile* tile): DynamicObj(texture, pos, tile){
-    Object::setData(data);
+// 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
+Player::Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
+DynamicObj(texture, pos, tile), textures(data), lastState(0){
+    Object::setData(textures[0]);
 }
 
+void Player::updateState(){
+    int state = 0;
+
+    // in the air
+    if (velo.y != 0) {
+        state = 1;
+    } else if (velo.x != 0) {
+        // on the tile
+        if (lastState == 3) state = 4;
+        else state = 3;
+    }
+
+    lastState = state;
+    // std::cout << lastState << std::endl;
+
+    Object::setData(textures[state]);
+    Object::setScale(0.5);
+}
+
+
+void Player::update(float elapsed){
+    modelMatrix.Identity();
+
+    modelMatrix.Translate(pos.x, pos.y, pos.z);
+    modelMatrix.Rotate(rotate);
+
+    if (velo.x < 0){
+        modelMatrix.Scale(-scale, scale, scale);
+    } else modelMatrix.Scale(scale, scale, scale);
+}
 
 
 void Player::jump(float disp){
@@ -79,6 +111,7 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup){
     if (prevX - pos.x != 0) velo.x = 0;
     if (prevY - pos.y != 0) velo.y = 0;
 
-    Object::update();
+    Player::updateState();
+    Player::update(elapsed);
     return result;
 }

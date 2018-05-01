@@ -39,8 +39,7 @@ protected:
 
     const Tile* tile = nullptr;
 
-    // linear interpolation
-    void lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar = glm::vec3(0, 0, 0)) const;
+
 
 };
 

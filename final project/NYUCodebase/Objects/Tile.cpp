@@ -121,21 +121,21 @@ bool Tile::collide(Object& rhs) const {
         if (collide){
             if (map.mapData[tileUp][tileX] != -1) {
                 rhs.coll.top = true;
-                rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.001;
+                rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
             }
             if (map.mapData[tileDown][tileX] != -1) {
                 rhs.coll.bottom = true;
                 // std::cout << "tile: " << enDown << " " << tileDown << " " << tileX << std::endl;
                 // std::cout << "tile: " << fabs(enDown - (-tilesize * tileDown)) + 0.001 << std::endl;
-                rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.001;
+                rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
             }
             if (map.mapData[tileY][tileLeft] != -1) {
                 rhs.coll.left = true;
-                rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.001;
+                rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
             }
             if (map.mapData[tileY][tileRight] != -1) {
                 rhs.coll.right = true;
-                rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.001;
+                rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
             }
         } else rhs.coll.reset();
     } else {

@@ -78,6 +78,10 @@ protected:
     std::vector<float> vertices = {-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5};
     std::vector<float> texCoords = {0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0};
 
+
+    // linear interpolation
+    void lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar = glm::vec3(0, 0, 0)) const;
+
 };
 
 bool TestSATSeparationForEdge(float edgeX, float edgeY, const std::vector<std::pair<float,float>> &points1, const std::vector<std::pair<float,float>> &points2, std::pair<float,float> &penetration);

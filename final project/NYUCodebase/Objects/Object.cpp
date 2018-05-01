@@ -224,6 +224,7 @@ void Object::setData(const XMLData& data){
 
     shape.x = w;
     shape.y = h;
+    scale = 1;
 
     satPoints();
 }
@@ -232,8 +233,10 @@ const glm::vec3& Object::getCenter() const {
     return pos;
 }
 
-
-
+// linear interpolation
+void Object::lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar) const {
+    orig = (glm::vec3(1, 1, 1) - prop) * orig + prop * tar;
+}
 
 
 
