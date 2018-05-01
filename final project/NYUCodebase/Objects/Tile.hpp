@@ -10,17 +10,21 @@
 
 #include <string>
 #include <iostream>
+#include <set>
 
 class Tile: public Object{
 public:
     // constructors, assume tiles start drawing at (0,0)
     Tile();
-    Tile(const std::string& tex, const std::string& txt, float tilesize = 0.5);
     // move copy constructor
     Tile(Tile&& rhs);
-
     // move assignment operator
     Tile& operator=(Tile&& rhs);
+
+    Tile(const std::string& tex, const std::string& txt, float tilesize = 0.5);
+
+    void loadMap(const std::string& txt);
+    void loadType(const std::string& txt);
 
     void render(const Matrix& view = Matrix());
     bool collide(Object& rhs) const;
@@ -28,7 +32,8 @@ public:
 private:
     FlareMap map;
     float tilesize;
-
+    std::set<int> deco;
+    std::set<int> trap;
 };
 
 #endif /* Tile_hpp */

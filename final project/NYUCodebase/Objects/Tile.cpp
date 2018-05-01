@@ -2,6 +2,7 @@
 // CS3113 Game Programming
 
 #include "Tile.hpp"
+#include <fstream>
 
 extern glm::vec3 center;
 extern ShaderProgram textured;
@@ -18,12 +19,29 @@ Tile::Tile(Tile&& rhs): map(rhs.map){
     rhs.map = FlareMap();
 }
 
-Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Object(&textured, 0), map(txt), tilesize(tilesize){
-    texture = LoadTexture((RESOURCE_FOLDER + tex).c_str());
+// move assignment operator
+Tile& Tile::operator=(Tile&& rhs){
+    map = rhs.map;
+    rhs.map = FlareMap();
+    return *this;
+}
+
+
+Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Object(&textured, 0), tilesize(tilesize){
+    texture = LoadTexture((RESOURCE_FOLDER + tex + ".png").c_str());
+    loadMap(txt);
+}
+
+// should take care of block types
+void Tile::loadMap(const std::string& txt){
+    // destructing previous map
+    map.~FlareMap();
+    map.Load(txt);
 
     vertices.clear();
     texCoords.clear();
 
+    // the data of sprite sheet for tilemap
     int spritex = 30, spritey = 30;
 
     for (int y = 0; y < map.mapHeight; y++){
@@ -55,17 +73,23 @@ Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Obje
         }
         // std::cout << std::endl;
     }
-
     pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
     shape = glm::vec3(map.mapWidth * tilesize, map.mapHeight * tilesize, 0);
+
+
+    loadType(txt);
 }
 
-// move assignment operator
-Tile& Tile::operator=(Tile&& rhs){
-    map = rhs.map;
-    rhs.map = FlareMap();
-    return *this;
+
+void Tile::loadType(const std::string& txt){
+    std::ifstream ifs(RESOURCE_FOLDER + txt + "_block_types.txt");
+    if(!ifs){
+        std::cout << "Unable to load FlareMap in the path " << txt << ". Make sure the path is correct\n";
+        exit(1);
+    }
+    
 }
+
 
 
 void Tile::render(const Matrix& view){

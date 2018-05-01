@@ -9,7 +9,7 @@
 #define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
 
 
-FlareMap::FlareMap(){}
+FlareMap::FlareMap(): mapWidth(-1), mapHeight(-1), mapData(nullptr){}
 
 FlareMap::FlareMap(const std::string& fileName) {
     Load(fileName);
@@ -29,7 +29,9 @@ FlareMap::FlareMap(const FlareMap& rhs): mapWidth(rhs.mapWidth), mapHeight(rhs.m
 }
 
 FlareMap::~FlareMap() {
-	for(int i = 0; i < this->mapHeight; i++) {
+    if (this->mapHeight == -1 && this->mapWidth == -1) return;
+
+    for(int i = 0; i < this->mapHeight; i++) {
 		delete mapData[i];
 	}
 	delete [] mapData;
@@ -120,7 +122,7 @@ bool FlareMap::ReadEntityData(std::ifstream &stream) {
 }
 
 void FlareMap::Load(const std::string& fileName) {
-    std::ifstream infile(RESOURCE_FOLDER + fileName);
+    std::ifstream infile(RESOURCE_FOLDER + fileName + ".txt");
 
     if(!infile){
         std::cout << "Unable to load FlareMap in the path " << fileName << ". Make sure the path is correct\n";

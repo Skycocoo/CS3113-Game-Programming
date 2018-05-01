@@ -49,7 +49,7 @@ ShaderProgram setUntextured(){
 ShaderProgram setTextured(const string& filepath, GLuint& texture){
     ShaderProgram program;
     program.Load(RESOURCE_FOLDER"Shad/vertex_textured.glsl", RESOURCE_FOLDER"Shad/fragment_textured.glsl");
-    texture = LoadTexture((RESOURCE_FOLDER + filepath).c_str());
+    texture = LoadTexture((RESOURCE_FOLDER + filepath + ".png").c_str());
 
     return program;
 }

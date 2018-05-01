@@ -60,6 +60,13 @@ void XMLLoad::getKeys() const {
     }
 }
 
-XMLData XMLLoad::getData(const std::string& name) {
-    return table[name];
+XMLData XMLLoad::getData(const std::string& name) const {
+    std::map<std::string, XMLData>::const_iterator iter = table.find(name);
+    if (iter != table.end()) return iter->second;
+    else {
+        std::cout << "Unable to find " << name << " in XML sheet" << std::endl;
+        exit(1);
+        return XMLData();
+    }
+    // return table[name];
 }

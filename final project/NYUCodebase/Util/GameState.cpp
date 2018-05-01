@@ -14,17 +14,17 @@ extern int maxStep;
 
 extern glm::vec3 center;
 
-GameState::GameState(): tile("Asset/tilemap.png", "Asset/level_2.txt", 0.5), xml("Asset/sheet.xml"){
+GameState::GameState(): tile("Asset/tilemap", "Asset/level_2", 0.5), xml("Asset/sheet.xml"){
     untextured = setUntextured();
     center = tile.getCenter();
 
     GLuint text;
-    textured = setTextured("Asset/font1.png", text);
+    textured = setTextured("Asset/font1", text);
     disp = Text(&textured, text);
 
     // GLuint texture;
     GLuint texture;
-    textured = setTextured("Asset/sheet.png", texture);
+    textured = setTextured("Asset/sheet", texture);
 
 
     std::vector<XMLData> p;

@@ -11,10 +11,10 @@ struct FlareMapEntity {
 
 class FlareMap {
 public:
-	int mapWidth = -1;
-	int mapHeight = -1;
+	int mapWidth;
+	int mapHeight;
+	int **mapData;
 
-	int **mapData = nullptr;
 	std::vector<FlareMapEntity> entities;
 
 	FlareMap();

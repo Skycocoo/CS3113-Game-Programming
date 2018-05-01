@@ -30,7 +30,7 @@ public:
 
     void display(std::ostream& os = std::cout) const;
     void getKeys() const;
-    XMLData getData(const std::string& name);
+    XMLData getData(const std::string& name) const;
 
 private:
     std::string name;
