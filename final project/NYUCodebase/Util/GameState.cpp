@@ -34,8 +34,8 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienBlue_stand.png"));
     p.push_back(xml.getData("alienBlue_walk1.png"));
     p.push_back(xml.getData("alienBlue_walk2.png"));
-    player = Player(texture, p, center, &tile);
-    player.setScale(0.5);
+    player1 = Player(texture, p, center, &tile);
+    player1.setScale(0.5);
 
     p.clear();
     p.push_back(xml.getData("alienYellow.png"));
@@ -57,23 +57,58 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
 }
 
 void GameState::init(){
-    player.setPos(center);
-    player.setVelo(0, 0);
+    player1.setPos(center);
+    player1.setVelo(0, 0);
+    player2.setPos(center);
+    player2.setVelo(0, 0);
     enemygroup.setPos(center);
     enemygroup.setVelo(0, 0);
+}
+
+float GameState::mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax) {
+    float retVal = dstMin + ((value - srcMin)/(srcMax-srcMin) * (dstMax-dstMin));
+
+    if(retVal < dstMin) {
+        retVal = dstMin;
+    }
+
+    if(retVal > dstMax) {
+        retVal = dstMax;
+    }
+    return retVal;
+}
+
+float GameState::easeIn(float from, float to, float time){
+    float tVal = time*time*time*time*time;
+    return (1.0f-tVal)*from + tVal*to;
 }
 
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    // player2.Object::satCollide(player);
-    player.satCollide(elapsed, enemygroup, player2);
-    player2.satCollide(elapsed, enemygroup, player);
-    enemygroup.satCollide(elapsed);
+    glm::vec3 player1Pos = player1.getCenter();
+    glm::vec3 player2Pos = player2.getCenter();
+    float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
+    // if (dist > 2) dist = 2;
 
-    // player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
-    // enemygroup.ene[0].satTwoCollide(elapsed, player, enemygroup.ene[1]);
-    // enemygroup.ene[1].satTwoCollide(elapsed, player, enemygroup.ene[0]);
+    dist = mapValue(dist, 0.0, 10.0, 0.0, 2);
+    if (dist < 0.5) dist = 0.5;
+    // std::cout << dist << " ";
+    // dist = easeIn(0, 2, dist);
+    // std::cout << dist << std::endl;
+
+
+
+    tile.setProject(dist);
+    player1.setProject(dist);
+    player2.setProject(dist);
+    enemygroup.setProject(dist);
+
+
+    // player2.Object::satCollide(player);
+    player1.satCollide(elapsed, enemygroup, player2);
+    player2.satCollide(elapsed, enemygroup, player1);
+    enemygroup.satCollide(elapsed);
 }
 
 void GameState::update(float elapsed){
@@ -137,15 +172,22 @@ void GameState::displayMainMenu(){
 }
 
 void GameState::displayLevel(){
-    // center the camera on player
+    // center the camera on the midpoint of player1 & player2
     Matrix viewMatrix;
-    glm::vec3 playerPos = player.getCenter();
-    viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
+    glm::vec3 player1Pos = player1.getCenter();
+    glm::vec3 player2Pos = player2.getCenter();
+
+
+    player1Pos = (player1Pos + player2Pos) / float(2);
+    viewMatrix.Translate(-player1Pos.x, -player1Pos.y, 0);
+
+//    float dist = glm::length(player1Pos);
+//    std::cout << dist << std::endl;
 
     // render tile first
     tile.render(viewMatrix);
 
-    player.render(viewMatrix);
+    player1.render(viewMatrix);
     player2.render(viewMatrix);
     enemygroup.render(viewMatrix);
 }

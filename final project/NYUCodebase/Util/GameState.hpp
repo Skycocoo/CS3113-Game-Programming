@@ -13,7 +13,7 @@
 
 class GameState{
 public:
-    Player player;
+    Player player1;
     Player player2;
     EnemyGroup enemygroup;
 
@@ -34,6 +34,9 @@ public:
 private:
     XMLLoad xml;
     Text disp;
+
+    float mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax);
+    float easeIn(float from, float to, float time);
 };
 
 #endif /* GameState_hpp */
