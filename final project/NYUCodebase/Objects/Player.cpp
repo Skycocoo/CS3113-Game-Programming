@@ -13,43 +13,6 @@ DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0){
     Object::setData(textures[0]);
 }
 
-void Player::updateState(){
-    int state = 0;
-    // std::cout << lastState << " " << lastPos << " " << pos.x << std::endl;
-
-    // in the air
-    if (velo.y != 0) {
-        state = 1;
-    } else if (velo.x != 0) {
-        // on the tile
-        if (lastPos == -100){
-            lastPos = pos.x;
-            state = 3;
-        }
-
-        if (lastState == 3) {
-            if (fabs(pos.x - lastPos) > 0.2){
-                state = 4;
-                lastPos = pos.x;
-            } else {
-                state = 3;
-            }
-        } else {
-            if (fabs(pos.x - lastPos) > 0.2){
-                state = 3;
-                lastPos = pos.x;
-            } else {
-                state = 4;
-            }
-        }
-    }
-
-    lastState = state;
-
-    Object::setData(textures[state]);
-}
-
-
 void Player::update(float elapsed){
     modelMatrix.Identity();
 
@@ -60,6 +23,34 @@ void Player::update(float elapsed){
         modelMatrix.Scale(-scale, scale, scale);
     } else modelMatrix.Scale(scale, scale, scale);
 }
+
+void Player::updateState(){
+    int state = 0;
+
+    // in the air
+    if (velo.y != 0) state = 1;
+    else if (velo.x != 0) {
+        // on the tile
+        if (lastPos == -100){
+            lastPos = pos.x;
+            state = 3;
+        }
+        if (lastState == 3) {
+            if (fabs(pos.x - lastPos) > 0.2){
+                state = 4;
+                lastPos = pos.x;
+            } else state = 3;
+        } else {
+            if (fabs(pos.x - lastPos) > 0.2){
+                state = 3;
+                lastPos = pos.x;
+            } else state = 4;
+        }
+    }
+    lastState = state;
+    Object::setData(textures[state]);
+}
+
 
 
 void Player::jump(float disp){

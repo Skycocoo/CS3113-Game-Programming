@@ -14,14 +14,47 @@ Enemy::Enemy(){}
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
 Enemy::Enemy(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), textures(data){
+DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0){
     Object::setData(data[0]);
 }
 
 // update positiin
 void Enemy::update(float elapsed){
-    pos += elapsed * velo;
-    Object::update();
+    modelMatrix.Identity();
+
+    modelMatrix.Translate(pos.x, pos.y, pos.z);
+    modelMatrix.Rotate(rotate);
+
+    if (velo.x < 0){
+        modelMatrix.Scale(-scale, scale, scale);
+    } else modelMatrix.Scale(scale, scale, scale);
+}
+
+void Enemy::updateState(){
+    int state = 0;
+
+    // in the air
+    if (velo.y != 0) state = 1;
+    else if (velo.x != 0) {
+        // on the tile
+        if (lastPos == -100){
+            lastPos = pos.x;
+            state = 3;
+        }
+        if (lastState == 3) {
+            if (fabs(pos.x - lastPos) > 0.2){
+                state = 4;
+                lastPos = pos.x;
+            } else state = 3;
+        } else {
+            if (fabs(pos.x - lastPos) > 0.2){
+                state = 3;
+                lastPos = pos.x;
+            } else state = 4;
+        }
+    }
+    lastState = state;
+    Object::setData(textures[state]);
 }
 
 void Enemy::control(float disp){
@@ -92,7 +125,8 @@ bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
     if (prevX - pos.x != 0) velo.x = 0;
     if (prevY - pos.y != 0) velo.y = 0;
 
-    Object::update();
+    Enemy::updateState();
+    Enemy::update(elapsed);
     return result;
 }
 

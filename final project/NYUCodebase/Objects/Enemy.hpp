@@ -14,6 +14,8 @@ public:
     Enemy(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
 
     void update(float elapsed);
+    void updateState();
+
     void control(float disp);
 
     bool collide(float elapsed, EnemyGroup& enemygroup);
@@ -21,6 +23,8 @@ public:
 
 private:
     std::vector<XMLData> textures;
+    int lastState;
+    float lastPos;
 };
 
 

@@ -26,6 +26,7 @@ public:
 	~FlareMap();
 
 	void Load(const std::string& fileName);
+	// bool compare(const std::string& orig, const std::string& comp);
 
 private:
 	bool ReadHeader(std::ifstream &stream);

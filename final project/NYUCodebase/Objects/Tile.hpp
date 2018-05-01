@@ -15,7 +15,7 @@ class Tile: public Object{
 public:
     // constructors, assume tiles start drawing at (0,0)
     Tile();
-    Tile(const std::string& name, float tilesize = 0.5);
+    Tile(const std::string& tex, const std::string& txt, float tilesize = 0.5);
     // move copy constructor
     Tile(Tile&& rhs);
 
