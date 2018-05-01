@@ -224,9 +224,9 @@ void Object::setData(const XMLData& data){
 
     shape.x = w;
     shape.y = h;
-    scale = 1;
-
     satPoints();
+
+    shape *= scale;
 }
 
 const glm::vec3& Object::getCenter() const {

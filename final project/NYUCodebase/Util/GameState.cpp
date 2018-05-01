@@ -14,7 +14,7 @@ extern int maxStep;
 
 extern glm::vec3 center;
 
-GameState::GameState(): tile("Asset/tilemap", 0.5), xml("Asset/sheet.xml"){
+GameState::GameState(): tile("Asset/tilemap", 1), xml("Asset/sheet.xml"){
     untextured = setUntextured();
     center = tile.getCenter();
 
@@ -35,7 +35,7 @@ GameState::GameState(): tile("Asset/tilemap", 0.5), xml("Asset/sheet.xml"){
     p.push_back(xml.getData("alienBlue_walk1.png"));
     p.push_back(xml.getData("alienBlue_walk2.png"));
     player = Player(texture, p, center, &tile);
-    player.setScale(0.5);
+    // player.setScale(0.5);
 
     p.clear();
     p.push_back(xml.getData("alienBeige.png"));
@@ -44,7 +44,7 @@ GameState::GameState(): tile("Asset/tilemap", 0.5), xml("Asset/sheet.xml"){
     p.push_back(xml.getData("alienBeige_walk1.png"));
     p.push_back(xml.getData("alienBeige_walk2.png"));
     enemygroup = EnemyGroup(texture, p, center, &tile);
-    enemygroup.setScale(0.5);
+    // enemygroup.setScale(0.5);
 }
 
 void GameState::init(){

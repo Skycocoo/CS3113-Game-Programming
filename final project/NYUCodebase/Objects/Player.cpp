@@ -9,27 +9,44 @@ Player::Player(){}
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
 Player::Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), textures(data), lastState(0){
+DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0){
     Object::setData(textures[0]);
 }
 
 void Player::updateState(){
     int state = 0;
+    // std::cout << lastState << " " << lastPos << " " << pos.x << std::endl;
 
     // in the air
     if (velo.y != 0) {
         state = 1;
     } else if (velo.x != 0) {
         // on the tile
-        if (lastState == 3) state = 4;
-        else state = 3;
+        if (lastPos == -100){
+            lastPos = pos.x;
+            state = 3;
+        }
+
+        if (lastState == 3) {
+            if (fabs(pos.x - lastPos) > 0.2){
+                state = 4;
+                lastPos = pos.x;
+            } else {
+                state = 3;
+            }
+        } else {
+            if (fabs(pos.x - lastPos) > 0.2){
+                state = 3;
+                lastPos = pos.x;
+            } else {
+                state = 4;
+            }
+        }
     }
 
     lastState = state;
-    // std::cout << lastState << std::endl;
 
     Object::setData(textures[state]);
-    Object::setScale(0.5);
 }
 
 
