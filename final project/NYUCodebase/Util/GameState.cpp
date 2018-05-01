@@ -14,7 +14,7 @@ extern int maxStep;
 
 extern glm::vec3 center;
 
-GameState::GameState(): tile("Asset/tilemap", "Asset/level_2", 0.5), xml("Asset/sheet.xml"){
+GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"){
     untextured = setUntextured();
     center = tile.getCenter();
 
@@ -131,9 +131,9 @@ void GameState::displayLevel(){
     glm::vec3 playerPos = player.getCenter();
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
+    tile.render(viewMatrix);
     player.render(viewMatrix);
     enemygroup.render(viewMatrix);
-    tile.render(viewMatrix);
 }
 
 void GameState::displayOver(){

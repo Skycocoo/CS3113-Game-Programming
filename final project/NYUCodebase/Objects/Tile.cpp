@@ -87,7 +87,35 @@ void Tile::loadType(const std::string& txt){
         std::cout << "Unable to load FlareMap in the path " << txt << ". Make sure the path is correct\n";
         exit(1);
     }
-    
+
+    std::string line;
+    int index;
+    char comma;
+
+    while (ifs >> line){
+        if (line == "decoration") {
+            while (ifs >> index >> comma){
+                deco.insert(index - 1);
+                if (comma != ',') break;
+            }
+        }
+        if (comma + line == "trap") {
+            while (ifs >> index >> comma){
+                trap.insert(index - 1);
+                if (comma != ',') break;
+            }
+            trap.insert(index);
+        }
+    }
+
+    // for (auto iter = deco.begin(); iter != deco.end(); ++iter){
+    //     std::cout << *iter << " ";
+    // }
+    // std::cout << std::endl;
+    // for (auto iter = trap.begin(); iter != trap.end(); ++iter){
+    //     std::cout << *iter << " ";
+    // }
+
 }
 
 
@@ -144,19 +172,19 @@ bool Tile::collide(Object& rhs) const {
             collide = true;
 
         if (collide){
-            if (map.mapData[tileUp][tileX] != -1) {
+            if (map.mapData[tileUp][tileX] != -1 && deco.find(map.mapData[tileUp][tileX]) == deco.end()) {
                 rhs.coll.top = true;
                 rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
             }
-            if (map.mapData[tileDown][tileX] != -1) {
+            if (map.mapData[tileDown][tileX] != -1 && deco.find(map.mapData[tileDown][tileX]) == deco.end()) {
                 rhs.coll.bottom = true;
                 rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
             }
-            if (map.mapData[tileY][tileLeft] != -1) {
+            if (map.mapData[tileY][tileLeft] != -1 && deco.find(map.mapData[tileY][tileLeft]) == deco.end()) {
                 rhs.coll.left = true;
                 rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
             }
-            if (map.mapData[tileY][tileRight] != -1) {
+            if (map.mapData[tileY][tileRight] != -1 && deco.find(map.mapData[tileY][tileRight]) == deco.end()) {
                 rhs.coll.right = true;
                 rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
             }
