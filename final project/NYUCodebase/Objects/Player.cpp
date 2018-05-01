@@ -116,8 +116,8 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup){
 
     if (tile) result = tile->collide(*this) || result;
 
-    if (prevX - pos.x != 0) velo.x = 0;
-    if (prevY - pos.y != 0) velo.y = 0;
+    if ((prevX - pos.x != 0) || (coll.left || coll.right)) velo.x = 0;
+    if ((prevY - pos.y != 0) || (coll.top || coll.bottom)) velo.y = 0;
 
     Player::updateState();
     Player::update(elapsed);

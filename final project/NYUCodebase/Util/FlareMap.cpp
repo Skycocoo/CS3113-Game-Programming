@@ -65,7 +65,7 @@ bool FlareMap::ReadHeader(std::ifstream &stream) {
 bool FlareMap::ReadLayerData(std::ifstream &stream) {
 	std::string line;
 	while(getline(stream, line)) {
-		if(line == "") { break; }
+		if(line == "" || line == "\r") { break; }
 		std::istringstream sStream(line);
 		std::string key,value;
 		std::getline(sStream, key, '=');
@@ -96,7 +96,7 @@ bool FlareMap::ReadEntityData(std::ifstream &stream) {
 	std::string line;
 	std::string type;
 	while(getline(stream, line)) {
-		if(line == "") { break; }
+		if(line == "" || line == "\r") { break; }
 		std::istringstream sStream(line);
 		std::string key,value;
 		getline(sStream, key, '=');
@@ -120,30 +120,23 @@ bool FlareMap::ReadEntityData(std::ifstream &stream) {
 }
 
 void FlareMap::Load(const std::string& fileName) {
-	std::ifstream infile(RESOURCE_FOLDER + fileName);
+    std::ifstream infile(RESOURCE_FOLDER + fileName);
 
-	if(!infile){
-		std::cout << "Unable to load FlareMap in the path " << fileName << ". Make sure the path is correct\n";
+    if(!infile){
+        std::cout << "Unable to load FlareMap in the path " << fileName << ". Make sure the path is correct\n";
         exit(1);
-	}
-
-    char a;
-    std::string line;
-    while (infile >> a) {
-        if (a == '[') std::getline(infile, line, ']');
-
-        if(line == "header") {
-            std::getline(infile, line);
-            if(!ReadHeader(infile)) {
-                std::cerr << "Fail to read flaremap" << std::endl; // invalid file data
-                exit(1);
-            }
-        } else if(line == "layer") {
-            std::getline(infile, line);
-            ReadLayerData(infile);
-        } else if(line == "ObjectsLayer") {
-            std::getline(infile, line);
-            ReadEntityData(infile);
-        }
     }
+
+	std::string line;
+	while (std::getline(infile, line)) {
+		if(line == "[header]" || line == "[header]\r") {
+			if(!ReadHeader(infile)) {
+				assert(false); // invalid file data
+			}
+		} else if(line == "[layer]" || line == "[layer]\r") {
+			ReadLayerData(infile);
+		} else if(line == "[ObjectsLayer]" || line == "[layer]\r") {
+			ReadEntityData(infile);
+		}
+	}
 }

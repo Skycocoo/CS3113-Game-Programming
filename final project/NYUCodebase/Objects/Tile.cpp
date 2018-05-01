@@ -28,6 +28,7 @@ Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Obje
 
     for (int y = 0; y < map.mapHeight; y++){
         for (int x = 0; x < map.mapWidth; x++){
+            // std::cout << map.mapData[y][x] << " ";
             if (map.mapData[y][x] != -1){
                 float u = (float)(((int) map.mapData[y][x]) % spritex) / (float) spritex;
                 float v = (float)(((int) map.mapData[y][x]) / spritex) / (float) spritey;
@@ -52,6 +53,7 @@ Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Obje
                 });
             }
         }
+        // std::cout << std::endl;
     }
 
     pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
@@ -124,8 +126,6 @@ bool Tile::collide(Object& rhs) const {
             }
             if (map.mapData[tileDown][tileX] != -1) {
                 rhs.coll.bottom = true;
-                // std::cout << "tile: " << enDown << " " << tileDown << " " << tileX << std::endl;
-                // std::cout << "tile: " << fabs(enDown - (-tilesize * tileDown)) + 0.001 << std::endl;
                 rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
             }
             if (map.mapData[tileY][tileLeft] != -1) {
@@ -136,18 +136,25 @@ bool Tile::collide(Object& rhs) const {
                 rhs.coll.right = true;
                 rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
             }
-        } else rhs.coll.reset();
+        }
     } else {
-        // boundary check
-        if (tileLeft < -10 || tileRight > map.mapWidth + 10) rhs.pos = center;
-        else {
+        collide = true;
+
+        if (tileUp <= 0) {
             rhs.coll.top = true;
+            rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
+        } else if (tileDown >= map.mapHeight) {
             rhs.coll.bottom = true;
+            rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
+        } else if (tileLeft <= 0) {
+            rhs.coll.left = true;
+            rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
+        } else if (tileRight >= map.mapWidth) {
+            rhs.coll.right = true;
+            rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
         }
     }
-
     // if (rhs.coll.left || rhs.coll.right) Mix_PlayChannel(-1, hit, 0);
-
     // std::cout << "original: " << enLeft << " " << enRight << " " << enUp << " " << enDown << std::endl;
 
     return collide;
