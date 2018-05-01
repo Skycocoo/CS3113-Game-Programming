@@ -14,6 +14,7 @@
 class GameState{
 public:
     Player player;
+    Player player2;
     EnemyGroup enemygroup;
 
     Tile tile;

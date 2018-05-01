@@ -19,7 +19,7 @@ public:
     void updateState();
 
     bool collide(float elapsed, EnemyGroup& enemygroup);
-    bool satCollide(float elapsed, EnemyGroup& enemygroup);
+    bool satCollide(float elapsed, EnemyGroup& enemygroup, Player& player);
 
 private:
     std::vector<XMLData> textures;

@@ -94,7 +94,7 @@ bool Player::collide(float elapsed, EnemyGroup& enemygroup){
     return (x || y);
 }
 
-bool Player::satCollide(float elapsed, EnemyGroup& enemygroup){
+bool Player::satCollide(float elapsed, EnemyGroup& enemygroup, Player& player){
     // update x & y positions
     DynamicObj::update(elapsed);
 
@@ -113,6 +113,10 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup){
         if (coll.left) enemygroup.ene[i].setAcce(-5);
         else if (coll.right) enemygroup.ene[i].setAcce(5);
     }
+
+    result = Object::satCollide(player) || result;
+    if (coll.left) player.setAcce(-5);
+    else if (coll.right) player.setAcce(5);
 
     if (tile) result = tile->collide(*this) || result;
 

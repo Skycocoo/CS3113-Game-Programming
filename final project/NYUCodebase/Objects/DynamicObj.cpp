@@ -10,7 +10,7 @@ extern ShaderProgram untextured;
 DynamicObj::DynamicObj(): Object::Object(){}
 
 DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
-    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.1, 0.1, 0.1), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
+    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.3, 0.3, 0.3), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
     {
         if (texture == 0) program = &untextured;
 

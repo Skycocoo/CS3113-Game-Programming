@@ -40,6 +40,8 @@ void Tile::loadMap(const std::string& txt){
 
     vertices.clear();
     texCoords.clear();
+    deco.clear();
+    trap.clear();
 
     // the data of sprite sheet for tilemap
     int spritex = 30, spritey = 30;
@@ -107,15 +109,6 @@ void Tile::loadType(const std::string& txt){
             trap.insert(index);
         }
     }
-
-    // for (auto iter = deco.begin(); iter != deco.end(); ++iter){
-    //     std::cout << *iter << " ";
-    // }
-    // std::cout << std::endl;
-    // for (auto iter = trap.begin(); iter != trap.end(); ++iter){
-    //     std::cout << *iter << " ";
-    // }
-
 }
 
 

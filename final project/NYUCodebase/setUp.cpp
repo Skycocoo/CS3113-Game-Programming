@@ -63,7 +63,8 @@ SDL_Window* setUp(const string& name){
     SDL_GL_MakeCurrent(displayWindow, context);
 
     glViewport(0, 0, 1020, 720);
-    glClearColor(0.376, 0.509, 0.806, 0);
+    // glClearColor(0.376, 0.509, 0.806, 1);
+    glClearColor(float(20) / float(256), float(101) / float(256), float(127) / float(256), 1);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

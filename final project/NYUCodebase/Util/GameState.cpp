@@ -38,6 +38,15 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     player.setScale(0.5);
 
     p.clear();
+    p.push_back(xml.getData("alienYellow.png"));
+    p.push_back(xml.getData("alienYellow_jump.png"));
+    p.push_back(xml.getData("alienYellow_stand.png"));
+    p.push_back(xml.getData("alienYellow_walk1.png"));
+    p.push_back(xml.getData("alienYellow_walk2.png"));
+    player2 = Player(texture, p, center, &tile);
+    player2.setScale(0.5);
+
+    p.clear();
     p.push_back(xml.getData("alienBeige.png"));
     p.push_back(xml.getData("alienBeige_jump.png"));
     p.push_back(xml.getData("alienBeige_stand.png"));
@@ -57,7 +66,9 @@ void GameState::init(){
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    player.satCollide(elapsed, enemygroup);
+    // player2.Object::satCollide(player);
+    player.satCollide(elapsed, enemygroup, player2);
+    player2.satCollide(elapsed, enemygroup, player);
     enemygroup.satCollide(elapsed);
 
     // player.satTwoCollide(elapsed, enemygroup.ene[0], enemygroup.ene[1]);
@@ -131,8 +142,11 @@ void GameState::displayLevel(){
     glm::vec3 playerPos = player.getCenter();
     viewMatrix.Translate(-playerPos.x, -playerPos.y, 0);
 
+    // render tile first
     tile.render(viewMatrix);
+
     player.render(viewMatrix);
+    player2.render(viewMatrix);
     enemygroup.render(viewMatrix);
 }
 

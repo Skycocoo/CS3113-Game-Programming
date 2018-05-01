@@ -37,39 +37,58 @@ glm::vec3 center = glm::vec3(0, 0, 0);
 
 
 void updateGame(const SDL_Event& event, GameState& game){
-    switch (event.type){
-        case SDL_KEYDOWN:
-            switch (event.key.keysym.scancode){
-                case SDL_SCANCODE_B:
-                    game.init();
-                    break;
-                case SDL_SCANCODE_LEFT:
-                    if (mode == STATE_GAME_LEVEL) {
-                        Mix_PlayChannel(1, walk, 0);
-                        game.player.setAcce(-3);
-                    }
-                    break;
-                case SDL_SCANCODE_RIGHT:
-                    if (mode == STATE_GAME_LEVEL) {
-                        Mix_PlayChannel(1, walk, 0);
-                        game.player.setAcce(3);
-                    }
-                    break;
-                case SDL_SCANCODE_UP:
-                    if (mode == STATE_GAME_LEVEL) {
-                        Mix_PlayChannel(-1, jump, 0);
-                        game.player.jump(0.8);
-                    }
-                    break;
-                case SDL_SCANCODE_SPACE:
-                    if (mode == STATE_GAME_LEVEL) {
-                        Mix_PlayChannel(-1, jump, 0);
-                        game.player.jump(0.8);
-                    }
-                    break;
+    // switch (event.type){
+        // case SDL_KEYDOWN:
+    if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP){
+        switch (event.key.keysym.scancode){
+            case SDL_SCANCODE_B:
+                game.init();
+                break;
+            case SDL_SCANCODE_LEFT:
+                if (mode == STATE_GAME_LEVEL) {
+                    Mix_PlayChannel(1, walk, 0);
+                    game.player.setAcce(-3);
+                }
+                break;
+            case SDL_SCANCODE_RIGHT:
+                if (mode == STATE_GAME_LEVEL) {
+                    Mix_PlayChannel(1, walk, 0);
+                    game.player.setAcce(3);
+                }
+                break;
+            case SDL_SCANCODE_UP:
+                if (mode == STATE_GAME_LEVEL) {
+                    Mix_PlayChannel(-1, jump, 0);
+                    game.player.jump(0.8);
+                }
+                break;
+            // case SDL_SCANCODE_SPACE:
+            //     if (mode == STATE_GAME_LEVEL) {
+            //         Mix_PlayChannel(-1, jump, 0);
+            //         game.player.jump(0.8);
+            //     }
+            //     break;
 
-            }
-            break;
+            case SDL_SCANCODE_A:
+                if (mode == STATE_GAME_LEVEL) {
+                    Mix_PlayChannel(1, walk, 0);
+                    game.player2.setAcce(-3);
+                }
+                break;
+            case SDL_SCANCODE_D:
+                if (mode == STATE_GAME_LEVEL) {
+                    Mix_PlayChannel(1, walk, 0);
+                    game.player2.setAcce(3);
+                }
+                break;
+            case SDL_SCANCODE_W:
+                if (mode == STATE_GAME_LEVEL) {
+                    Mix_PlayChannel(-1, jump, 0);
+                    game.player2.jump(0.8);
+                }
+                break;
+        }
+        // break;
     }
 }
 

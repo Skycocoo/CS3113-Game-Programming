@@ -161,11 +161,12 @@ void EnemyGroup::setPos(const glm::vec3& pos){
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;
 
-    for (size_t i = 0; i < ene.size(); i++){
+    for (int i = 0; i < numRow; i++){
         float relativeY = i - float(numRow - 1) / float(2);
 
         for (int j = 0; j < numCol; j++){
             float relativeX = j - float(numCol - 1) / float(2);
+            // ene[i].setPos(glm::vec3(posX + relativeX * step, posY + relativeY * step, 0));
             ene[i].setPos(posX + relativeX * step, posY + relativeY * step);
             ene[i].setVelo(0, 0);
         }
