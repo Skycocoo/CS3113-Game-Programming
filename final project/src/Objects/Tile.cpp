@@ -259,47 +259,53 @@ bool Tile::collide(Player& rhs) const {
                     }
                 }
             }
-            if (map.mapData[tileDown][tileX] != -1 && deco.find(map.mapData[tileDown][tileX]) == deco.end()) {
-                rhs.coll.bottom = true;
-                rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
+            if (map.mapData[tileDown][tileX] != -1) {
+                if (deco.find(map.mapData[tileDown][tileX]) == deco.end()){
+                    rhs.coll.bottom = true;
+                    rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
 
-                if (trap.find(map.mapData[tileDown][tileX]) != trap.end()){
-                    rhs.dead();
-                    return true;
-                }
-
-                for (size_t i = 0; i < end.size()/2; i++){
-                    if (end[2 * i] == tileDown && end[2 * i + 1] == tileX) rhs.end = true;
-                }
-            }
-            if (map.mapData[tileY][tileLeft] != -1 && deco.find(map.mapData[tileY][tileLeft]) == deco.end()) {
-                rhs.coll.left = true;
-                rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
-
-                if (trap.find(map.mapData[tileY][tileLeft]) != trap.end()){
-                    rhs.dead();
-                    return true;
-                }
-
-                for (size_t i = 0; i < end.size()/2; i++){
-                    // std::cout << end[2*i] << " " << end[2*i+1] << std::endl;
-                    if (end[2 * i] == tileY && end[2 * i + 1] == tileLeft) {
-                        rhs.end = true;
+                    if (trap.find(map.mapData[tileDown][tileX]) != trap.end()){
+                        rhs.dead();
                         return true;
+                    }
+                } else {
+                    for (size_t i = 0; i < end.size()/2; i++){
+                        if (end[2 * i] == tileDown && end[2 * i + 1] == tileX) rhs.end = true;
                     }
                 }
             }
-            if (map.mapData[tileY][tileRight] != -1 && deco.find(map.mapData[tileY][tileRight]) == deco.end()) {
-                rhs.coll.right = true;
-                rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
+            if (map.mapData[tileY][tileLeft] != -1) {
+                if (deco.find(map.mapData[tileY][tileLeft]) == deco.end()){
+                    rhs.coll.left = true;
+                    rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
 
-                if (trap.find(map.mapData[tileY][tileRight]) != trap.end()){
-                    rhs.dead();
-                    return true;
+                    if (trap.find(map.mapData[tileY][tileLeft]) != trap.end()){
+                        rhs.dead();
+                        return true;
+                    }
+                } else {
+                    for (size_t i = 0; i < end.size()/2; i++){
+                        // std::cout << end[2*i] << " " << end[2*i+1] << std::endl;
+                        if (end[2 * i] == tileY && end[2 * i + 1] == tileLeft) {
+                            rhs.end = true;
+                            return true;
+                        }
+                    }
                 }
+            }
+            if (map.mapData[tileY][tileRight] != -1) {
+                if (deco.find(map.mapData[tileY][tileRight]) == deco.end()){
+                    rhs.coll.right = true;
+                    rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
 
-                for (size_t i = 0; i < end.size()/2; i++){
-                    if (end[2 * i] == tileY && end[2 * i + 1] == tileRight) rhs.end = true;
+                    if (trap.find(map.mapData[tileY][tileRight]) != trap.end()){
+                        rhs.dead();
+                        return true;
+                    }
+                } else {
+                    for (size_t i = 0; i < end.size()/2; i++){
+                        if (end[2 * i] == tileY && end[2 * i + 1] == tileRight) rhs.end = true;
+                    }
                 }
             }
         }

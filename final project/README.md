@@ -48,7 +48,7 @@ $ ./main
 
 ## Requirement
 
-- [ ] title screen and proper mode for game over
+- [x] title screen and proper mode for game over
 
 - [x] music and sound effects
 

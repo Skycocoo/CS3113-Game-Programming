@@ -64,7 +64,6 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     play2.setData(xml.getData("alienYellow.png"));
     play2.setScale(0.6);
     play2.update();
-
 }
 
 void GameState::init(){
@@ -135,17 +134,22 @@ void GameState::fixedUpdate(float lastFrameTicks, float accumulator){
 
 void GameState::updateLevel(){
     if (player1.end || player2.end){
-        // std::cout << "level: " << level << std::endl;
-        level += 1;
+
+        // when reaching the end first: earn points
+        if (player1.end) player1.points += 30;
+        else player2.points += 30;
+
         player1.end = false;
         player2.end = false;
 
+        // update to next level
+        level += 1;
         if (level > 3) {
             mode = STATE_GAME_OVER;
             return;
         }
         tile.loadMap("Asset/level_" + std::to_string(level));
-        init();
+        this->init();
     }
 }
 
@@ -179,21 +183,32 @@ void GameState::render(){
 }
 
 void GameState::displayData(){
+    play1.setPos(-screenWidth + 1, screenHeight - 1);
+    play1.update();
     play1.render();
     disp.renderLeft("Points: " + std::to_string(player1.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1);
+
+    play2.setPos(-screenWidth + 1, screenHeight - 1.6);
+    play2.update();
     play2.render();
     disp.renderLeft("Points: " + std::to_string(player2.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1.6);
-
 }
 
 
 void GameState::displayMainMenu(){
-    disp.render("Platformer", 1, 2, 0, 3.5);
-    disp.render("<=   =>   to move", 0.5, 1, 0, 1);
+    disp.render("Racing", 1, 2, 0, 3.5);
+
+    play1.setPos(-2.5, 0);
+    play1.update();
+    play1.render();
+    disp.render("< ^ > to move", 0.5, 1, 0, 0);
+
+    play2.setPos(-2.5, 1);
+    play2.update();
+    play2.render();
+    disp.render("AWD to move", 0.5, 1, 0, 1);
 
     disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
-
-    displayData();
 }
 
 void GameState::displayLevel(){
@@ -215,4 +230,20 @@ void GameState::displayLevel(){
 
 void GameState::displayOver(){
     disp.render("Game Over", 1, 2, 0, 1.5);
+    if (player1.points > player2.points) {
+        play1.setPos(0, 0);
+        play1.setScale(1);
+        play1.update();
+        play1.render();
+        disp.render("wins",  0.5, 1, 0, -1);
+    } else if (player1.points > player2.points) {
+        play2.setPos(0, 0);
+        play2.setScale(1);
+        play2.update();
+        play2.render();
+        disp.render("wins",  0.5, 1, 0, -1);
+    } else {
+        disp.render("Game ends with a draw",  0.5, 1, 0, -1);
+    }
+
 }

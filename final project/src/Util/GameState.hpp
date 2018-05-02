@@ -38,6 +38,7 @@ public:
 private:
     XMLLoad xml;
     Text disp;
+
     Object play1;
     Object play2;
 
