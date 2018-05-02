@@ -5,11 +5,13 @@
 #include "Enemy.hpp"
 #include "Tile.hpp"
 
+extern glm::vec3 center;
+
 Player::Player(){}
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
 Player::Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0){
+DynamicObj(texture, pos, tile),  death(0), end(false), textures(data), lastState(0), lastPos(-100.0){
     Object::setData(textures[0]);
 }
 
@@ -56,6 +58,11 @@ void Player::updateState(){
 void Player::jump(float disp){
 //    if (coll.bottom)
         velo.y += disp;
+}
+
+void Player::dead(){
+    death += 1;
+    this->setPos(center);
 }
 
 bool Player::collide(float elapsed, EnemyGroup& enemygroup){

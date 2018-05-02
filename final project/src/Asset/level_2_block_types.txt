@@ -3,3 +3,9 @@ decoration
 
 trap
 71, 574, 571
+
+start
+2,23
+
+end
+39,12; 39,13

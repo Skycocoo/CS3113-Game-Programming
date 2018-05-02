@@ -10,10 +10,14 @@ class EnemyGroup;
 
 class Player: public DynamicObj{
 public:
+    int death;
+    bool end;
+
     Player();
     Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
 
     void jump(float disp);
+    void dead();
 
     void update(float elapsed);
     void updateState();
@@ -25,7 +29,6 @@ private:
     std::vector<XMLData> textures;
     int lastState;
     float lastPos;
-
 };
 
 #endif /* Player_hpp */

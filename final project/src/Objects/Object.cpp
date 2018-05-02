@@ -229,7 +229,7 @@ void Object::setData(const XMLData& data){
     shape *= scale;
 }
 
-const glm::vec3& Object::getCenter() const {
+const glm::vec3& Object::getPos() const {
     return pos;
 }
 

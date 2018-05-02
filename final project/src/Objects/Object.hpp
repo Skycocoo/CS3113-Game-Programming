@@ -52,7 +52,7 @@ public:
     void setProject(float proj);
     void setData(const XMLData& data);
 
-    const glm::vec3& getCenter() const;
+    const glm::vec3& getPos() const;
 
 protected:
     // shader

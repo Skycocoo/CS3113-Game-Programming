@@ -2,6 +2,7 @@
 // CS3113 Game Programming
 
 #include "Tile.hpp"
+#include "Player.hpp"
 #include <fstream>
 
 extern glm::vec3 center;
@@ -75,9 +76,8 @@ void Tile::loadMap(const std::string& txt){
         }
         // std::cout << std::endl;
     }
-    pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
+    // pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
     shape = glm::vec3(map.mapWidth * tilesize, map.mapHeight * tilesize, 0);
-
 
     loadType(txt);
 }
@@ -91,22 +91,33 @@ void Tile::loadType(const std::string& txt){
     }
 
     std::string line;
-    int index;
+    int index, index2;
     char comma;
 
     while (ifs >> line){
-        if (line == "decoration") {
+        if (line == "decoration"){
             while (ifs >> index >> comma){
                 deco.insert(index - 1);
                 if (comma != ',') break;
             }
         }
-        if (comma + line == "trap") {
+        if (comma + line == "trap"){
             while (ifs >> index >> comma){
                 trap.insert(index - 1);
                 if (comma != ',') break;
             }
             trap.insert(index);
+        }
+        if (comma + line == "start"){
+            ifs >> index >> comma >> index2 >> comma;
+            pos = glm::vec3((index * tilesize), (-index2 * tilesize), 0);
+            // std::cout << index << " " << index2 << std::endl;
+        }
+        if (comma + line == "end"){
+            while (ifs >> index >> comma){
+                end.push_back(index);
+                if (comma != ',') break;
+            }
         }
     }
 }
@@ -180,6 +191,106 @@ bool Tile::collide(Object& rhs) const {
             if (map.mapData[tileY][tileRight] != -1 && deco.find(map.mapData[tileY][tileRight]) == deco.end()) {
                 rhs.coll.right = true;
                 rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
+            }
+        }
+    } else {
+        collide = true;
+
+        if (tileUp <= 0) {
+            rhs.coll.top = true;
+            rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
+        } else if (tileDown >= map.mapHeight) {
+            rhs.coll.bottom = true;
+            rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
+        } else if (tileLeft <= 0) {
+            rhs.coll.left = true;
+            rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
+        } else if (tileRight >= map.mapWidth) {
+            rhs.coll.right = true;
+            rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
+        }
+    }
+    // if (rhs.coll.left || rhs.coll.right) Mix_PlayChannel(-1, hit, 0);
+    // std::cout << "original: " << enLeft << " " << enRight << " " << enUp << " " << enDown << std::endl;
+
+    return collide;
+}
+
+// manage collision with end & traps for player only
+bool Tile::collide(Player& rhs) const {
+    rhs.coll.reset();
+    bool collide = false;
+
+    int tileX = int(rhs.pos.x / tilesize), tileY = int(-rhs.pos.y / tilesize);
+
+    float enUp = rhs.pos.y + rhs.shape.y / 2,
+    enDown = rhs.pos.y - rhs.shape.y / 2,
+    enLeft = rhs.pos.x - rhs.shape.x / 2,
+    enRight = rhs.pos.x + rhs.shape.x / 2;
+
+    int tileUp = int(-enUp / tilesize),
+    tileDown = int(-enDown / tilesize),
+    tileLeft = int(enLeft/ tilesize),
+    tileRight = int(enRight/ tilesize);
+
+    if ((tileUp > 0) && (tileDown < map.mapHeight) && (tileLeft > 0) && (tileRight < map.mapWidth)){
+
+        if ((map.mapData[tileUp][tileX] != -1) || (map.mapData[tileDown][tileX] != -1) ||
+            (map.mapData[tileY][tileLeft] != -1) || (map.mapData[tileY][tileRight] != -1))
+            collide = true;
+
+        if (collide){
+            if (map.mapData[tileUp][tileX] != -1 && deco.find(map.mapData[tileUp][tileX]) == deco.end()) {
+                rhs.coll.top = true;
+                rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
+
+                if (trap.find(map.mapData[tileUp][tileX]) != trap.end()){
+                    rhs.dead();
+                    return true;
+                }
+
+                for (size_t i = 0; i < end.size()/2; i++){
+                    if (end[2 * i] == tileUp && end[2 * i + 1] == tileX) rhs.end = true;
+                }
+            }
+            if (map.mapData[tileDown][tileX] != -1 && deco.find(map.mapData[tileDown][tileX]) == deco.end()) {
+                rhs.coll.bottom = true;
+                rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
+
+                if (trap.find(map.mapData[tileDown][tileX]) != trap.end()){
+                    rhs.dead();
+                    return true;
+                }
+
+                for (size_t i = 0; i < end.size()/2; i++){
+                    if (end[2 * i] == tileDown && end[2 * i + 1] == tileX) rhs.end = true;
+                }
+            }
+            if (map.mapData[tileY][tileLeft] != -1 && deco.find(map.mapData[tileY][tileLeft]) == deco.end()) {
+                rhs.coll.left = true;
+                rhs.pos.x += fabs(enLeft - (tilesize * tileLeft + tilesize)) + 0.0001;
+
+                if (trap.find(map.mapData[tileY][tileLeft]) != trap.end()){
+                    rhs.dead();
+                    return true;
+                }
+
+                for (size_t i = 0; i < end.size()/2; i++){
+                    if (end[2 * i] == tileY && end[2 * i + 1] == tileLeft) rhs.end = true;
+                }
+            }
+            if (map.mapData[tileY][tileRight] != -1 && deco.find(map.mapData[tileY][tileRight]) == deco.end()) {
+                rhs.coll.right = true;
+                rhs.pos.x -= fabs((tilesize * tileRight) - enRight) + 0.0001;
+
+                if (trap.find(map.mapData[tileY][tileRight]) != trap.end()){
+                    rhs.dead();
+                    return true;
+                }
+
+                for (size_t i = 0; i < end.size()/2; i++){
+                    if (end[2 * i] == tileY && end[2 * i + 1] == tileRight) rhs.end = true;
+                }
             }
         }
     } else {

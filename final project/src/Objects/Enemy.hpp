@@ -25,6 +25,8 @@ private:
     std::vector<XMLData> textures;
     int lastState;
     float lastPos;
+
+    bool dead;
 };
 
 

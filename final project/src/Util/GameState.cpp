@@ -15,7 +15,7 @@ extern GameMode mode;
 
 GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"){
     untextured = setUntextured();
-    center = tile.getCenter();
+    center = tile.getPos();
 
     GLuint text;
     textured = setTextured("Asset/font1", text);
@@ -81,8 +81,8 @@ float GameState::mapValue(float value, float srcMin, float srcMax, float dstMin,
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
     // scale projection matrix
-    glm::vec3 player1Pos = player1.getCenter();
-    glm::vec3 player2Pos = player2.getCenter();
+    glm::vec3 player1Pos = player1.getPos();
+    glm::vec3 player2Pos = player2.getPos();
     float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
     dist = mapValue(dist, 0.0, 2 * screenWidth, 0.0, 2);
     if (dist < 0.5) dist = 0.5;
@@ -160,8 +160,8 @@ void GameState::displayMainMenu(){
 void GameState::displayLevel(){
     // center the camera on the midpoint of player1 & player2
     Matrix viewMatrix;
-    glm::vec3 player1Pos = player1.getCenter();
-    glm::vec3 player2Pos = player2.getCenter();
+    glm::vec3 player1Pos = player1.getPos();
+    glm::vec3 player2Pos = player2.getPos();
     player1Pos = (player1Pos + player2Pos) / float(2);
     viewMatrix.Translate(-player1Pos.x, -player1Pos.y, 0);
 

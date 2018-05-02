@@ -14,7 +14,7 @@ Enemy::Enemy(){}
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
 Enemy::Enemy(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0){
+DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0), dead(false){
     Object::setData(data[0]);
 }
 
@@ -102,6 +102,8 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 }
 
 bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
+    if (dead) return false;
+    
     // update x & y positions
     DynamicObj::update(elapsed);
 

@@ -12,6 +12,8 @@
 #include <iostream>
 #include <set>
 
+class Player;
+
 class Tile: public Object{
 public:
     // constructors, assume tiles start drawing at (0,0)
@@ -28,12 +30,14 @@ public:
 
     void render(const Matrix& view = Matrix());
     bool collide(Object& rhs) const;
+    bool collide(Player& rhs) const;
 
 private:
     FlareMap map;
     float tilesize;
     std::set<int> deco;
     std::set<int> trap;
+    std::vector<int> end;
 };
 
 #endif /* Tile_hpp */

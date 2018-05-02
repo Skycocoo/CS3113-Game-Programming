@@ -48,15 +48,23 @@ $ ./main
 
 ## Requirement
 
-- [x] title screen and proper mode for game over
+- [ ] title screen and proper mode for game over
 
-- [x] music and sound effects.
+- [x] music and sound effects
 
-- [ ] at least 3 different levels / procedurally generated levels
+- [x] at least 3 different levels
 
-- [ ] multiplayer / have AI (or both)
+- [x] multiplayer
 
-- [ ] some animation or particle effects.
+- [x] some animation
+
+## Option
+
+- [ ] procedurally generated levels
+
+- [ ] AI
+
+- [ ] particle effects
 
 ## Extra Credits
 
