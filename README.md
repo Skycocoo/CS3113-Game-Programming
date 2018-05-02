@@ -28,7 +28,7 @@ Clone this project: (Note that I use .gitmodules to include glm, the clone shoul
 
 ```bash
 $ git clone git@github.com:Skycocoo/CS3113-Game-Programming.git --recursive
-$ cd ./final\ project
+$ cd ./CS3113-Game-Programming/final\ project
 ```
 
 <!-- Open the folder and cd into the folder Checker-Game in shell -->
