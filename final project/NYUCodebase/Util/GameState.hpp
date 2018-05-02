@@ -36,7 +36,6 @@ private:
     Text disp;
 
     float mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax);
-    float easeIn(float from, float to, float time);
 };
 
 #endif /* GameState_hpp */

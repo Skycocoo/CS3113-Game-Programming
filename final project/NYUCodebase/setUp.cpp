@@ -57,19 +57,21 @@ ShaderProgram setTextured(const string& filepath, GLuint& texture){
 
 // initialize the window
 SDL_Window* setUp(const string& name){
+    int width = 1280, height = 780;
+
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* displayWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1020, 720, SDL_WINDOW_OPENGL);
+    SDL_Window* displayWindow = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
 
-    glViewport(0, 0, 1020, 720);
+    glViewport(0, 0, width, height);
     // glClearColor(0.376, 0.509, 0.806, 1);
     glClearColor(float(20) / float(256), float(101) / float(256), float(127) / float(256), 1);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // screen view point
-    screenRatio = float(1020) / float(720);
+    screenRatio = float(width) / float(height);
     screenHeight = 5.0;
     screenWidth = screenHeight * screenRatio;
 

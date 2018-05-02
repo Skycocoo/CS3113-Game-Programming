@@ -6,13 +6,12 @@
 
 extern ShaderProgram untextured;
 extern ShaderProgram textured;
+extern float fixedStep, screenWidth;
+extern int maxStep;
+extern glm::vec3 center;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 extern GameMode mode;
-extern float fixedStep;
-extern int maxStep;
-
-extern glm::vec3 center;
 
 GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"){
     untextured = setUntextured();
@@ -78,34 +77,21 @@ float GameState::mapValue(float value, float srcMin, float srcMax, float dstMin,
     return retVal;
 }
 
-float GameState::easeIn(float from, float to, float time){
-    float tVal = time*time*time*time*time;
-    return (1.0f-tVal)*from + tVal*to;
-}
-
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
+    // scale projection matrix
     glm::vec3 player1Pos = player1.getCenter();
     glm::vec3 player2Pos = player2.getCenter();
     float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
-    // if (dist > 2) dist = 2;
-
-    dist = mapValue(dist, 0.0, 10.0, 0.0, 2);
+    dist = mapValue(dist, 0.0, 2 * screenWidth, 0.0, 2);
     if (dist < 0.5) dist = 0.5;
-    // std::cout << dist << " ";
-    // dist = easeIn(0, 2, dist);
-    // std::cout << dist << std::endl;
-
-
 
     tile.setProject(dist);
     player1.setProject(dist);
     player2.setProject(dist);
     enemygroup.setProject(dist);
 
-
-    // player2.Object::satCollide(player);
     player1.satCollide(elapsed, enemygroup, player2);
     player2.satCollide(elapsed, enemygroup, player1);
     enemygroup.satCollide(elapsed);
@@ -176,17 +162,11 @@ void GameState::displayLevel(){
     Matrix viewMatrix;
     glm::vec3 player1Pos = player1.getCenter();
     glm::vec3 player2Pos = player2.getCenter();
-
-
     player1Pos = (player1Pos + player2Pos) / float(2);
     viewMatrix.Translate(-player1Pos.x, -player1Pos.y, 0);
 
-//    float dist = glm::length(player1Pos);
-//    std::cout << dist << std::endl;
-
     // render tile first
     tile.render(viewMatrix);
-
     player1.render(viewMatrix);
     player2.render(viewMatrix);
     enemygroup.render(viewMatrix);
