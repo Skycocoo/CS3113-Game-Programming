@@ -7,8 +7,7 @@
 #include "Util/ShaderProgram.hpp"
 #include <SDL.h>
 #include <SDL_opengl.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
+// #include <SDL_image.h>
 #include <string>
 
 // from lecture slide Jan 31, 2018

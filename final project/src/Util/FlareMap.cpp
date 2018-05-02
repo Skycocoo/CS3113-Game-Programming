@@ -6,7 +6,7 @@
 #include <sstream>
 #include <cassert>
 
-#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
+#define RESOURCE_FOLDER "../src/"
 
 
 FlareMap::FlareMap(): mapWidth(-1), mapHeight(-1), mapData(nullptr){}

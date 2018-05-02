@@ -9,7 +9,7 @@ extern ShaderProgram textured;
 // extern Mix_Chunk* hit;
 
 
-#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
+#define RESOURCE_FOLDER "../src/"
 
 // assume tiles start drawing at (0,0)
 Tile::Tile(): Object(){}

@@ -4,7 +4,7 @@
 
 #include "setUp.hpp"
 #include "stb_image.h"
-#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
+#define RESOURCE_FOLDER "../src/"
 
 extern float screenRatio;
 extern float screenHeight;
@@ -20,7 +20,7 @@ GLuint LoadTexture(const char *filePath) {
     unsigned char* image = stbi_load(filePath, &w, &h, &comp, STBI_rgb_alpha);
 
     if(image == NULL) {
-        cerr << "Unable to load image in the path " << *filePath << ". Make sure the path is correct\n";
+        cerr << "Unable to load image in the path " << filePath << ". Make sure the path is correct\n";
         exit(1);
     }
 

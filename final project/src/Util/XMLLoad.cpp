@@ -3,8 +3,7 @@
 
 #include "XMLLoad.hpp"
 
-#define RESOURCE_FOLDER "NYUCodebase.app/Contents/Resources/"
-
+#define RESOURCE_FOLDER "../src/"
 
 // XMLData
 std::ostream& operator<<(std::ostream& os, const XMLData& data){
