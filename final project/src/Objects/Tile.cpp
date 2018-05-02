@@ -76,10 +76,11 @@ void Tile::loadMap(const std::string& txt){
         }
         // std::cout << std::endl;
     }
-    // pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
     shape = glm::vec3(map.mapWidth * tilesize, map.mapHeight * tilesize, 0);
 
     loadType(txt);
+    // pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
+
 }
 
 
@@ -118,6 +119,7 @@ void Tile::loadType(const std::string& txt){
                 end.push_back(index);
                 if (comma != ',') break;
             }
+            end.push_back(index);
         }
     }
 }
@@ -234,23 +236,27 @@ bool Tile::collide(Player& rhs) const {
     tileRight = int(enRight/ tilesize);
 
     if ((tileUp > 0) && (tileDown < map.mapHeight) && (tileLeft > 0) && (tileRight < map.mapWidth)){
-
         if ((map.mapData[tileUp][tileX] != -1) || (map.mapData[tileDown][tileX] != -1) ||
             (map.mapData[tileY][tileLeft] != -1) || (map.mapData[tileY][tileRight] != -1))
             collide = true;
 
         if (collide){
-            if (map.mapData[tileUp][tileX] != -1 && deco.find(map.mapData[tileUp][tileX]) == deco.end()) {
-                rhs.coll.top = true;
-                rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
+            // std::cout << tileY << " " << tileLeft << std::endl;;
 
-                if (trap.find(map.mapData[tileUp][tileX]) != trap.end()){
-                    rhs.dead();
-                    return true;
-                }
 
-                for (size_t i = 0; i < end.size()/2; i++){
-                    if (end[2 * i] == tileUp && end[2 * i + 1] == tileX) rhs.end = true;
+            if (map.mapData[tileUp][tileX] != -1) {
+                if (deco.find(map.mapData[tileUp][tileX]) == deco.end()){
+                    rhs.coll.top = true;
+                    rhs.pos.y -= fabs((-tilesize * tileUp - tilesize) - enUp) + 0.0001;
+
+                    if (trap.find(map.mapData[tileUp][tileX]) != trap.end()){
+                        rhs.dead();
+                        return true;
+                    }
+                } else {
+                    for (size_t i = 0; i < end.size()/2; i++){
+                        if (end[2 * i] == tileUp && end[2 * i + 1] == tileX) rhs.end = true;
+                    }
                 }
             }
             if (map.mapData[tileDown][tileX] != -1 && deco.find(map.mapData[tileDown][tileX]) == deco.end()) {
@@ -276,7 +282,11 @@ bool Tile::collide(Player& rhs) const {
                 }
 
                 for (size_t i = 0; i < end.size()/2; i++){
-                    if (end[2 * i] == tileY && end[2 * i + 1] == tileLeft) rhs.end = true;
+                    // std::cout << end[2*i] << " " << end[2*i+1] << std::endl;
+                    if (end[2 * i] == tileY && end[2 * i + 1] == tileLeft) {
+                        rhs.end = true;
+                        return true;
+                    }
                 }
             }
             if (map.mapData[tileY][tileRight] != -1 && deco.find(map.mapData[tileY][tileRight]) == deco.end()) {

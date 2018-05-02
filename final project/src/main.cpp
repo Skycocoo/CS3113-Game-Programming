@@ -28,7 +28,7 @@ float fixedStep = 0.0166666f; // 60 FPS (1.0f/60.0f) (update sixty times a secon
 int maxStep = 3;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
-GameMode mode = STATE_GAME_LEVEL;
+GameMode mode = STATE_MAIN_MENU;
 
 Mix_Chunk* jump;
 Mix_Chunk* walk;
@@ -45,6 +45,7 @@ void updateGame(const SDL_Event& event, GameState& game){
     if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP){
         switch (event.key.keysym.scancode){
             case SDL_SCANCODE_B:
+                if (mode == STATE_MAIN_MENU) mode = STATE_GAME_LEVEL;
                 game.init();
                 break;
             case SDL_SCANCODE_LEFT:

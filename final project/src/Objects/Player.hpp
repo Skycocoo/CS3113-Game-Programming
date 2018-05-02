@@ -10,7 +10,7 @@ class EnemyGroup;
 
 class Player: public DynamicObj{
 public:
-    int death;
+    int points;
     bool end;
 
     Player();

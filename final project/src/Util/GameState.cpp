@@ -6,14 +6,14 @@
 
 extern ShaderProgram untextured;
 extern ShaderProgram textured;
-extern float fixedStep, screenWidth;
+extern float fixedStep, screenWidth, screenHeight;
 extern int maxStep;
 extern glm::vec3 center;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 extern GameMode mode;
 
-GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"){
+GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"), level(1){
     untextured = setUntextured();
     center = tile.getPos();
 
@@ -53,6 +53,18 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienBeige_walk2.png"));
     enemygroup = EnemyGroup(texture, p, center, &tile);
     enemygroup.setScale(0.5);
+
+
+    play1 = Object(&textured, texture, glm::vec3(-screenWidth + 1, screenHeight - 1 , 0));
+    play1.setData(xml.getData("alienBlue.png"));
+    play1.setScale(0.6);
+    play1.update();
+
+    play2 = Object(&textured, texture, glm::vec3(-screenWidth + 1, screenHeight - 1.6, 0));
+    play2.setData(xml.getData("alienYellow.png"));
+    play2.setScale(0.6);
+    play2.update();
+
 }
 
 void GameState::init(){
@@ -97,18 +109,6 @@ void GameState::checkCollision(float elapsed){
     enemygroup.satCollide(elapsed);
 }
 
-void GameState::update(float elapsed){
-    switch (mode){
-        case STATE_MAIN_MENU:
-            break;
-        case STATE_GAME_LEVEL:
-            checkCollision(elapsed);
-            break;
-        case STATE_GAME_OVER:
-            break;
-    }
-}
-
 void GameState::fixedUpdate(float lastFrameTicks, float accumulator){
     // update parameters
     float ticks = (float)SDL_GetTicks()/1000.0f;
@@ -133,6 +133,35 @@ void GameState::fixedUpdate(float lastFrameTicks, float accumulator){
     accumulator = elapsed;
 }
 
+void GameState::updateLevel(){
+    if (player1.end || player2.end){
+        // std::cout << "level: " << level << std::endl;
+        level += 1;
+        player1.end = false;
+        player2.end = false;
+
+        if (level > 3) {
+            mode = STATE_GAME_OVER;
+            return;
+        }
+        tile.loadMap("Asset/level_" + std::to_string(level));
+        init();
+    }
+}
+
+
+void GameState::update(float elapsed){
+    switch (mode){
+        case STATE_MAIN_MENU:
+            break;
+        case STATE_GAME_LEVEL:
+            updateLevel();
+            checkCollision(elapsed);
+            break;
+        case STATE_GAME_OVER:
+            break;
+    }
+}
 
 void GameState::render(){
     switch (mode){
@@ -149,12 +178,22 @@ void GameState::render(){
 
 }
 
+void GameState::displayData(){
+    play1.render();
+    disp.renderLeft("Points: " + std::to_string(player1.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1);
+    play2.render();
+    disp.renderLeft("Points: " + std::to_string(player2.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1.6);
+
+}
+
 
 void GameState::displayMainMenu(){
     disp.render("Platformer", 1, 2, 0, 3.5);
     disp.render("<=   =>   to move", 0.5, 1, 0, 1);
 
     disp.render("B: begin   Q: quit", 0.5, 1, 0, -1.5);
+
+    displayData();
 }
 
 void GameState::displayLevel(){
@@ -170,6 +209,8 @@ void GameState::displayLevel(){
     player1.render(viewMatrix);
     player2.render(viewMatrix);
     enemygroup.render(viewMatrix);
+
+    displayData();
 }
 
 void GameState::displayOver(){

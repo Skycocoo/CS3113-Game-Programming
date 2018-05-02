@@ -103,7 +103,7 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
 
 bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
     if (dead) return false;
-    
+
     // update x & y positions
     DynamicObj::update(elapsed);
 

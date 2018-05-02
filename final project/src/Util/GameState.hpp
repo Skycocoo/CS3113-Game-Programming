@@ -22,7 +22,9 @@ public:
     GameState();
     void init();
 
+    void updateLevel();
     void checkCollision(float elapsed);
+
     void update(float elapsed);
     void fixedUpdate(float lastFrameTicks, float accumulator);
     void render();
@@ -31,9 +33,15 @@ public:
     void displayLevel();
     void displayOver();
 
+    void displayData();
+
 private:
     XMLLoad xml;
     Text disp;
+    Object play1;
+    Object play2;
+
+    int level;
 
     float mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax);
 };
