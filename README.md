@@ -7,6 +7,51 @@ Use gitmodules to include glm;
 
 Please clone with ```git clone --recursive https://github.com/Skycocoo/CS3113-Game-Programming.git```
 
+# Dependencies
+
+Please make sure you have these libraries installed before cmake
+
+```
+- OpenGL (find packages with cmake)
+- GLEW (find packages with cmake)
+- glm (included in the folder)
+
+- SDL_mixer (find packages with cmake modules)
+- SDL2 (find packages with cmake modules)
+- SDL2_Image (find packages with cmake modules)
+```
+
+
+# Installation with cmake
+
+Clone this project: (Note that I use .gitmodules to include glm, the clone should be in recursive mode)
+
+```bash
+$ git clone git@github.com:Skycocoo/CS3113-Game-Programming.git --recursive
+$ cd ./final\ project
+```
+
+<!-- Open the folder and cd into the folder Checker-Game in shell -->
+
+Make build directory for cmake:
+```bash
+$ mkdir build
+$ cd ./build/
+```
+
+Run cmake & build executable for this project:
+
+```bash
+$ cmake ..
+$ make
+```
+Run the executable of this project:
+
+```bash
+$ ./main
+```
+
+
 
 # Assignments
 
