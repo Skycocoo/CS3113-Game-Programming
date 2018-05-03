@@ -149,6 +149,7 @@ void GameState::updateLevel(){
             return;
         }
         tile.loadMap("Asset/level_" + std::to_string(level));
+        tile.loadType("Asset/level_" + std::to_string(level));
         this->init();
     }
 }
@@ -183,6 +184,8 @@ void GameState::render(){
 }
 
 void GameState::displayData(){
+    if (level <= 3) disp.renderLeft("Game Level: " + std::to_string(level) + "/3", 0.5, 0.6, -screenWidth + 0.8, screenHeight - 0.4);
+
     play1.setPos(-screenWidth + 1, screenHeight - 1);
     play1.update();
     play1.render();
@@ -230,6 +233,7 @@ void GameState::displayLevel(){
 
 void GameState::displayOver(){
     disp.render("Game Over", 1, 2, 0, 1.5);
+
     if (player1.points > player2.points) {
         play1.setPos(0, 0);
         play1.setScale(1);
@@ -246,4 +250,5 @@ void GameState::displayOver(){
         disp.render("Game ends with a draw",  0.5, 1, 0, -1);
     }
 
+    displayData();
 }

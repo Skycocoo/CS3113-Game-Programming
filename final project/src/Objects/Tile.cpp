@@ -255,7 +255,7 @@ bool Tile::collide(Player& rhs) const {
                     }
                 } else {
                     for (size_t i = 0; i < end.size()/2; i++){
-                        if (end[2 * i] == tileUp && end[2 * i + 1] == tileX) rhs.end = true;
+                        if (end[2 * i] == tileX && end[2 * i + 1] == tileUp) rhs.end = true;
                     }
                 }
             }
@@ -270,7 +270,7 @@ bool Tile::collide(Player& rhs) const {
                     }
                 } else {
                     for (size_t i = 0; i < end.size()/2; i++){
-                        if (end[2 * i] == tileDown && end[2 * i + 1] == tileX) rhs.end = true;
+                        if (end[2 * i] == tileX && end[2 * i + 1] == tileDown) rhs.end = true;
                     }
                 }
             }
@@ -285,8 +285,8 @@ bool Tile::collide(Player& rhs) const {
                     }
                 } else {
                     for (size_t i = 0; i < end.size()/2; i++){
-                        // std::cout << end[2*i] << " " << end[2*i+1] << std::endl;
-                        if (end[2 * i] == tileY && end[2 * i + 1] == tileLeft) {
+                        // first x then y for the location of end
+                        if (end[2 * i] == tileLeft && end[2 * i + 1] == tileY) {
                             rhs.end = true;
                             return true;
                         }
@@ -304,7 +304,7 @@ bool Tile::collide(Player& rhs) const {
                     }
                 } else {
                     for (size_t i = 0; i < end.size()/2; i++){
-                        if (end[2 * i] == tileY && end[2 * i + 1] == tileRight) rhs.end = true;
+                        if (end[2 * i] == tileRight && end[2 * i + 1] == tileY) rhs.end = true;
                     }
                 }
             }
