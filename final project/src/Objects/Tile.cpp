@@ -93,28 +93,25 @@ void Tile::loadType(const std::string& txt){
 
     std::string line;
     int index, index2;
-    char comma;
+    char comma = 0;
 
     while (ifs >> line){
-        if (line == "decoration"){
+        std::string temp = comma + line;
+        if (temp == "decoration" || line == "decoration"){
             while (ifs >> index >> comma){
                 deco.insert(index - 1);
                 if (comma != ',') break;
             }
-        }
-        if (comma + line == "trap"){
+        } else if (temp == "trap"){
             while (ifs >> index >> comma){
                 trap.insert(index - 1);
                 if (comma != ',') break;
             }
             trap.insert(index);
-        }
-        if (comma + line == "start"){
+        } else if (temp == "start"){
             ifs >> index >> comma >> index2 >> comma;
             pos = glm::vec3((index * tilesize), (-index2 * tilesize), 0);
-            // std::cout << index << " " << index2 << std::endl;
-        }
-        if (comma + line == "end"){
+        } else if (temp == "end"){
             while (ifs >> index >> comma){
                 end.push_back(index);
                 if (comma != ',') break;
@@ -242,8 +239,6 @@ bool Tile::collide(Player& rhs) const {
 
         if (collide){
             // std::cout << tileY << " " << tileLeft << std::endl;;
-
-
             if (map.mapData[tileUp][tileX] != -1) {
                 if (deco.find(map.mapData[tileUp][tileX]) == deco.end()){
                     rhs.coll.top = true;

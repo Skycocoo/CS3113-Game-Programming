@@ -5,6 +5,7 @@
 // please clone with git clone --recursive https://github.com/Skycocoo/CS3113-Game-Programming.git
 // since I'm using gitmodules to include glm
 
+#define RESOURCE_FOLDER "../src/"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -13,8 +14,6 @@
 #include <vector>
 
 #include <SDL_mixer.h>
-
-
 #include "includes.hpp"
 
 using namespace std;
@@ -103,11 +102,11 @@ int main(){
     srand(time(NULL));
     SDL_Window* displayWindow = setUp("Finan project");
 
-    // music
+    // // music
     // Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
-    // Mix_Music* music = Mix_LoadMUS("Asset/my_music.mp3");
-    // jump = Mix_LoadWAV("Asset/jump.wav");
-    // walk = Mix_LoadWAV("Asset/walk.wav");
+    // Mix_Music* music = Mix_LoadMUS(RESOURCE_FOLDER"Asset/my_music.mp3");
+    // jump = Mix_LoadWAV(RESOURCE_FOLDER"Asset/jump.wav");
+    // walk = Mix_LoadWAV(RESOURCE_FOLDER"Asset/walk.wav");
     // if(!music || !jump || !walk) {
     //    cout << "Mix_Load: ";
     //    Mix_GetError();
