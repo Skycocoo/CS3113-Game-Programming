@@ -11,7 +11,7 @@ Player::Player(){}
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
 Player::Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), points(0), end(false), textures(data), lastState(0), lastPos(-100.0){
+DynamicObj(texture, pos, tile), numJump(0), points(0), end(false), textures(data), lastState(0), lastPos(-100.0){
     Object::setData(textures[0]);
 }
 
@@ -108,6 +108,7 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup, Player& player){
     // store updated positions
     float prevX = pos.x, prevY = pos.y;
     bool result = false;
+    bool bottom = false;
 
     // std::cout << "player" << std::endl;
 
@@ -119,16 +120,22 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup, Player& player){
 
         if (coll.left) enemygroup.ene[i].setAcce(-5);
         else if (coll.right) enemygroup.ene[i].setAcce(5);
+
+        if (coll.bottom) bottom = true;
     }
 
     result = Object::satCollide(player) || result;
     if (coll.left) player.setAcce(-5);
     else if (coll.right) player.setAcce(5);
+    if (coll.bottom) bottom = true;
+
 
     if (tile) result = tile->collide(*this) || result;
-
     if ((prevX - pos.x != 0) || (coll.left || coll.right)) velo.x = 0;
     if ((prevY - pos.y != 0) || (coll.top || coll.bottom)) velo.y = 0;
+    if (coll.bottom) bottom = true;
+
+    if (bottom) this->numJump = 0;
 
     Player::updateState();
     Player::update(elapsed);

@@ -10,6 +10,7 @@ class EnemyGroup;
 
 class Player: public DynamicObj{
 public:
+    int numJump;
     int points;
     bool end;
 

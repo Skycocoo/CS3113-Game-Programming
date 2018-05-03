@@ -63,7 +63,10 @@ void updateGame(const SDL_Event& event, GameState& game){
             case SDL_SCANCODE_UP:
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
-                    game.player1.jump(0.8);
+                    if (game.player1.numJump < 3) {
+                        game.player1.jump(0.8);
+                        game.player1.numJump += 1;
+                    }
                 }
                 break;
             // case SDL_SCANCODE_SPACE:
@@ -88,7 +91,10 @@ void updateGame(const SDL_Event& event, GameState& game){
             case SDL_SCANCODE_W:
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
-                    game.player2.jump(0.8);
+                    if (game.player2.numJump < 3) {
+                        game.player2.jump(0.8);
+                        game.player2.numJump += 1;
+                    }
                 }
                 break;
         }
