@@ -219,23 +219,18 @@ void GameState::displayLevel(){
     Matrix viewMatrix;
     glm::vec3 player1Pos = player1.getPos();
     glm::vec3 player2Pos = player2.getPos();
-    player1Pos = (player1Pos + player2Pos) / float(2);
-    viewMatrix.Translate(-player1Pos.x, -player1Pos.y, 0);
+    glm::vec3 midPos = (player1Pos + player2Pos) / float(2);
+    viewMatrix.Translate(-midPos.x, -midPos.y, 0);
 
     // render light
     GLint lightPositionsUniform = glGetUniformLocation(lighting.programID, "lightPositions");
-    GLfloat lightPositions[2*2];
-    glm::vec3 lights[2];
-
-    lights[0] = player1.getPos();
-    lights[1] = player2.getPos();
-
-    for(int i = 0; i < 2; i++){
-        lightPositions[i*2] = lights[i].x;
-        lightPositions[(i*2)+1] = lights[i].y;
-    }
-
-    glUniform2fv(lightPositionsUniform, 4, lightPositions);
+    GLfloat lightPositions[4];
+    lightPositions[0] = player1Pos.x;
+    lightPositions[1] = player1Pos.y;
+    lightPositions[2] = player2Pos.x;
+    lightPositions[3] = player2Pos.y;
+    glUseProgram(lighting.programID);
+    glUniform2fv(lightPositionsUniform, 2, lightPositions);
 
     // render tile first
     tile.render(viewMatrix);
