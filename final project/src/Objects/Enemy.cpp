@@ -141,7 +141,7 @@ bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
 EnemyGroup::EnemyGroup(){}
 
 EnemyGroup::EnemyGroup(GLuint texture, const std::vector<XMLData>&data, const glm::vec3& pos, const Tile* tile):
-    size(1), numEn(3), numCol(3), numRow(1){
+    size(1), numEn(0), numCol(0), numRow(0){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;

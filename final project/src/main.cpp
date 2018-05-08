@@ -27,7 +27,7 @@ float fixedStep = 0.0166666f; // 60 FPS (1.0f/60.0f) (update sixty times a secon
 int maxStep = 3;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
-GameMode mode = STATE_MAIN_MENU;
+GameMode mode = STATE_GAME_LEVEL;
 
 Mix_Chunk* jump;
 Mix_Chunk* walk;
@@ -63,7 +63,7 @@ void updateGame(const SDL_Event& event, GameState& game){
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
                     // if (game.player1.numJump < 3) {
-                        game.player1.jump(0.8);
+                        game.player1.jump(0.5);
                         // game.player1.numJump += 1;
                     // }
                 }
@@ -85,7 +85,7 @@ void updateGame(const SDL_Event& event, GameState& game){
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
                     // if (game.player2.numJump < 3) {
-                        game.player2.jump(0.8);
+                        game.player2.jump(0.5);
                         // game.player2.numJump += 1;
                     // }
                 }

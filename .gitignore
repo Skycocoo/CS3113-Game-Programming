@@ -3,6 +3,7 @@
 *.gch
 *.tmx
 *.tsx
+*.mov
 
 lecture/*
 test/*
