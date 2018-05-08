@@ -39,10 +39,12 @@ void Tile::loadMap(const std::string& txt){
     map.~FlareMap();
     map.Load(txt);
 
-    vertices.clear();
     texCoords.clear();
     deco.clear();
     trap.clear();
+
+    start = std::chrono::system_clock::now();
+    srand(time(NULL));
 
     // the data of sprite sheet for tilemap
     int spritex = 30, spritey = 30;
@@ -80,6 +82,39 @@ void Tile::loadMap(const std::string& txt){
 
     loadType(txt);
     // pos = glm::vec3((map.mapWidth * tilesize) / 2, (-map.mapHeight * tilesize) / 2, 0);
+
+}
+
+void Tile::easeIn(){
+    vertices.clear();
+
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+
+    // the data of sprite sheet for tilemap
+    int spritex = 30, spritey = 30;
+
+
+    for (int y = 0; y < map.mapHeight; y++){
+        for (int x = 0; x < map.mapWidth; x++){
+            if (map.mapData[y][x] != -1){
+                float u = (float)(((int) map.mapData[y][x]) % spritex) / (float) spritex;
+                float v = (float)(((int) map.mapData[y][x]) / spritex) / (float) spritey;
+                float spriteWidth = 1.0f / (float) spritex;
+                float spriteHeight = 1.0f / (float) spritey;
+                float offset = sin(M_PI * elapsed.count() * (0.8 + 0.4 * float(rand() % 100) / float (100))) * (1 - elapsed.count() / fadeInTime);
+
+                vertices.insert(vertices.end(), {
+                    tilesize * x, -tilesize * y + offset,
+                    tilesize * x, (-tilesize * y)-tilesize + offset,
+                    (tilesize * x)+tilesize, (-tilesize * y)-tilesize + offset,
+                    tilesize * x, -tilesize * y + offset,
+                    (tilesize * x)+tilesize, (-tilesize * y)-tilesize + offset,
+                    (tilesize * x)+tilesize, -tilesize * y + offset
+                });
+            }
+        }
+    }
 
 }
 
@@ -131,6 +166,12 @@ void Tile::render(const Matrix& view){
     program->SetViewMatrix(view);
 
     glBindTexture(GL_TEXTURE_2D, texture);
+
+
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    if(elapsed.count() <= fadeInTime)
+        easeIn();
 
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
     glEnableVertexAttribArray(program->positionAttribute);
