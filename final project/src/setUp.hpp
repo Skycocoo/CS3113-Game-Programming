@@ -19,6 +19,10 @@ ShaderProgram setUntextured();
 // textured shader
 ShaderProgram setTextured(const std::string& filepath, GLuint& texture);
 
+// lighting shader
+ShaderProgram setLight(const std::string& filepath, GLuint& texture);
+
+
 
 // initialize the window
 SDL_Window* setUp(const std::string& name);

@@ -54,6 +54,16 @@ ShaderProgram setTextured(const string& filepath, GLuint& texture){
     return program;
 }
 
+// lighting shader
+ShaderProgram setLight(const std::string& filepath, GLuint& texture){
+    ShaderProgram program;
+    program.Load(RESOURCE_FOLDER"Shad/vertex_lighting.glsl", RESOURCE_FOLDER"Shad/fragment_lighting.glsl");
+    texture = LoadTexture((RESOURCE_FOLDER + filepath + ".png").c_str());
+
+    return program;
+}
+
+
 
 // initialize the window
 SDL_Window* setUp(const string& name){

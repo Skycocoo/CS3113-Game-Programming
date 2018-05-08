@@ -4,8 +4,8 @@
 #include "GameState.hpp"
 #include "../setUp.hpp"
 
-extern ShaderProgram untextured;
-extern ShaderProgram textured;
+extern ShaderProgram textured, untextured, lighting;
+
 extern float fixedStep, screenWidth, screenHeight;
 extern int maxStep;
 extern glm::vec3 center;
@@ -24,7 +24,7 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     // GLuint texture;
     GLuint texture;
     textured = setTextured("Asset/sheet", texture);
-
+    lighting = setLight("Asset/sheet", texture);
 
     std::vector<XMLData> p;
     // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
@@ -33,7 +33,7 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienBlue_stand.png"));
     p.push_back(xml.getData("alienBlue_walk1.png"));
     p.push_back(xml.getData("alienBlue_walk2.png"));
-    player1 = Player(texture, p, center, &tile);
+    player1 = Player(&lighting, texture, p, center, &tile);
     player1.setScale(0.5);
 
     p.clear();
@@ -42,7 +42,7 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienYellow_stand.png"));
     p.push_back(xml.getData("alienYellow_walk1.png"));
     p.push_back(xml.getData("alienYellow_walk2.png"));
-    player2 = Player(texture, p, center, &tile);
+    player2 = Player(&lighting, texture, p, center, &tile);
     player2.setScale(0.5);
 
     p.clear();
@@ -51,7 +51,7 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienBeige_stand.png"));
     p.push_back(xml.getData("alienBeige_walk1.png"));
     p.push_back(xml.getData("alienBeige_walk2.png"));
-    enemygroup = EnemyGroup(texture, p, center, &tile);
+    enemygroup = EnemyGroup(&lighting, texture, p, center, &tile);
     enemygroup.setScale(0.5);
 
 
@@ -223,10 +223,8 @@ void GameState::displayLevel(){
     viewMatrix.Translate(-player1Pos.x, -player1Pos.y, 0);
 
     // render light
-    GLint lightPositionsUniform = glGetUniformLocation(textured.programID, "lightPositions");
-
+    GLint lightPositionsUniform = glGetUniformLocation(lighting.programID, "lightPositions");
     GLfloat lightPositions[2*2];
-
     glm::vec3 lights[2];
 
     lights[0] = player1.getPos();
@@ -237,7 +235,7 @@ void GameState::displayLevel(){
         lightPositions[(i*2)+1] = lights[i].y;
     }
 
-    glUniform2fv(lightPositionsUniform, 6, lightPositions);
+    glUniform2fv(lightPositionsUniform, 4, lightPositions);
 
     // render tile first
     tile.render(viewMatrix);

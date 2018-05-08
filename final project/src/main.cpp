@@ -21,7 +21,7 @@ using namespace std;
 ///////////////////////////////////////////GLOBAL VARIABLES///////////////////////////////////////////
 
 float screenRatio = 0.0, screenHeight = 0.0, screenWidth = 0.0, splitScale = 0.0, edge = 1.0;
-ShaderProgram textured, untextured;
+ShaderProgram textured, untextured, lighting;
 
 float fixedStep = 0.0166666f; // 60 FPS (1.0f/60.0f) (update sixty times a second)
 int maxStep = 3;

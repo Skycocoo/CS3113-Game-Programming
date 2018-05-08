@@ -4,17 +4,15 @@
 #include "DynamicObj.hpp"
 #include "Tile.hpp"
 
-extern ShaderProgram textured;
-extern ShaderProgram untextured;
+// extern ShaderProgram textured;
+// extern ShaderProgram untextured;
 
 DynamicObj::DynamicObj(): Object::Object(){}
 
-DynamicObj::DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile):
-    Object(&textured, texture, pos), velo(0, 0, 0), fric(0.3, 0.3, 0.3), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile)
-    {
-        if (texture == 0) program = &untextured;
+DynamicObj::DynamicObj(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const Tile* tile):
+    Object(program, texture, pos), velo(0, 0, 0), fric(0.3, 0.3, 0.3), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile) {}
+    // if (texture == 0) program = &untextured;
 
-    }
 
 void DynamicObj::setTile(const Tile& t){
     tile = &t;

@@ -7,11 +7,10 @@ uniform vec4 vcolor;
 
 varying vec4 color;
 
-void main()
-{
+void main() {
 	vec4 p = viewMatrix * modelMatrix  * position;
 	gl_Position = projectionMatrix * p;
-    
+
     color = vcolor;
 //    color = vec4(1, 1, 1, 1);
 }

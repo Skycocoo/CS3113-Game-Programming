@@ -10,8 +10,8 @@ extern glm::vec3 center;
 Player::Player(){}
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
-Player::Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), numJump(0), points(0), end(false), textures(data), lastState(0), lastPos(-100.0){
+Player::Player(ShaderProgram* program, GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
+DynamicObj(program, texture, pos, tile), numJump(0), points(0), end(false), textures(data), lastState(0), lastPos(-100.0){
     Object::setData(textures[0]);
 }
 

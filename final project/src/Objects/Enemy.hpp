@@ -11,7 +11,7 @@ class EnemyGroup;
 class Enemy: public DynamicObj{
 public:
     Enemy();
-    Enemy(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
+    Enemy(ShaderProgram* program, GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
 
     void update(float elapsed);
     void updateState();
@@ -35,7 +35,7 @@ public:
     std::vector<Enemy> ene;
 
     EnemyGroup();
-    EnemyGroup(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
+    EnemyGroup(ShaderProgram* program, GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
 
     // void update(float elapsed);
     void render(const Matrix& view = Matrix());

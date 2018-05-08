@@ -12,7 +12,7 @@ class DynamicObj: public Object{
 public:
 
     DynamicObj();
-    DynamicObj(GLuint texture, const glm::vec3& pos, const Tile* tile);
+    DynamicObj(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const Tile* tile);
 
     void setTile(const Tile& t);
     void setAcce(float disp);

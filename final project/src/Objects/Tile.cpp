@@ -6,7 +6,7 @@
 #include <fstream>
 
 extern glm::vec3 center;
-extern ShaderProgram textured;
+extern ShaderProgram lighting;
 // extern Mix_Chunk* hit;
 
 
@@ -28,7 +28,7 @@ Tile& Tile::operator=(Tile&& rhs){
 }
 
 
-Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Object(&textured, 0), tilesize(tilesize){
+Tile::Tile(const std::string& tex, const std::string& txt, float tilesize): Object(&lighting, 0), tilesize(tilesize){
     texture = LoadTexture((RESOURCE_FOLDER + tex + ".png").c_str());
     loadMap(txt);
 }

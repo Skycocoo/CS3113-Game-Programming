@@ -13,8 +13,8 @@ Enemy::Enemy(){}
 
 
 // 0: original; 1: jump; 2: stand; 3: walk1; 4: walk2
-Enemy::Enemy(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
-DynamicObj(texture, pos, tile), textures(data), lastState(0), lastPos(-100.0), dead(false){
+Enemy::Enemy(ShaderProgram* program, GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile):
+DynamicObj(program, texture, pos, tile), textures(data), lastState(0), lastPos(-100.0), dead(false){
     Object::setData(data[0]);
 }
 
@@ -140,7 +140,7 @@ bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
 
 EnemyGroup::EnemyGroup(){}
 
-EnemyGroup::EnemyGroup(GLuint texture, const std::vector<XMLData>&data, const glm::vec3& pos, const Tile* tile):
+EnemyGroup::EnemyGroup(ShaderProgram* program, GLuint texture, const std::vector<XMLData>&data, const glm::vec3& pos, const Tile* tile):
     size(1), numEn(0), numCol(0), numRow(0){
     // create enemy objects
     float posX = pos.x, posY = pos.y, spacing = 0.3;
@@ -152,7 +152,7 @@ EnemyGroup::EnemyGroup(GLuint texture, const std::vector<XMLData>&data, const gl
         for (int j = 0; j < numCol; j++){
             float relativeX = j - float(numCol - 1) / float(2);
             // std::cout << posX + relativeX * step << " " << posY + relativeY * step << std::endl;
-            Enemy temp (texture, data, glm::vec3(posX + relativeX * step, posY + relativeY * step, 0), tile);
+            Enemy temp (program, texture, data, glm::vec3(posX + relativeX * step, posY + relativeY * step, 0), tile);
             temp.setScale(size);
             ene.push_back(temp);
         }

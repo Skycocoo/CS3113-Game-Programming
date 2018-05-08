@@ -15,7 +15,7 @@ public:
     bool end;
 
     Player();
-    Player(GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
+    Player(ShaderProgram* program, GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
 
     void jump(float disp);
     void dead();
