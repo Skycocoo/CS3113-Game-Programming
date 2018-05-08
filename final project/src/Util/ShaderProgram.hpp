@@ -1,5 +1,12 @@
 #pragma once
 
+
+#if defined(_WINDOWS) || defined(__linux__)
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
+
+
 #include <SDL_opengl.h>
 #include <string>
 #include <iostream>
