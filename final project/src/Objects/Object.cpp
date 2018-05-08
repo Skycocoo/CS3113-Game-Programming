@@ -36,6 +36,7 @@ void Object::update(float elapsed){
 
 void Object::render(const Matrix& view){
     // viewMatrix = view;
+    glUseProgram(program->programID);
 
     program->SetModelMatrix(modelMatrix);
     program->SetProjectionMatrix(projectionMatrix);

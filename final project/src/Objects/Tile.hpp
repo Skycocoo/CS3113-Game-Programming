@@ -30,7 +30,7 @@ public:
     void loadMap(const std::string& txt);
     void loadType(const std::string& txt);
 
-    void easeIn();
+    void easeIn(float offTime, float fadeInTime);
 
     void render(const Matrix& view = Matrix());
     bool collide(Object& rhs) const;
@@ -42,9 +42,6 @@ private:
     std::set<int> deco;
     std::set<int> trap;
     std::vector<int> end;
-
-    std::chrono::system_clock::time_point start;
-    float fadeInTime = 2.0;
 };
 
 #endif /* Tile_hpp */

@@ -132,7 +132,31 @@ void GameState::fixedUpdate(float lastFrameTicks, float accumulator){
     accumulator = elapsed;
 }
 
+void GameState::initLevel(){
+    if (level != 1){
+        tile.loadMap("Asset/level_" + std::to_string(level));
+        tile.loadType("Asset/level_" + std::to_string(level));
+        this->init();
+    }
+    start = std::chrono::system_clock::now();
+}
+
+void GameState::easeInLevel(){
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double>  elapsed = end - start;
+    if (elapsed.count() < fadeInTime){
+        tile.easeIn(elapsed.count(), fadeInTime);
+    }
+}
+
+
 void GameState::updateLevel(){
+    if (!initial){
+        initLevel();
+        initial = true;
+        return;
+    }
+
     if (player1.end || player2.end){
 
         // when reaching the end first: earn points
@@ -148,9 +172,7 @@ void GameState::updateLevel(){
             mode = STATE_GAME_OVER;
             return;
         }
-        tile.loadMap("Asset/level_" + std::to_string(level));
-        tile.loadType("Asset/level_" + std::to_string(level));
-        this->init();
+        initLevel();
     }
 }
 
@@ -161,6 +183,7 @@ void GameState::update(float elapsed){
             break;
         case STATE_GAME_LEVEL:
             updateLevel();
+            easeInLevel();
             checkCollision(elapsed);
             break;
         case STATE_GAME_OVER:
@@ -183,19 +206,7 @@ void GameState::render(){
 
 }
 
-void GameState::displayData(){
-    if (level <= 3) disp.renderLeft("Game Level: " + std::to_string(level) + "/3", 0.5, 0.6, -screenWidth + 0.8, screenHeight - 0.4);
 
-    play1.setPos(-screenWidth + 1, screenHeight - 1);
-    play1.update();
-    play1.render();
-    disp.renderLeft("Points: " + std::to_string(player1.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1);
-
-    play2.setPos(-screenWidth + 1, screenHeight - 1.6);
-    play2.update();
-    play2.render();
-    disp.renderLeft("Points: " + std::to_string(player2.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1.6);
-}
 
 
 void GameState::displayMainMenu(){
@@ -261,4 +272,19 @@ void GameState::displayOver(){
     }
 
     displayData();
+}
+
+
+void GameState::displayData(){
+    if (level <= 3) disp.renderLeft("Game Level: " + std::to_string(level) + "/3", 0.5, 0.6, -screenWidth + 0.8, screenHeight - 0.4);
+
+    play1.setPos(-screenWidth + 1, screenHeight - 1);
+    play1.update();
+    play1.render();
+    disp.renderLeft("Points: " + std::to_string(player1.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1);
+
+    play2.setPos(-screenWidth + 1, screenHeight - 1.6);
+    play2.update();
+    play2.render();
+    disp.renderLeft("Points: " + std::to_string(player2.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1.6);
 }

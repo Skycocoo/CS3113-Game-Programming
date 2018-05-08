@@ -22,7 +22,10 @@ public:
     GameState();
     void init();
 
+    void initLevel();
+    void easeInLevel();
     void updateLevel();
+
     void checkCollision(float elapsed);
 
     void update(float elapsed);
@@ -32,7 +35,6 @@ public:
     void displayMainMenu();
     void displayLevel();
     void displayOver();
-
     void displayData();
 
 private:
@@ -43,6 +45,10 @@ private:
     Object play2;
 
     int level;
+
+    std::chrono::system_clock::time_point start;
+    float fadeInTime = 2.0;
+    bool initial = false;
 
     float mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax);
 };

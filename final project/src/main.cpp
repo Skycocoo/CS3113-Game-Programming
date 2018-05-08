@@ -27,7 +27,7 @@ float fixedStep = 0.0166666f; // 60 FPS (1.0f/60.0f) (update sixty times a secon
 int maxStep = 3;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
-GameMode mode = STATE_GAME_LEVEL;
+GameMode mode = STATE_MAIN_MENU;
 
 Mix_Chunk* jump;
 Mix_Chunk* walk;
