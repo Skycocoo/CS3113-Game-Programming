@@ -42,6 +42,7 @@ public:
     bool collide(float elapsed);
     bool satCollide(float elapsed);
 
+    void setShader(ShaderProgram* program);
     void setScale(float scale);
     void setPos(const glm::vec3& pos);
     void setVelo(float x, float y);

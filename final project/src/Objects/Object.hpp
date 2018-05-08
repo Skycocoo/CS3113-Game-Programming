@@ -18,12 +18,7 @@
 // collision flags for four sides
 struct Coll{
     bool top = false, bottom = false, left = false, right = false;
-    void reset(){
-        top = false;
-        bottom = false;
-        left = false;
-        right = false;
-    }
+    void reset();
 };
 
 std::ostream& operator<<(std::ostream& os, const Coll& c);
@@ -40,6 +35,8 @@ public:
     virtual void update(float elapsed = 0);
     virtual void render(const Matrix& view = Matrix());
     virtual bool collide(const Object& rhs);
+
+    void setShader(ShaderProgram* program);
 
     void satPoints();
     bool satCollide(const Object& rhs);

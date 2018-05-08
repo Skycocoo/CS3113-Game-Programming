@@ -15,8 +15,8 @@
 #include <chrono>
 
 class Player;
-
 class Tile: public Object{
+    friend class GameState;
 public:
     // constructors, assume tiles start drawing at (0,0)
     Tile();

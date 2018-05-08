@@ -159,6 +159,13 @@ EnemyGroup::EnemyGroup(ShaderProgram* program, GLuint texture, const std::vector
     }
 }
 
+
+void EnemyGroup::setShader(ShaderProgram* program){
+    for (size_t i = 0; i < ene.size(); i++){
+        ene[i].setShader(program);
+    }
+}
+
 void EnemyGroup::setPos(const glm::vec3& pos){
     float posX = pos.x, posY = pos.y, spacing = 0.3;
     float step = size + spacing;

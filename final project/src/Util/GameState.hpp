@@ -49,6 +49,8 @@ private:
     std::chrono::system_clock::time_point start;
     float fadeInTime = 2.0;
     bool initial = false;
+    bool changeToTexture = false;
+    bool changeToLight = false;
 
     float mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax);
 };

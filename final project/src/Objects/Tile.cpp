@@ -98,7 +98,8 @@ void Tile::easeIn(float offTime, float fadeInTime){
                 float v = (float)(((int) map.mapData[y][x]) / spritex) / (float) spritey;
                 float spriteWidth = 1.0f / (float) spritex;
                 float spriteHeight = 1.0f / (float) spritey;
-                float offset = sin(M_PI * offTime * (0.8 + 0.4 * float(rand() % 100) / float (100))) * (1 - offTime / fadeInTime);
+                float offset = sin((1 - offTime) * (float(rand() % 100) / float (100) - 0.5) / 3)  * (0.9 + 0.2 * float(rand() % 100) / float (100)) * (1 - offTime / fadeInTime);
+                // float offset = sin(M_PI * offTime * (0.8 + 0.4 * float(rand() % 100) / float (100))) * (1 - offTime / fadeInTime);
 
                 vertices.insert(vertices.end(), {
                     tilesize * x, -tilesize * y + offset,

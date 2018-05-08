@@ -75,34 +75,9 @@ void GameState::init(){
     enemygroup.setVelo(0, 0);
 }
 
-float GameState::mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax) {
-    float retVal = dstMin + ((value - srcMin)/(srcMax-srcMin) * (dstMax-dstMin));
-
-    if(retVal < dstMin) {
-        retVal = dstMin;
-    }
-
-    if(retVal > dstMax) {
-        retVal = dstMax;
-    }
-    return retVal;
-}
-
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){
-    // scale projection matrix
-    glm::vec3 player1Pos = player1.getPos();
-    glm::vec3 player2Pos = player2.getPos();
-    float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
-    dist = mapValue(dist, 0.0, 2 * screenWidth, 0.0, 2);
-    if (dist < 0.5) dist = 0.5;
-
-    tile.setProject(dist);
-    player1.setProject(dist);
-    player2.setProject(dist);
-    enemygroup.setProject(dist);
-
     player1.satCollide(elapsed, enemygroup, player2);
     player2.satCollide(elapsed, enemygroup, player1);
     enemygroup.satCollide(elapsed);
@@ -132,6 +107,9 @@ void GameState::fixedUpdate(float lastFrameTicks, float accumulator){
     accumulator = elapsed;
 }
 
+
+//////////////////////// handling levels ////////////////////////
+
 void GameState::initLevel(){
     if (level != 1){
         tile.loadMap("Asset/level_" + std::to_string(level));
@@ -139,6 +117,8 @@ void GameState::initLevel(){
         this->init();
     }
     start = std::chrono::system_clock::now();
+    changeToLight = false;
+    changeToTexture = false;
 }
 
 void GameState::easeInLevel(){
@@ -148,7 +128,6 @@ void GameState::easeInLevel(){
         tile.easeIn(elapsed.count(), fadeInTime);
     }
 }
-
 
 void GameState::updateLevel(){
     if (!initial){
@@ -176,6 +155,8 @@ void GameState::updateLevel(){
     }
 }
 
+
+//////////////////////// handling game modes ////////////////////////
 
 void GameState::update(float elapsed){
     switch (mode){
@@ -206,8 +187,7 @@ void GameState::render(){
 
 }
 
-
-
+//////////////////////// handling display ////////////////////////
 
 void GameState::displayMainMenu(){
     disp.render("Racing", 1, 2, 0, 3.5);
@@ -226,28 +206,64 @@ void GameState::displayMainMenu(){
 }
 
 void GameState::displayLevel(){
-    // center the camera on the midpoint of player1 & player2
-    Matrix viewMatrix;
+
     glm::vec3 player1Pos = player1.getPos();
     glm::vec3 player2Pos = player2.getPos();
-    glm::vec3 midPos = (player1Pos + player2Pos) / float(2);
-    viewMatrix.Translate(-midPos.x, -midPos.y, 0);
+    Matrix viewMatrix;
 
-    // render light
-    GLint lightPositionsUniform = glGetUniformLocation(lighting.programID, "lightPositions");
-    GLfloat lightPositions[4];
-    lightPositions[0] = player1Pos.x;
-    lightPositions[1] = player1Pos.y;
-    lightPositions[2] = player2Pos.x;
-    lightPositions[3] = player2Pos.y;
-    glUseProgram(lighting.programID);
-    glUniform2fv(lightPositionsUniform, 2, lightPositions);
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double>  elapsed = end - start;
 
-    // render tile first
-    tile.render(viewMatrix);
-    player1.render(viewMatrix);
-    player2.render(viewMatrix);
-    enemygroup.render(viewMatrix);
+    if (elapsed.count() >= fadeInTime){
+        if (!changeToLight){
+            tile.setShader(&lighting);
+            changeToLight = true;
+        }
+
+        // center the camera on the midpoint of player1 & player2
+        glm::vec3 midPos = (player1Pos + player2Pos) / float(2);
+        viewMatrix.Translate(-midPos.x, -midPos.y, 0);
+
+        // scale the projection based on the distance between player1 and player2
+        float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
+        dist = mapValue(dist, 0.0, 2 * screenWidth, 0.0, 2);
+        if (dist < 0.5) dist = 0.5;
+
+        tile.setProject(dist);
+        player1.setProject(dist);
+        player2.setProject(dist);
+        enemygroup.setProject(dist);
+
+        // render light
+        GLint lightPositionsUniform = glGetUniformLocation(lighting.programID, "lightPositions");
+        GLfloat lightPositions[4];
+        lightPositions[0] = player1Pos.x;
+        lightPositions[1] = player1Pos.y;
+        lightPositions[2] = player2Pos.x;
+        lightPositions[3] = player2Pos.y;
+        glUseProgram(lighting.programID);
+        glUniform2fv(lightPositionsUniform, 2, lightPositions);
+
+        // render tile first
+        tile.render(viewMatrix);
+        player1.render(viewMatrix);
+        player2.render(viewMatrix);
+        enemygroup.render(viewMatrix);
+
+    } else {
+        if (!changeToTexture){
+            tile.setShader(&textured);
+            tile.setProject(2);
+            changeToTexture = true;
+        }
+        // view matrix: reverse of desired center position
+        viewMatrix.Translate((-tile.map.mapWidth * tile.tilesize) / 2.0, (tile.map.mapHeight * tile.tilesize) / 2.0, 0);
+
+        // projection matrix: display the entire map
+        tile.render(viewMatrix);
+    }
+
+
 
     displayData();
 }
@@ -274,7 +290,6 @@ void GameState::displayOver(){
     displayData();
 }
 
-
 void GameState::displayData(){
     if (level <= 3) disp.renderLeft("Game Level: " + std::to_string(level) + "/3", 0.5, 0.6, -screenWidth + 0.8, screenHeight - 0.4);
 
@@ -287,4 +302,19 @@ void GameState::displayData(){
     play2.update();
     play2.render();
     disp.renderLeft("Points: " + std::to_string(player2.points), 0.5, 0.6, -screenWidth + 1.5, screenHeight - 1.6);
+}
+
+//////////////////////// helper function ////////////////////////
+
+float GameState::mapValue(float value, float srcMin, float srcMax, float dstMin, float dstMax) {
+    float retVal = dstMin + ((value - srcMin)/(srcMax-srcMin) * (dstMax-dstMin));
+
+    if(retVal < dstMin) {
+        retVal = dstMin;
+    }
+
+    if(retVal > dstMax) {
+        retVal = dstMax;
+    }
+    return retVal;
 }
