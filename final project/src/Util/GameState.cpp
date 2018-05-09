@@ -13,7 +13,7 @@ extern glm::vec3 startPos;
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 extern GameMode mode;
 
-GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"), level(1){
+GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), background("Asset/tilemap", "Asset/background", 0.5), xml("Asset/sheet.xml"), level(1){
     untextured = setUntextured();
     startPos = tile.getPos();
 
@@ -129,6 +129,7 @@ void GameState::easeInLevel(){
     std::chrono::duration<double>  elapsed = end - start;
     if (elapsed.count() < fadeInTime){
         tile.easeIn(elapsed.count(), fadeInTime);
+        // background.easeIn(elapsed.count(), fadeInTime);
     }
 }
 
@@ -220,10 +221,12 @@ void GameState::displayLevel(){
     if (elapsed.count() >= fadeInTime){
         if (!changeToLight){
             tile.setShader(&lighting);
+            background.setShader(&lighting);
             changeToLight = true;
         }
 
         // render light
+        GLint brightnessUniform = glGetUniformLocation(lighting.programID, "brightness");
         GLint lightPositionsUniform = glGetUniformLocation(lighting.programID, "lightPositions");
         GLfloat lightPositions[4];
         lightPositions[0] = player1Pos.x;
@@ -239,6 +242,8 @@ void GameState::displayLevel(){
         if (dist < 0.5) dist = 0.5;
 
         tile.setProject(dist);
+        background.setProject(dist);
+
         player1.setProject(dist);
         player2.setProject(dist);
         enemygroup.setProject(dist);
@@ -248,6 +253,10 @@ void GameState::displayLevel(){
         viewMatrix.Translate(-midPos.x, -midPos.y, 0);
 
         // render tile first
+        glUniform1f(brightnessUniform, 0.5);
+        background.render(viewMatrix);
+
+        glUniform1f(brightnessUniform, 1);
         tile.render(viewMatrix);
         player1.render(viewMatrix);
         player2.render(viewMatrix);
@@ -256,6 +265,7 @@ void GameState::displayLevel(){
     } else {
         if (!changeToTexture){
             tile.setShader(&textured);
+            background.setShader(&textured);
             changeToTexture = true;
         }
 
@@ -263,9 +273,8 @@ void GameState::displayLevel(){
 
         // render light
         GLint brightnessUniform = glGetUniformLocation(textured.programID, "brightness");
-        glUseProgram(textured.programID);
-        glUniform1f(brightnessUniform, mapValue(scale, 0.0, 1.0, 0.6, 1.0));
 
+        // calculate the distance
         float width = (tile.map.mapWidth * tile.tilesize) / 2.0 - startPos.x;
         float height = (-tile.map.mapHeight * tile.tilesize) / 2.0 - startPos.y;
         float distWidth = width * scale;
@@ -276,9 +285,15 @@ void GameState::displayLevel(){
 
         // projection matrix: display the entire map
         tile.setProject(mapValue(scale, 0.0, 1.0, 0.5, 2.0));
+        background.setProject(mapValue(scale, 0.0, 1.0, 0.5, 2.0));
 
         // view matrix: reverse of desired startPos position
         viewMatrix.Translate(-distWidth, -distHeight, 0);
+
+        glUseProgram(textured.programID);
+        glUniform1f(brightnessUniform, mapValue(scale, 0.0, 1.0, 0.5, 0.7));
+        background.render(viewMatrix);
+        glUniform1f(brightnessUniform, mapValue(scale, 0.0, 1.0, 0.6, 1.0));
         tile.render(viewMatrix);
     }
 
@@ -308,6 +323,11 @@ void GameState::displayOver(){
 }
 
 void GameState::displayData(){
+    // render light
+    GLint brightnessUniform = glGetUniformLocation(textured.programID, "brightness");
+    glUseProgram(textured.programID);
+    glUniform1f(brightnessUniform, 1);
+
     if (level <= 3) disp.renderLeft("Game Level: " + std::to_string(level) + "/3", 0.5, 0.6, -screenWidth + 0.8, screenHeight - 0.4);
 
     play1.setPos(-screenWidth + 1, screenHeight - 1);

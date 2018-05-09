@@ -18,6 +18,7 @@ public:
     EnemyGroup enemygroup;
 
     Tile tile;
+    Tile background;
 
     GameState();
     void init();

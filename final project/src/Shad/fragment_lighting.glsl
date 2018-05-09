@@ -1,5 +1,5 @@
 uniform sampler2D diffuse;
-
+uniform float brightness;
 uniform vec2 lightPositions[2];
 
 varying vec2 varPosition;
@@ -10,16 +10,16 @@ float attenuate(float dist, float a, float b){
 }
 
 void main() {
-    float brightness = 0.0;
+    float light = 0.0;
 
     for(int i = 0; i < 2; i++){
-        brightness += attenuate(distance(lightPositions[i], varPosition), 0.5, 0.8);
+        light += attenuate(distance(lightPositions[i], varPosition), 0.5, 0.8);
     }
 
-    if(brightness > 1.0)
-        brightness = 1.0;
+    if(light > 1.0)
+        light = 1.0;
 
     vec4 textureColor = texture2D(diffuse, texCoordVar);
-    gl_FragColor = textureColor * brightness;
+    gl_FragColor = textureColor * light * brightness;
     gl_FragColor.a = textureColor.a;
 }

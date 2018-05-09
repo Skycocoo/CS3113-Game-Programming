@@ -39,6 +39,7 @@ void Tile::loadMap(const std::string& txt){
     map.~FlareMap();
     map.Load(txt);
 
+    vertices.clear();
     texCoords.clear();
     deco.clear();
     trap.clear();
