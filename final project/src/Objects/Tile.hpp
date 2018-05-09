@@ -42,6 +42,7 @@ private:
     std::set<int> deco;
     std::set<int> trap;
     std::vector<int> end;
+    int jump = 0;
 };
 
 #endif /* Tile_hpp */

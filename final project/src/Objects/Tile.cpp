@@ -150,6 +150,9 @@ void Tile::loadType(const std::string& txt){
                 if (comma != ',') break;
             }
             end.push_back(index);
+        } else if (temp == "jump"){
+            ifs >> index;
+            jump = index;
         }
     }
 }
@@ -291,6 +294,13 @@ bool Tile::collide(Player& rhs) const {
                 if (deco.find(map.mapData[tileDown][tileX]) == deco.end()){
                     rhs.coll.bottom = true;
                     rhs.pos.y += fabs(enDown - (-tilesize * tileDown)) + 0.0001;
+
+                    if (map.mapData[tileDown][tileX] == jump){
+                        rhs.superJump = true;
+                        rhs.numJump = 2;
+                    } else {
+                        rhs.superJump = false;
+                    }
 
                     if (trap.find(map.mapData[tileDown][tileX]) != trap.end()){
                         rhs.dead();

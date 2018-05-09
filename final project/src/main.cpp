@@ -63,7 +63,8 @@ void updateGame(const SDL_Event& event, GameState& game){
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
                     if (game.player1.numJump < 3) {
-                        game.player1.jump(1);
+                        if (!game.player1.superJump) game.player1.jump(1);
+                        else game.player1.jump(3);
                         game.player1.numJump += 1;
                     }
                 }
@@ -85,7 +86,8 @@ void updateGame(const SDL_Event& event, GameState& game){
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
                     if (game.player2.numJump < 3) {
-                        game.player2.jump(1);
+                        if (!game.player2.superJump) game.player2.jump(1);
+                        else game.player2.jump(3);
                         game.player2.numJump += 1;
                     }
                 }
