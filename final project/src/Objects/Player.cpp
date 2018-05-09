@@ -5,7 +5,7 @@
 #include "Enemy.hpp"
 #include "Tile.hpp"
 
-extern glm::vec3 center;
+extern glm::vec3 startPos;
 
 Player::Player(){}
 
@@ -62,7 +62,7 @@ void Player::jump(float disp){
 
 void Player::dead(){
     points -= 10;
-    this->setPos(center);
+    this->setPos(startPos);
 }
 
 bool Player::collide(float elapsed, EnemyGroup& enemygroup){

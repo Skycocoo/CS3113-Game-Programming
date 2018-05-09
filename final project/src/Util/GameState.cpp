@@ -8,14 +8,14 @@ extern ShaderProgram textured, untextured, lighting;
 
 extern float fixedStep, screenWidth, screenHeight;
 extern int maxStep;
-extern glm::vec3 center;
+extern glm::vec3 startPos;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
 extern GameMode mode;
 
 GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/sheet.xml"), level(1){
     untextured = setUntextured();
-    center = tile.getPos();
+    startPos = tile.getPos();
 
     GLuint text;
     textured = setTextured("Asset/font1", text);
@@ -33,7 +33,7 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienBlue_stand.png"));
     p.push_back(xml.getData("alienBlue_walk1.png"));
     p.push_back(xml.getData("alienBlue_walk2.png"));
-    player1 = Player(&lighting, texture, p, center, &tile);
+    player1 = Player(&lighting, texture, p, startPos, &tile);
     player1.setScale(0.5);
 
     p.clear();
@@ -42,7 +42,7 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienYellow_stand.png"));
     p.push_back(xml.getData("alienYellow_walk1.png"));
     p.push_back(xml.getData("alienYellow_walk2.png"));
-    player2 = Player(&lighting, texture, p, center, &tile);
+    player2 = Player(&lighting, texture, p, startPos, &tile);
     player2.setScale(0.5);
 
     p.clear();
@@ -51,27 +51,30 @@ GameState::GameState(): tile("Asset/tilemap", "Asset/level_1", 0.5), xml("Asset/
     p.push_back(xml.getData("alienBeige_stand.png"));
     p.push_back(xml.getData("alienBeige_walk1.png"));
     p.push_back(xml.getData("alienBeige_walk2.png"));
-    enemygroup = EnemyGroup(&lighting, texture, p, center, &tile);
+    enemygroup = EnemyGroup(&lighting, texture, p, startPos, &tile);
     enemygroup.setScale(0.5);
 
 
-    play1 = Object(&textured, texture, glm::vec3(-screenWidth + 1, screenHeight - 1 , 0));
+    play1 = Object(&textured, texture);
     play1.setData(xml.getData("alienBlue.png"));
     play1.setScale(0.6);
     play1.update();
 
-    play2 = Object(&textured, texture, glm::vec3(-screenWidth + 1, screenHeight - 1.6, 0));
+    play2 = Object(&textured, texture);
     play2.setData(xml.getData("alienYellow.png"));
     play2.setScale(0.6);
     play2.update();
+
+    init();
 }
 
 void GameState::init(){
-    player1.setPos(center);
+    player1.setPos(startPos.x - 0.5, startPos.y);
     player1.setVelo(0, 0);
-    player2.setPos(center);
+    // player2.setPos(startPos);
+    player2.setPos(startPos.x + 0.5, startPos.y);
     player2.setVelo(0, 0);
-    enemygroup.setPos(center);
+    enemygroup.setPos(startPos);
     enemygroup.setVelo(0, 0);
 }
 
@@ -220,20 +223,6 @@ void GameState::displayLevel(){
             changeToLight = true;
         }
 
-        // center the camera on the midpoint of player1 & player2
-        glm::vec3 midPos = (player1Pos + player2Pos) / float(2);
-        viewMatrix.Translate(-midPos.x, -midPos.y, 0);
-
-        // scale the projection based on the distance between player1 and player2
-        float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
-        dist = mapValue(dist, 0.0, 2 * screenWidth, 0.0, 2);
-        if (dist < 0.5) dist = 0.5;
-
-        tile.setProject(dist);
-        player1.setProject(dist);
-        player2.setProject(dist);
-        enemygroup.setProject(dist);
-
         // render light
         GLint lightPositionsUniform = glGetUniformLocation(lighting.programID, "lightPositions");
         GLfloat lightPositions[4];
@@ -244,6 +233,20 @@ void GameState::displayLevel(){
         glUseProgram(lighting.programID);
         glUniform2fv(lightPositionsUniform, 2, lightPositions);
 
+        // scale the projection based on the distance between player1 and player2
+        float dist = sqrt(pow(player1Pos.x - player2Pos.x, 2) + pow(player1Pos.y - player2Pos.y, 2));
+        dist = mapValue(dist, 0.0, 2 * screenWidth, 0, 2);
+        if (dist < 0.5) dist = 0.5;
+
+        tile.setProject(dist);
+        player1.setProject(dist);
+        player2.setProject(dist);
+        enemygroup.setProject(dist);
+
+        // startPos the camera on the midpoint of player1 & player2
+        glm::vec3 midPos = (player1Pos + player2Pos) / float(2);
+        viewMatrix.Translate(-midPos.x, -midPos.y, 0);
+
         // render tile first
         tile.render(viewMatrix);
         player1.render(viewMatrix);
@@ -253,17 +256,31 @@ void GameState::displayLevel(){
     } else {
         if (!changeToTexture){
             tile.setShader(&textured);
-            tile.setProject(2);
             changeToTexture = true;
         }
-        // view matrix: reverse of desired center position
-        viewMatrix.Translate((-tile.map.mapWidth * tile.tilesize) / 2.0, (tile.map.mapHeight * tile.tilesize) / 2.0, 0);
+
+        float scale = 1 - elapsed.count() / fadeInTime;
+
+        // render light
+        GLint brightnessUniform = glGetUniformLocation(textured.programID, "brightness");
+        glUseProgram(textured.programID);
+        glUniform1f(brightnessUniform, mapValue(scale, 0.0, 1.0, 0.6, 1.0));
+
+        float width = (tile.map.mapWidth * tile.tilesize) / 2.0 - startPos.x;
+        float height = (-tile.map.mapHeight * tile.tilesize) / 2.0 - startPos.y;
+        float distWidth = width * scale;
+        float distHeight = height * scale;
+
+        distWidth = mapValue(distWidth, 0.0, width, startPos.x, (tile.map.mapWidth * tile.tilesize) / 2.0);
+        distHeight = mapValue(distHeight, 0.0, height, startPos.y - 0.25, (-tile.map.mapHeight * tile.tilesize) / 2.0);
 
         // projection matrix: display the entire map
+        tile.setProject(mapValue(scale, 0.0, 1.0, 0.5, 2.0));
+
+        // view matrix: reverse of desired startPos position
+        viewMatrix.Translate(-distWidth, -distHeight, 0);
         tile.render(viewMatrix);
     }
-
-
 
     displayData();
 }

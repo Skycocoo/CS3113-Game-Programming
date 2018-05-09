@@ -32,7 +32,7 @@ GameMode mode = STATE_GAME_LEVEL;
 Mix_Chunk* jump;
 Mix_Chunk* walk;
 
-glm::vec3 center = glm::vec3(0, 0, 0);
+glm::vec3 startPos = glm::vec3(0, 0, 0);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
