@@ -22,6 +22,7 @@ public:
 
     GameState();
     void init();
+    void cheat();
 
     void initLevel();
     void easeInLevel();

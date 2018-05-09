@@ -15,7 +15,7 @@ public:
     DynamicObj(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const Tile* tile);
 
     void setTile(const Tile& t);
-    void setAcce(float disp);
+    void setVelo(float disp);
 
     void update(float elapsed);
     void render(const Matrix& view = Matrix());

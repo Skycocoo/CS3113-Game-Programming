@@ -48,8 +48,8 @@ void DynamicObj::update(float elapsed){
 
 }
 
-void DynamicObj::setAcce(float disp){
-    velo.x += disp / 30;
+void DynamicObj::setVelo(float disp){
+    velo.x += disp;
 }
 
 bool DynamicObj::satTwoCollide(float elapsed, DynamicObj& rhs1, DynamicObj& rhs2){

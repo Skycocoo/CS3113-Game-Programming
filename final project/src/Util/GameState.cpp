@@ -78,6 +78,15 @@ void GameState::init(){
     enemygroup.setVelo(0, 0);
 }
 
+void GameState::cheat(){
+    level += 1;
+    if (level > 3) {
+        mode = STATE_GAME_OVER;
+        return;
+    }
+    initLevel();
+}
+
 
 // bullets: disappear when collide
 void GameState::checkCollision(float elapsed){

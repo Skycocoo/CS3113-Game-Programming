@@ -73,8 +73,8 @@ bool Enemy::collide(float elapsed, EnemyGroup& enemygroup){
         if (this != &enemygroup.ene[i]){
             bool result = Object::collide(enemygroup.ene[i]);
             if (result){
-                if (coll.left) enemygroup.ene[i].control(-5);
-                if (coll.right) enemygroup.ene[i].control(5);
+                if (coll.left) enemygroup.ene[i].control(-0.3);
+                if (coll.right) enemygroup.ene[i].control(0.3);
                 x = true;
             }
         }
@@ -117,8 +117,8 @@ bool Enemy::satCollide(float elapsed, EnemyGroup& enemygroup){
         // std::cout << "calling satCollide " << i << std::endl;
         if (this != &enemygroup.ene[i]){
             result = Object::satCollide(enemygroup.ene[i]) || result;
-            if (coll.left) enemygroup.ene[i].setAcce(-5);
-            else if (coll.right) enemygroup.ene[i].setAcce(5);
+            if (coll.left) enemygroup.ene[i].setVelo(-0.3);
+            else if (coll.right) enemygroup.ene[i].setVelo(0.3);
         }
     }
 

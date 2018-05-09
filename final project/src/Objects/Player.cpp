@@ -63,6 +63,7 @@ void Player::jump(float disp){
 void Player::dead(){
     points -= 10;
     this->setPos(startPos);
+    this->setVelo(0, 0);
 }
 
 bool Player::collide(float elapsed, EnemyGroup& enemygroup){
@@ -74,8 +75,8 @@ bool Player::collide(float elapsed, EnemyGroup& enemygroup){
     for (size_t i = 0; i < enemygroup.ene.size(); i++){
         bool result = Object::collide(enemygroup.ene[i]);
         if (result){
-            if (coll.left) enemygroup.ene[i].setAcce(-5);
-            if (coll.right) enemygroup.ene[i].setAcce(5);
+            if (coll.left) enemygroup.ene[i].setVelo(-0.3);
+            if (coll.right) enemygroup.ene[i].setVelo(0.3);
             x = true;
         }
         // shouldnt update velocity for size() many times
@@ -118,15 +119,15 @@ bool Player::satCollide(float elapsed, EnemyGroup& enemygroup, Player& player){
 
         // if (result) std::cout << "collide? " << coll;
 
-        if (coll.left) enemygroup.ene[i].setAcce(-5);
-        else if (coll.right) enemygroup.ene[i].setAcce(5);
+        if (coll.left) enemygroup.ene[i].setVelo(-0.3);
+        else if (coll.right) enemygroup.ene[i].setVelo(0.3);
 
         if (coll.bottom) bottom = true;
     }
 
     result = Object::satCollide(player) || result;
-    if (coll.left) player.setAcce(-5);
-    else if (coll.right) player.setAcce(5);
+    if (coll.left) player.setVelo(-0.3);
+    else if (coll.right) player.setVelo(0.3);
     if (coll.bottom) bottom = true;
 
 
