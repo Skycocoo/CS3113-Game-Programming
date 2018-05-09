@@ -207,7 +207,7 @@ void GameState::displayMainMenu(){
     GLint brightnessUniform = glGetUniformLocation(textured.programID, "brightness");
     glUseProgram(textured.programID);
     glUniform1f(brightnessUniform, 1);
-    
+
     disp.render("Racing", 1, 2, 0, 3.5);
 
     play1.setPos(-2.5, 0);
@@ -328,7 +328,7 @@ void GameState::displayOver(){
         play1.update();
         play1.render();
         disp.render("wins",  0.5, 1, 0, -1);
-    } else if (player1.points > player2.points) {
+    } else if (player1.points < player2.points) {
         play2.setPos(0, 0);
         play2.setScale(1);
         play2.update();
