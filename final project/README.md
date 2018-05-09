@@ -72,7 +72,7 @@ $ ./main
 
 - [ ] 3D elements
 
-- [ ] shader effects
+- [x] shader effects
 
 
 ## Todo

@@ -1,5 +1,5 @@
-// Yuxi Luo (yl4217), February 26, 2018
-// Homework 4, Platformers, CS3113 Game Programming
+// Yuxi Luo (yl4217), Yiyang Zeng
+// Final Project, Platformer, CS3113 Game Programming
 
 // !!!Important!!!
 // please clone with git clone --recursive https://github.com/Skycocoo/CS3113-Game-Programming.git
@@ -27,7 +27,7 @@ float fixedStep = 0.0166666f; // 60 FPS (1.0f/60.0f) (update sixty times a secon
 int maxStep = 3;
 
 enum GameMode {STATE_MAIN_MENU, STATE_GAME_LEVEL, STATE_GAME_OVER};
-GameMode mode = STATE_GAME_LEVEL;
+GameMode mode = STATE_MAIN_MENU;
 
 Mix_Chunk* jump;
 Mix_Chunk* walk;
@@ -63,8 +63,11 @@ void updateGame(const SDL_Event& event, GameState& game){
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
                     if (game.player1.numJump < 3) {
-                        if (!game.player1.superJump) game.player1.jump(1);
-                        else game.player1.jump(3);
+                        if (!game.player1.superJump) game.player1.jump(1.2);
+                        else {
+                            game.player1.jump(4);
+                            game.player1.superJump = false;
+                        }
                         game.player1.numJump += 1;
                     }
                 }
@@ -86,8 +89,11 @@ void updateGame(const SDL_Event& event, GameState& game){
                 if (mode == STATE_GAME_LEVEL) {
                     Mix_PlayChannel(-1, jump, 0);
                     if (game.player2.numJump < 3) {
-                        if (!game.player2.superJump) game.player2.jump(1);
-                        else game.player2.jump(3);
+                        if (!game.player2.superJump) game.player2.jump(1.2);
+                        else {
+                            game.player2.jump(4);
+                            game.player2.superJump = false;
+                        }
                         game.player2.numJump += 1;
                     }
                 }
@@ -105,20 +111,20 @@ void updateGame(const SDL_Event& event, GameState& game){
 
 int main(){
     // initial set up
-    SDL_Window* displayWindow = setUp("Finan project");
+    SDL_Window* displayWindow = setUp("Finanl project");
 
-    // // music
-    // Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 4096 );
-    // Mix_Music* music = Mix_LoadMUS(RESOURCE_FOLDER"Asset/my_music.mp3");
-    // jump = Mix_LoadWAV(RESOURCE_FOLDER"Asset/jump.wav");
-    // walk = Mix_LoadWAV(RESOURCE_FOLDER"Asset/walk.wav");
-    // if(!music || !jump || !walk) {
-    //    cout << "Mix_Load: ";
-    //    Mix_GetError();
-    //    cout << endl;
-    //    exit(1);
-    // }
-    // Mix_PlayMusic(music, -1);
+    // music
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+    Mix_Music* music = Mix_LoadMUS(RESOURCE_FOLDER"Asset/my_music.mp3");
+    jump = Mix_LoadWAV(RESOURCE_FOLDER"Asset/jump.wav");
+    walk = Mix_LoadWAV(RESOURCE_FOLDER"Asset/walk.wav");
+    if(!music || !jump || !walk) {
+       cout << "Mix_Load: ";
+       Mix_GetError();
+       cout << endl;
+       exit(1);
+    }
+    Mix_PlayMusic(music, -1);
 
 
     GameState game;

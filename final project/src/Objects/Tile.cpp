@@ -297,9 +297,6 @@ bool Tile::collide(Player& rhs) const {
 
                     if (map.mapData[tileDown][tileX] == jump){
                         rhs.superJump = true;
-                        rhs.numJump = 2;
-                    } else {
-                        rhs.superJump = false;
                     }
 
                     if (trap.find(map.mapData[tileDown][tileX]) != trap.end()){

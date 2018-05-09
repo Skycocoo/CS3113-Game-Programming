@@ -13,7 +13,7 @@ public:
     int numJump;
     int points;
     bool end;
-    bool superJump;
+    bool superJump = false;
 
     Player();
     Player(ShaderProgram* program, GLuint texture, const std::vector<XMLData>& data, const glm::vec3& pos, const Tile* tile);
