@@ -8,20 +8,15 @@
 #include <string>
 #include <utility>
 
+#include "../Util/Coll.hpp"
 #include "../Util/XMLLoad.hpp"
 #include "../Util/ShaderProgram.hpp"
 #include "../Math/Matrix.hpp"
 
+
 #include "glm/glm.hpp"
 
 
-// collision flags for four sides
-struct Coll{
-    bool top = false, bottom = false, left = false, right = false;
-    void reset();
-};
-
-std::ostream& operator<<(std::ostream& os, const Coll& c);
 
 // create an object class to handle parameters
 class Object{
@@ -81,9 +76,6 @@ protected:
 
 };
 
-bool TestSATSeparationForEdge(float edgeX, float edgeY, const std::vector<std::pair<float,float>> &points1, const std::vector<std::pair<float,float>> &points2, std::pair<float,float> &penetration);
-bool PenetrationSort(const std::pair<float,float> &p1, const std::pair<float,float> &p2);
-bool CheckSATCollision(const std::vector<std::pair<float,float>> &e1Points, const std::vector<std::pair<float,float>> &e2Points, std::pair<float,float> &penetration);
 
 
 #endif /* Object_hpp */

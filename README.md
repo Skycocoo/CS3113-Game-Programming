@@ -1,11 +1,6 @@
 # Racing - final project for CS3113
 
-## Comments
-
 Some other games made for CS3113 Game Programming are stored in branch ```archive```
-
-
-# Final Project Description
 
 # Dependencies
 
