@@ -18,7 +18,6 @@ public:
     void setVelo(float disp);
 
     void update(float elapsed);
-    void render(const Matrix& view = Matrix());
 
     const glm::vec3 getVelo() const;
     void setVelo(float x, float y);
@@ -27,7 +26,6 @@ public:
     bool collide(float elapsed);
     bool collide(float elapsed, const Object& rhs);
     bool satCollide(float elapsed, const Object& rhs);
-    bool satTwoCollide(float elapsed, DynamicObj& rhs1, DynamicObj& rhs2);
 
 protected:
     // should set float or else it would set to garbage value

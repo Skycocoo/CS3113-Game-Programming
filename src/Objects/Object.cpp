@@ -13,15 +13,14 @@ extern float screenWidth;
 extern float screenHeight;
 extern float splitScale;
 
-
+// constructors
 Object::Object(){}
-
 Object::Object(ShaderProgram* program, GLuint texture, const glm::vec3& pos): program(program), texture(texture), pos(pos), shape(1, 1, 1){
     projectionMatrix.SetOrthoProjection(-screenWidth, screenWidth, -screenHeight, screenHeight, -1.0f, 1.0f);
     satPoints();
 }
 
-
+// update & render
 void Object::update(float elapsed){
     modelMatrix.Identity();
 
@@ -29,7 +28,6 @@ void Object::update(float elapsed){
     modelMatrix.Rotate(rotate);
     modelMatrix.Scale(scale, scale, scale);
 }
-
 
 void Object::render(const Matrix& view){
     // viewMatrix = view;
@@ -54,7 +52,7 @@ void Object::render(const Matrix& view){
 }
 
 // collision detection
-// separate axis for collision handling
+// separate axis (x and y) for collision handling
 bool Object::collide(const Object& rhs) {
     coll.reset();
     bool collide = false;
@@ -72,8 +70,6 @@ bool Object::collide(const Object& rhs) {
 
     // intersecting
     if (!(objUp < enDown || objLeft > enRight || objDown > enUp || objRight < enLeft)) collide = true;
-
-
     // if (collide) std::cout << objUp << " " << enDown << " " << (objUp > enDown)<< std::endl;
 
     if (collide){
@@ -97,12 +93,7 @@ bool Object::collide(const Object& rhs) {
 }
 
 
-
-void Object::setShader(ShaderProgram* program){
-    this->program = program;
-}
-
-
+// SAT collision detection
 void Object::satPoints(){
     points.clear();
 
@@ -156,6 +147,13 @@ bool Object::satCollide(const Object& rhs){
 }
 
 
+
+// setters
+
+void Object::setShader(ShaderProgram* program){
+    this->program = program;
+}
+
 void Object::setScale(float size){
     this->scale = size;
     this->shape *= size;
@@ -195,8 +193,6 @@ void Object::setProject(float proj){
     projectionMatrix.SetOrthoProjection(-screenWidth * proj, screenWidth * proj, -screenHeight * proj, screenHeight * proj, -1.0f, 1.0f);
 }
 
-
-
 void Object::setData(const XMLData& data){
     // assume the shape of sheetsprite is 1024 * 512
     float u = data.x / 1024.0,
@@ -234,11 +230,14 @@ void Object::setData(const XMLData& data){
     shape *= scale;
 }
 
+// getters
+
 const glm::vec3& Object::getPos() const {
     return pos;
 }
 
 // linear interpolation
+
 void Object::lerp(glm::vec3& orig, const glm::vec3& prop, const glm::vec3& tar) const {
     orig = (glm::vec3(1, 1, 1) - prop) * orig + prop * tar;
 }

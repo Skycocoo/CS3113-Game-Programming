@@ -4,26 +4,36 @@
 #include "DynamicObj.hpp"
 #include "Tile.hpp"
 
-// extern ShaderProgram textured;
-// extern ShaderProgram untextured;
-
+// constructors
 DynamicObj::DynamicObj(): Object::Object(){}
-
 DynamicObj::DynamicObj(ShaderProgram* program, GLuint texture, const glm::vec3& pos, const Tile* tile):
     Object(program, texture, pos), velo(0, 0, 0), fric(0.3, 0.3, 0.3), grav(0, -0.98, 0), acce(0, 0, 0), tile(tile) {}
     // if (texture == 0) program = &untextured;
 
 
+
+// update velocity
+void DynamicObj::updateVelo(float elapsed){
+    velo += acce * elapsed;
+    velo += grav * elapsed;
+    // movement is influenced by friction
+    lerp(velo, fric * elapsed);
+}
+
+
+// update position
+void DynamicObj::update(float elapsed){
+    updateVelo(elapsed);
+    pos.x += velo.x * elapsed;
+    pos.y += velo.y * elapsed;
+    Object::update();
+}
+
+
+// setters
+
 void DynamicObj::setTile(const Tile& t){
     tile = &t;
-}
-
-void DynamicObj::render(const Matrix& view){
-    Object::render(view);
-}
-
-const glm::vec3 DynamicObj::getVelo() const {
-    return velo;
 }
 
 void DynamicObj::setVelo(float x, float y){
@@ -31,50 +41,13 @@ void DynamicObj::setVelo(float x, float y){
     velo.y = y;
 }
 
-void DynamicObj::updateVelo(float elapsed){
-    lerp(velo, fric * elapsed);
-    velo += acce * elapsed;
-    velo += grav * elapsed;
 
-    if (acce.x != 0) acce.x = 0;
-   // if (acce.y != 0) acce.y = 0;
-}
 
-void DynamicObj::update(float elapsed){
-    updateVelo(elapsed);
-    pos.x += velo.x * elapsed;
-    pos.y += velo.y * elapsed;
-    Object::update();
 
-}
 
 void DynamicObj::setVelo(float disp){
     velo.x += disp;
 }
-
-bool DynamicObj::satTwoCollide(float elapsed, DynamicObj& rhs1, DynamicObj& rhs2){
-    // update x & y positions
-    DynamicObj::update(elapsed);
-
-    // store updated positions
-    float prevX = pos.x, prevY = pos.y;
-    bool result = false;
-
-    result = Object::satCollide(rhs1) || result;
-    // Object::update();
-    result = Object::satCollide(rhs2) || result;
-    // Object::update();
-
-    if (tile) result = tile->collide(*this) || result;
-
-    if (prevX - pos.x != 0) velo.x = 0;
-    if (prevY - pos.y != 0) velo.y = 0;
-
-
-    Object::update();
-    return result;
-}
-
 
 bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
     DynamicObj::update(elapsed);
@@ -99,6 +72,27 @@ bool DynamicObj::satCollide(float elapsed, const Object& rhs) {
     return (x || y);
 }
 
+// only collide with tile
+bool DynamicObj::collide(float elapsed) {
+    bool result = false;
+    updateVelo(elapsed);
+
+    // x axis:
+    pos.x += velo.x * elapsed;
+    if (tile) result = tile->collide(*this) || result;
+    if (result) velo.x = 0;
+
+    // y axis:
+    pos.y += velo.y * elapsed;
+    // should also check collide with tile map
+    if (tile) result = tile->collide(*this) || result;
+    if (result) velo.y = 0;
+
+    Object::update();
+
+    return result;
+}
+
 
 bool DynamicObj::collide(float elapsed, const Object& rhs) {
     bool x = false, y = false;
@@ -120,22 +114,8 @@ bool DynamicObj::collide(float elapsed, const Object& rhs) {
     return (x || y);
 }
 
-bool DynamicObj::collide(float elapsed) {
-    bool result = false;
-    updateVelo(elapsed);
+// getters
 
-    // x axis:
-    pos.x += velo.x * elapsed;
-    if (tile) result = tile->collide(*this) || result;
-    if (result) velo.x = 0;
-
-    // y axis:
-    pos.y += velo.y * elapsed;
-    // should also check collide with tile map
-    if (tile) result = tile->collide(*this) || result;
-    if (result) velo.y = 0;
-
-    Object::update();
-
-    return result;
+const glm::vec3 DynamicObj::getVelo() const {
+    return velo;
 }
